@@ -1,6 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+    useEffect,
+    useState,
+} from "react";
 
 import {
+    FaCalendarAlt,
     FaChartBar,
     FaCheckCircle,
     FaTimesCircle,
@@ -10,107 +14,284 @@ import {
 } from "react-icons/fa";
 
 import api from "../../services/api";
+
 import { useAuth } from "../../context/AuthContext";
 
 import "./Reports.css";
 
+
 const Reports = () => {
-    const { user } = useAuth();
 
-    const [classData, setClassData] = useState(null);
-    const [reportData, setReportData] = useState(null);
+    const { user } =
+        useAuth();
 
-    const [loading, setLoading] = useState(true);
-    const [refreshing, setRefreshing] = useState(false);
 
-    const [error, setError] = useState("");
+    const [classData, setClassData] =
+        useState(null);
+
+    const [reportData, setReportData] =
+        useState(null);
+
+
+    const [selectedDate, setSelectedDate] =
+        useState("");
+
+
+    const [loading, setLoading] =
+        useState(true);
+
+    const [refreshing, setRefreshing] =
+        useState(false);
+
+    const [error, setError] =
+        useState("");
 
 
     // ==========================================
-    // LOAD REPORT
+    // GET TODAY
+    // ==========================================
+
+    const getToday = () => {
+
+        const today =
+            new Date();
+
+
+        const year =
+            today.getFullYear();
+
+
+        const month =
+            String(
+                today.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const day =
+            String(
+                today.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        return `${year}-${month}-${day}`;
+    };
+
+
+    // ==========================================
+    // LOAD ASSIGNED CLASS
+    // ==========================================
+
+    const loadClass = async () => {
+
+        const response =
+            await api.get(
+                "/classes/my-class"
+            );
+
+
+        const responseData =
+            response.data;
+
+
+        const assignedClass =
+            responseData.class ||
+            responseData.myClass ||
+            responseData.data?.class ||
+            responseData.data ||
+            responseData;
+
+
+        if (
+            !assignedClass ||
+            !assignedClass._id
+        ) {
+
+            throw new Error(
+                "No class is assigned to you."
+            );
+        }
+
+
+        setClassData(
+            assignedClass
+        );
+
+
+        return assignedClass;
+    };
+
+
+    // ==========================================
+    // LOAD DATE REPORT
+    // ==========================================
+
+    const loadDateReport = async (
+        date,
+        classId
+    ) => {
+
+        if (
+            !date ||
+            !classId
+        ) {
+
+            setReportData(
+                null
+            );
+
+            return;
+        }
+
+
+        const response =
+            await api.get(
+                `/attendance/report/date/${date}?classId=${classId}`
+            );
+
+
+        setReportData(
+            response.data
+        );
+    };
+
+
+    // ==========================================
+    // INITIAL LOAD
     // ==========================================
 
     useEffect(() => {
-        loadReport();
+
+        const initialize =
+            async () => {
+
+                try {
+
+                    setLoading(
+                        true
+                    );
+
+                    setError("");
+
+
+                    const today =
+                        getToday();
+
+
+                    setSelectedDate(
+                        today
+                    );
+
+
+                    const assignedClass =
+                        await loadClass();
+
+
+                    await loadDateReport(
+                        today,
+                        assignedClass._id
+                    );
+
+                } catch (err) {
+
+                    console.error(
+                        "Teacher Report Error:",
+                        err
+                    );
+
+
+                    setError(
+                        err.response?.data?.message ||
+                        err.message ||
+                        "Unable to load attendance report."
+                    );
+
+                } finally {
+
+                    setLoading(
+                        false
+                    );
+                }
+            };
+
+
+        initialize();
+
     }, []);
 
 
-    const loadReport = async () => {
-        try {
-            setLoading(true);
-            setError("");
+    // ==========================================
+    // DATE CHANGE
+    // ==========================================
 
-            // ======================================
-            // GET ASSIGNED CLASS
-            // ======================================
+    const handleDateChange = async (
+        event
+    ) => {
 
-            const classResponse =
-                await api.get("/classes/my-class");
-
-            console.log(
-                "My Class Report Response:",
-                classResponse.data
-            );
-
-            const responseData =
-                classResponse.data;
-
-            const assignedClass =
-                responseData.class ||
-                responseData.myClass ||
-                responseData.data?.class ||
-                responseData.data ||
-                responseData;
-
-            if (
-                !assignedClass ||
-                !assignedClass._id
-            ) {
-                setError(
-                    "No class is assigned to you."
-                );
-
-                setClassData(null);
-                setReportData(null);
-
-                return;
-            }
-
-            setClassData(assignedClass);
+        const date =
+            event.target.value;
 
 
-            // ======================================
-            // GET CLASS ATTENDANCE REPORT
-            // ======================================
+        setSelectedDate(
+            date
+        );
 
-            const reportResponse =
-                await api.get(
-                    `/attendance/report/class/${assignedClass._id}`
-                );
 
-            console.log(
-                "Class Report Response:",
-                reportResponse.data
-            );
+        if (
+            !date ||
+            !classData?._id
+        ) {
 
             setReportData(
-                reportResponse.data
+                null
+            );
+
+            return;
+        }
+
+
+        try {
+
+            setError("");
+
+            setLoading(
+                true
+            );
+
+
+            await loadDateReport(
+                date,
+                classData._id
             );
 
         } catch (err) {
+
             console.error(
-                "Teacher Report Error:",
+                "Date Report Error:",
                 err
             );
 
+
+            setReportData(
+                null
+            );
+
+
             setError(
                 err.response?.data?.message ||
-                "Unable to load attendance report."
+                "Unable to load attendance for selected date."
             );
 
         } finally {
-            setLoading(false);
-            setRefreshing(false);
+
+            setLoading(
+                false
+            );
         }
     };
 
@@ -120,289 +301,133 @@ const Reports = () => {
     // ==========================================
 
     const handleRefresh = async () => {
-        setRefreshing(true);
 
-        await loadReport();
-    };
+        try {
 
-
-    // ==========================================
-    // EXTRACT STUDENT REPORTS
-    // ==========================================
-
-    const studentReports = useMemo(() => {
-
-        if (!reportData) {
-            return [];
-        }
-
-        const reports =
-            reportData.students ||
-            reportData.studentReports ||
-            reportData.data?.students ||
-            reportData.data?.studentReports ||
-            reportData.report?.students ||
-            reportData.report ||
-            [];
-
-        return Array.isArray(reports)
-            ? reports
-            : [];
-
-    }, [reportData]);
-
-
-    // ==========================================
-    // GET STUDENT NAME
-    // ==========================================
-
-    const getStudentName = (student) => {
-
-        return (
-            student.studentName ||
-            student.name ||
-            student.studentId?.name ||
-            "Unknown Student"
-        );
-    };
-
-
-    // ==========================================
-    // GET ROLL NUMBER
-    // ==========================================
-
-    const getRollNo = (student) => {
-
-        return (
-            student.rollNo ||
-            student.studentId?.rollNo ||
-            "-"
-        );
-    };
-
-
-    // ==========================================
-    // GET PRESENT COUNT
-    // ==========================================
-
-    const getPresent = (student) => {
-
-        return Number(
-            student.present ??
-            student.presentCount ??
-            student.totalPresent ??
-            0
-        );
-    };
-
-
-    // ==========================================
-    // GET ABSENT COUNT
-    // ==========================================
-
-    const getAbsent = (student) => {
-
-        return Number(
-            student.absent ??
-            student.absentCount ??
-            student.totalAbsent ??
-            0
-        );
-    };
-
-
-    // ==========================================
-    // GET TOTAL DAYS
-    // ==========================================
-
-    const getTotalDays = (student) => {
-
-        const present =
-            getPresent(student);
-
-        const absent =
-            getAbsent(student);
-
-        return Number(
-            student.totalDays ??
-            student.attendanceDays ??
-            student.totalAttendanceDays ??
-            present + absent
-        );
-    };
-
-
-    // ==========================================
-    // GET PERCENTAGE
-    // ==========================================
-
-    const getPercentage = (student) => {
-
-        const directPercentage =
-            student.percentage ??
-            student.attendancePercentage ??
-            student.attendancePercent;
-
-        if (
-            directPercentage !== undefined &&
-            directPercentage !== null
-        ) {
-            return Number(
-                directPercentage
+            setRefreshing(
+                true
             );
-        }
 
-        const present =
-            getPresent(student);
-
-        const total =
-            getTotalDays(student);
-
-        if (total === 0) {
-            return 0;
-        }
-
-        return (
-            (present / total) *
-            100
-        );
-    };
+            setError("");
 
 
-    // ==========================================
-    // CALCULATE SUMMARY
-    // ==========================================
-
-    const totals = useMemo(() => {
-
-        // ======================================
-        // NO REPORT
-        // ======================================
-
-        if (
-            !studentReports ||
-            studentReports.length === 0
-        ) {
-            return {
-                totalStudents:
-                    classData?.students?.length || 0,
-
-                totalDays: 0,
-
-                present: 0,
-
-                absent: 0,
-
-                percentage: 0,
-            };
-        }
+            const assignedClass =
+                await loadClass();
 
 
-        // ======================================
-        // TOTAL STUDENTS
-        // ======================================
+            await loadDateReport(
+                selectedDate,
+                assignedClass._id
+            );
 
-        const totalStudents =
-            classData?.students?.length ||
-            studentReports.length;
+        } catch (err) {
 
-
-        // ======================================
-        // TOTAL PRESENT
-        // ======================================
-
-        const present =
-            studentReports.reduce(
-                (total, student) => {
-                    return (
-                        total +
-                        getPresent(student)
-                    );
-                },
-                0
+            console.error(
+                "Refresh Report Error:",
+                err
             );
 
 
-        // ======================================
-        // TOTAL ABSENT
-        // ======================================
-
-        const absent =
-            studentReports.reduce(
-                (total, student) => {
-                    return (
-                        total +
-                        getAbsent(student)
-                    );
-                },
-                0
+            setError(
+                err.response?.data?.message ||
+                err.message ||
+                "Unable to refresh report."
             );
 
+        } finally {
 
-        // ======================================
-        // ATTENDANCE DAYS
-        //
-        // Each student has:
-        //
-        // present + absent = total days
-        //
-        // Since every student belongs to
-        // the same class, we use the maximum
-        // total days found.
-        // ======================================
-
-        const totalDays =
-            studentReports.reduce(
-                (maximum, student) => {
-
-                    const days =
-                        getTotalDays(
-                            student
-                        );
-
-                    return Math.max(
-                        maximum,
-                        days
-                    );
-                },
-                0
+            setRefreshing(
+                false
             );
+        }
+    };
 
 
-        // ======================================
-        // OVERALL ATTENDANCE
-        //
-        // Total Present
-        // ---------------- × 100
-        // Present + Absent
-        // ======================================
+    // ==========================================
+    // SELECTED CLASS REPORT
+    // ==========================================
 
-        const totalAttendance =
-            present + absent;
-
-
-        const percentage =
-            totalAttendance > 0
-                ? (
-                    (present /
-                        totalAttendance) *
-                    100
+    const classReport =
+        reportData?.classes?.find(
+            (item) =>
+                String(
+                    item.classId
+                ) ===
+                String(
+                    classData?._id
                 )
-                : 0;
+        ) ||
+        reportData?.classes?.[0] ||
+        null;
 
 
-        return {
-            totalStudents,
-            totalDays,
-            present,
-            absent,
-            percentage,
-        };
+    // ==========================================
+    // DISPLAY DATE
+    // ==========================================
 
-    }, [
-        studentReports,
-        classData,
-    ]);
+    const displayDate =
+        selectedDate
+            ? new Date(
+                  `${selectedDate}T00:00:00`
+              ).toLocaleDateString(
+                  "en-IN",
+                  {
+                      day:
+                          "2-digit",
+
+                      month:
+                          "long",
+
+                      year:
+                          "numeric",
+                  }
+              )
+            : "-";
+
+
+    // ==========================================
+    // SUMMARY
+    // ==========================================
+
+    const totalStudents =
+        classReport?.totalStudents ||
+        0;
+
+
+    const present =
+        classReport?.present ||
+        0;
+
+
+    const absent =
+        classReport?.absent ||
+        0;
+
+
+    const percentage =
+        classReport?.percentage ||
+        0;
+
+
+    // ==========================================
+    // STATUS CLASS
+    // ==========================================
+
+    const getStatusClass = (
+        status
+    ) => {
+
+        if (
+            status ===
+            "Present"
+        ) {
+
+            return "status-present";
+        }
+
+
+        return "status-absent";
+    };
 
 
     // ==========================================
@@ -410,16 +435,24 @@ const Reports = () => {
     // ==========================================
 
     const getPercentageClass = (
-        percentage
+        value
     ) => {
 
-        if (percentage >= 75) {
+        if (
+            value >= 75
+        ) {
+
             return "percentage-good";
         }
 
-        if (percentage >= 50) {
+
+        if (
+            value >= 50
+        ) {
+
             return "percentage-warning";
         }
+
 
         return "percentage-danger";
     };
@@ -429,12 +462,16 @@ const Reports = () => {
     // LOADING
     // ==========================================
 
-    if (loading) {
+    if (loading && !classData) {
+
         return (
+
             <div className="reports-page">
 
                 <div className="reports-loading">
+
                     Loading reports...
+
                 </div>
 
             </div>
@@ -447,6 +484,7 @@ const Reports = () => {
     // ==========================================
 
     return (
+
         <div className="reports-page">
 
 
@@ -462,13 +500,17 @@ const Reports = () => {
                         ATTENDANCE REPORTS
                     </p>
 
+
                     <h1>
                         Reports
                     </h1>
 
+
                     <p className="reports-description">
-                        View attendance performance
-                        for your assigned class.
+
+                        View attendance for your
+                        assigned class by date.
+
                     </p>
 
                 </div>
@@ -476,8 +518,12 @@ const Reports = () => {
 
                 <button
                     className="refresh-button"
-                    onClick={handleRefresh}
-                    disabled={refreshing}
+                    onClick={
+                        handleRefresh
+                    }
+                    disabled={
+                        refreshing
+                    }
                 >
 
                     <FaSyncAlt
@@ -487,6 +533,7 @@ const Reports = () => {
                                 : ""
                         }
                     />
+
 
                     {refreshing
                         ? "Refreshing..."
@@ -503,11 +550,13 @@ const Reports = () => {
             ====================================== */}
 
             {error && (
+
                 <div className="reports-error">
 
                     <strong>
                         Unable to load report
                     </strong>
+
 
                     <span>
                         {error}
@@ -518,23 +567,218 @@ const Reports = () => {
 
 
             {/* ======================================
-                NO CLASS
+                CLASS INFORMATION
             ====================================== */}
 
-            {!classData &&
-                !error && (
+            {classData && (
 
-                    <div className="reports-empty">
+                <div className="class-report-card">
 
-                        <FaUsers />
+                    <div>
+
+                        <p className="card-label">
+                            MY CLASS
+                        </p>
+
 
                         <h2>
-                            No Assigned Class
+                            {
+                                classData.className
+                            }
                         </h2>
 
+                    </div>
+
+
+                    <div className="class-details">
+
+                        <div>
+
+                            <span>
+                                Teacher
+                            </span>
+
+
+                            <strong>
+
+                                {
+                                    classData
+                                        .classTeacher
+                                        ?.name ||
+                                    user?.name ||
+                                    "You"
+                                }
+
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Report Date
+                            </span>
+
+
+                            <strong>
+                                {
+                                    displayDate
+                                }
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            )}
+
+
+            {/* ======================================
+                DATE FILTER
+            ====================================== */}
+
+            {classData && (
+
+                <div className="student-report-card">
+
+                    <div className="section-heading">
+
+                        <div>
+
+                            <p className="card-label">
+                                REPORT FILTER
+                            </p>
+
+
+                            <h2>
+                                Select Date
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style={{
+                            display:
+                                "flex",
+
+                            alignItems:
+                                "flex-end",
+
+                            gap:
+                                "20px",
+
+                            flexWrap:
+                                "wrap",
+                        }}
+                    >
+
+                        <div
+                            style={{
+                                minWidth:
+                                    "250px",
+                            }}
+                        >
+
+                            <label
+                                style={{
+                                    display:
+                                        "block",
+
+                                    marginBottom:
+                                        "8px",
+
+                                    fontWeight:
+                                        "600",
+                                }}
+                            >
+
+                                <FaCalendarAlt
+                                    style={{
+                                        marginRight:
+                                            "7px",
+                                    }}
+                                />
+
+                                Date
+
+                            </label>
+
+
+                            <input
+                                type="date"
+                                value={
+                                    selectedDate
+                                }
+                                onChange={
+                                    handleDateChange
+                                }
+                                style={{
+                                    width:
+                                        "100%",
+
+                                    padding:
+                                        "12px",
+
+                                    border:
+                                        "1px solid #dbe3ef",
+
+                                    borderRadius:
+                                        "8px",
+
+                                    fontSize:
+                                        "15px",
+
+                                    background:
+                                        "white",
+
+                                    boxSizing:
+                                        "border-box",
+                                }}
+                            />
+
+                        </div>
+
+                    </div>
+
+                </div>
+            )}
+
+
+            {/* ======================================
+                NO RECORD
+            ====================================== */}
+
+            {classData &&
+                !classReport && (
+
+                    <div className="report-empty">
+
+                        <FaCalendarAlt />
+
+
+                        <h3>
+                            No attendance record
+                        </h3>
+
+
                         <p>
-                            You do not currently
-                            have a class assigned.
+
+                            Attendance has not been
+                            marked for{" "}
+
+                            <strong>
+                                {
+                                    displayDate
+                                }
+                            </strong>
+
+                            .
+
                         </p>
 
                     </div>
@@ -542,75 +786,15 @@ const Reports = () => {
 
 
             {/* ======================================
-                CLASS REPORT
+                REPORT
             ====================================== */}
 
-            {classData && (
+            {classReport && (
+
                 <>
 
-
                     {/* ==================================
-                        CLASS INFORMATION
-                    ================================== */}
-
-                    <div className="class-report-card">
-
-                        <div>
-
-                            <p className="card-label">
-                                MY CLASS
-                            </p>
-
-                            <h2>
-                                {classData.className}
-                            </h2>
-
-                        </div>
-
-
-                        <div className="class-details">
-
-                            <div>
-
-                                <span>
-                                    Teacher
-                                </span>
-
-                                <strong>
-                                    {
-                                        classData
-                                            .classTeacher
-                                            ?.name ||
-                                        user?.name ||
-                                        "You"
-                                    }
-                                </strong>
-
-                            </div>
-
-
-                            <div>
-
-                                <span>
-                                    Students
-                                </span>
-
-                                <strong>
-                                    {
-                                        totals
-                                            .totalStudents
-                                    }
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    {/* ==================================
-                        SUMMARY CARDS
+                        SUMMARY
                     ================================== */}
 
                     <div className="summary-grid">
@@ -621,8 +805,11 @@ const Reports = () => {
                         <div className="summary-card">
 
                             <div className="summary-icon">
+
                                 <FaUsers />
+
                             </div>
+
 
                             <div>
 
@@ -630,36 +817,10 @@ const Reports = () => {
                                     Total Students
                                 </span>
 
-                                <strong>
-                                    {
-                                        totals
-                                            .totalStudents
-                                    }
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                        {/* ATTENDANCE DAYS */}
-
-                        <div className="summary-card">
-
-                            <div className="summary-icon">
-                                <FaChartBar />
-                            </div>
-
-                            <div>
-
-                                <span>
-                                    Attendance Days
-                                </span>
 
                                 <strong>
                                     {
-                                        totals
-                                            .totalDays
+                                        totalStudents
                                     }
                                 </strong>
 
@@ -673,8 +834,11 @@ const Reports = () => {
                         <div className="summary-card">
 
                             <div className="summary-icon">
+
                                 <FaCheckCircle />
+
                             </div>
+
 
                             <div>
 
@@ -682,9 +846,10 @@ const Reports = () => {
                                     Present
                                 </span>
 
+
                                 <strong>
                                     {
-                                        totals.present
+                                        present
                                     }
                                 </strong>
 
@@ -698,8 +863,11 @@ const Reports = () => {
                         <div className="summary-card">
 
                             <div className="summary-icon">
+
                                 <FaTimesCircle />
+
                             </div>
+
 
                             <div>
 
@@ -707,9 +875,10 @@ const Reports = () => {
                                     Absent
                                 </span>
 
+
                                 <strong>
                                     {
-                                        totals.absent
+                                        absent
                                     }
                                 </strong>
 
@@ -718,32 +887,40 @@ const Reports = () => {
                         </div>
 
 
-                        {/* OVERALL ATTENDANCE */}
+                        {/* ATTENDANCE */}
 
                         <div className="summary-card">
 
                             <div className="summary-icon">
+
                                 <FaPercentage />
+
                             </div>
+
 
                             <div>
 
                                 <span>
-                                    Overall Attendance
+                                    Attendance
                                 </span>
+
 
                                 <strong
                                     className={
                                         getPercentageClass(
-                                            totals.percentage
+                                            percentage
                                         )
                                     }
                                 >
+
                                     {
-                                        totals
-                                            .percentage
-                                            .toFixed(1)
+                                        Number(
+                                            percentage
+                                        ).toFixed(
+                                            1
+                                        )
                                     }%
+
                                 </strong>
 
                             </div>
@@ -754,7 +931,7 @@ const Reports = () => {
 
 
                     {/* ==================================
-                        STUDENT REPORT
+                        STUDENT ATTENDANCE
                     ================================== */}
 
                     <div className="student-report-card">
@@ -764,8 +941,9 @@ const Reports = () => {
                             <div>
 
                                 <p className="card-label">
-                                    STUDENT PERFORMANCE
+                                    DAILY ATTENDANCE
                                 </p>
+
 
                                 <h2>
                                     Student Attendance
@@ -773,185 +951,141 @@ const Reports = () => {
 
                             </div>
 
+
+                            <div>
+
+                                <strong>
+                                    {
+                                        displayDate
+                                    }
+                                </strong>
+
+                            </div>
+
                         </div>
 
 
-                        {studentReports.length === 0 ? (
+                        {
+                            classReport.students
+                                ?.length === 0
 
-                            <div className="report-empty">
+                                ? (
 
-                                <FaChartBar />
+                                    <div className="report-empty">
 
-                                <h3>
-                                    No attendance
-                                    records yet
-                                </h3>
-
-                                <p>
-                                    Attendance data will
-                                    appear here after
-                                    attendance is marked.
-                                </p>
-
-                            </div>
-
-                        ) : (
-
-                            <div className="table-wrapper">
-
-                                <table>
-
-                                    <thead>
-
-                                        <tr>
-
-                                            <th>
-                                                Roll No.
-                                            </th>
-
-                                            <th>
-                                                Student
-                                            </th>
-
-                                            <th>
-                                                Present
-                                            </th>
-
-                                            <th>
-                                                Absent
-                                            </th>
-
-                                            <th>
-                                                Total Days
-                                            </th>
-
-                                            <th>
-                                                Attendance
-                                            </th>
-
-                                        </tr>
-
-                                    </thead>
+                                        <FaChartBar />
 
 
-                                    <tbody>
+                                        <h3>
+                                            No student records
+                                        </h3>
 
-                                        {studentReports.map(
-                                            (
-                                                student,
-                                                index
-                                            ) => {
+                                    </div>
 
-                                                const present =
-                                                    getPresent(
-                                                        student
-                                                    );
+                                )
 
-                                                const absent =
-                                                    getAbsent(
-                                                        student
-                                                    );
+                                : (
 
-                                                const total =
-                                                    getTotalDays(
-                                                        student
-                                                    );
+                                    <div className="table-wrapper">
 
-                                                const percentage =
-                                                    getPercentage(
-                                                        student
-                                                    );
+                                        <table>
+
+                                            <thead>
+
+                                                <tr>
+
+                                                    <th>
+                                                        Roll No.
+                                                    </th>
 
 
-                                                return (
-                                                    <tr
-                                                        key={
-                                                            student
-                                                                .studentId
-                                                                ?._id ||
-                                                            student
-                                                                .studentId ||
-                                                            index
-                                                        }
-                                                    >
-
-                                                        <td>
-                                                            {
-                                                                getRollNo(
-                                                                    student
-                                                                )
-                                                            }
-                                                        </td>
+                                                    <th>
+                                                        Student
+                                                    </th>
 
 
-                                                        <td>
+                                                    <th>
+                                                        Status
+                                                    </th>
 
-                                                            <strong>
-                                                                {
-                                                                    getStudentName(
+                                                </tr>
+
+                                            </thead>
+
+
+                                            <tbody>
+
+                                                {
+                                                    classReport
+                                                        .students
+                                                        ?.map(
+                                                            (
+                                                                student,
+                                                                index
+                                                            ) => (
+
+                                                                <tr
+                                                                    key={
                                                                         student
-                                                                    )
-                                                                }
-                                                            </strong>
+                                                                            .studentId ||
+                                                                        index
+                                                                    }
+                                                                >
 
-                                                        </td>
+                                                                    <td>
 
+                                                                        <strong>
+                                                                            {
+                                                                                student.rollNo
+                                                                            }
+                                                                        </strong>
 
-                                                        <td className="present-cell">
-                                                            {
-                                                                present
-                                                            }
-                                                        </td>
-
-
-                                                        <td className="absent-cell">
-                                                            {
-                                                                absent
-                                                            }
-                                                        </td>
+                                                                    </td>
 
 
-                                                        <td>
-                                                            {
-                                                                total
-                                                            }
-                                                        </td>
+                                                                    <td>
+
+                                                                        <strong>
+                                                                            {
+                                                                                student.name
+                                                                            }
+                                                                        </strong>
+
+                                                                    </td>
 
 
-                                                        <td>
+                                                                    <td>
 
-                                                            <span
-                                                                className={
-                                                                    `percentage-badge ${
-                                                                        getPercentageClass(
-                                                                            percentage
-                                                                        )
-                                                                    }`
-                                                                }
-                                                            >
+                                                                        <span
+                                                                            className={
+                                                                                getStatusClass(
+                                                                                    student.status
+                                                                                )
+                                                                            }
+                                                                        >
 
-                                                                {
-                                                                    percentage.toFixed(
-                                                                        1
-                                                                    )
-                                                                }%
+                                                                            {
+                                                                                student.status
+                                                                            }
 
-                                                            </span>
+                                                                        </span>
 
-                                                        </td>
+                                                                    </td>
 
-                                                    </tr>
-                                                );
-                                            }
-                                        )}
+                                                                </tr>
 
-                                    </tbody>
+                                                            )
+                                                        )
+                                                }
 
-                                </table>
+                                            </tbody>
 
-                            </div>
+                                        </table>
 
-                        )}
+                                    </div>
+
+                                )
+                        }
 
                     </div>
 
@@ -961,5 +1095,6 @@ const Reports = () => {
         </div>
     );
 };
+
 
 export default Reports;

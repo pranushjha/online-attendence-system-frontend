@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import {
     FaCheck,
     FaSave,
@@ -10,74 +11,127 @@ import { useAuth } from "../../context/AuthContext";
 
 import "./Attendance.css";
 
+
 const Attendance = () => {
+
     const { user } = useAuth();
 
-    const isTeacher = user?.role === "teacher";
-    const isAdmin = user?.role === "admin";
+    const isTeacher =
+        user?.role === "teacher";
+
+    const isAdmin =
+        user?.role === "admin";
+
 
     // ==========================================
     // STATE
     // ==========================================
 
-    const [classes, setClasses] = useState([]);
-    const [students, setStudents] = useState([]);
-    const [attendanceRecords, setAttendanceRecords] = useState([]);
+    const [classes, setClasses] =
+        useState([]);
 
-    const [selectedClass, setSelectedClass] = useState("");
-    const [selectedDate, setSelectedDate] = useState("");
+    const [students, setStudents] =
+        useState([]);
 
-    const [attendance, setAttendance] = useState({});
+    const [selectedClass, setSelectedClass] =
+        useState("");
 
-    const [existingRecord, setExistingRecord] = useState(null);
+    const [selectedDate, setSelectedDate] =
+        useState("");
 
-    const [loading, setLoading] = useState(true);
-    const [loadingStudents, setLoadingStudents] = useState(false);
-    const [saving, setSaving] = useState(false);
+    const [attendance, setAttendance] =
+        useState({});
 
-    const [error, setError] = useState("");
-    const [message, setMessage] = useState("");
+    const [existingRecord, setExistingRecord] =
+        useState(null);
+
+    const [loading, setLoading] =
+        useState(true);
+
+    const [loadingStudents, setLoadingStudents] =
+        useState(false);
+
+    const [saving, setSaving] =
+        useState(false);
+
+    const [error, setError] =
+        useState("");
+
+    const [message, setMessage] =
+        useState("");
 
 
     // ==========================================
-    // GET TODAY
+    // TODAY
     // ==========================================
 
     const getToday = () => {
-        const today = new Date();
 
-        const year = today.getFullYear();
+        const today =
+            new Date();
 
-        const month = String(
-            today.getMonth() + 1
-        ).padStart(2, "0");
+        const year =
+            today.getFullYear();
 
-        const day = String(
-            today.getDate()
-        ).padStart(2, "0");
+        const month =
+            String(
+                today.getMonth() + 1
+            ).padStart(2, "0");
+
+        const day =
+            String(
+                today.getDate()
+            ).padStart(2, "0");
 
         return `${year}-${month}-${day}`;
     };
 
 
     // ==========================================
-    // FORMAT DATE
+    // NORMALIZE DATE
     // ==========================================
 
-    const formatDate = (date) => {
+    const normalizeDate = (date) => {
+
         if (!date) {
             return "";
         }
 
-        const parsedDate = new Date(date);
+        // Already YYYY-MM-DD
+        if (
+            typeof date === "string" &&
+            /^\d{4}-\d{2}-\d{2}$/.test(
+                date
+            )
+        ) {
+            return date;
+        }
 
-        if (Number.isNaN(parsedDate.getTime())) {
+        const parsed =
+            new Date(date);
+
+        if (
+            Number.isNaN(
+                parsed.getTime()
+            )
+        ) {
             return "";
         }
 
-        return parsedDate
-            .toISOString()
-            .split("T")[0];
+        const year =
+            parsed.getFullYear();
+
+        const month =
+            String(
+                parsed.getMonth() + 1
+            ).padStart(2, "0");
+
+        const day =
+            String(
+                parsed.getDate()
+            ).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
     };
 
 
@@ -86,68 +140,55 @@ const Attendance = () => {
     // ==========================================
 
     useEffect(() => {
-        loadInitialData();
-    }, []);
+
+        initializePage();
+
+    }, [user?.role]);
 
 
     // ==========================================
-    // LOAD INITIAL DATA
+    // INITIALIZE PAGE
     // ==========================================
 
-    const loadInitialData = async () => {
+    const initializePage = async () => {
+
         try {
+
             setLoading(true);
             setError("");
             setMessage("");
 
-            const today = getToday();
+            const today =
+                getToday();
 
             setSelectedDate(today);
 
 
-            // ======================================
+            // ==================================
             // TEACHER
-            // ======================================
+            // ==================================
 
             if (isTeacher) {
-                const [
-                    classResponse,
-                    attendanceResponse,
-                ] = await Promise.all([
-                    api.get("/classes/my-class"),
-                    api.get("/attendance"),
-                ]);
 
-                console.log(
-                    "Teacher My Class Response:",
-                    classResponse.data
-                );
-
-                console.log(
-                    "Teacher Attendance Response:",
-                    attendanceResponse.data
-                );
-
-
-                // ==================================
-                // FIND CLASS
-                // ==================================
+                const response =
+                    await api.get(
+                        "/classes/my-class"
+                    );
 
                 const responseData =
-                    classResponse.data;
+                    response.data;
 
                 const myClass =
                     responseData.class ||
                     responseData.myClass ||
                     responseData.data?.class ||
-                    responseData.data ||
-                    responseData;
-
+                    responseData.data;
 
                 if (
                     !myClass ||
                     !myClass._id
                 ) {
+
                     setClasses([]);
                     setStudents([]);
 
@@ -158,105 +199,51 @@ const Attendance = () => {
                     return;
                 }
 
-
-                setClasses([myClass]);
+                setClasses([
+                    myClass,
+                ]);
 
                 setSelectedClass(
                     myClass._id
                 );
 
-
-                // ==================================
-                // FIND STUDENTS
-                // ==================================
-
-                const classStudents =
-                    responseData.students ||
-                    responseData.data?.students ||
-                    myClass.students ||
-                    myClass.studentsList ||
-                    [];
-
-
-                console.log(
-                    "Students received:",
-                    classStudents
-                );
-
-
-                const activeStudents =
-                    Array.isArray(classStudents)
-                        ? classStudents.filter(
-                              (student) =>
-                                  student.active !== false
-                          )
-                        : [];
-
-
-                setStudents(
-                    activeStudents
-                );
-
-
-                // ==================================
-                // LOAD ATTENDANCE
-                // ==================================
-
-                const records =
-                    attendanceResponse.data
-                        ?.attendance || [];
-
-
-                setAttendanceRecords(
-                    records
-                );
-
-
-                loadExistingAttendance(
-                    myClass._id,
-                    today,
-                    activeStudents,
-                    records
+                await loadStudentsForClass(
+                    myClass._id
                 );
 
                 return;
             }
 
 
-            // ======================================
+            // ==================================
             // ADMIN
-            // ======================================
+            // ==================================
 
             if (isAdmin) {
-                const [
-                    classesResponse,
-                    attendanceResponse,
-                ] = await Promise.all([
-                    api.get("/classes"),
-                    api.get("/attendance"),
-                ]);
 
+                const response =
+                    await api.get(
+                        "/classes"
+                    );
 
                 const allClasses =
-                    classesResponse.data
+                    response.data
                         ?.classes || [];
-
-
-                const records =
-                    attendanceResponse.data
-                        ?.attendance || [];
-
 
                 setClasses(
                     allClasses
                 );
 
-                setAttendanceRecords(
-                    records
-                );
+                setSelectedClass("");
+                setStudents([]);
+                setAttendance({});
+                setExistingRecord(null);
+
+                return;
             }
 
         } catch (err) {
+
             console.error(
                 "Attendance Initial Load Error:",
                 err
@@ -268,557 +255,593 @@ const Attendance = () => {
             );
 
         } finally {
+
             setLoading(false);
         }
     };
 
 
     // ==========================================
-    // FIND EXISTING ATTENDANCE
+    // LOAD STUDENTS
     // ==========================================
 
-    const loadExistingAttendance = (
-        classId,
-        date,
-        classStudents,
-        records
-    ) => {
-        if (!classId || !date) {
-            setExistingRecord(null);
-            return;
-        }
+    const loadStudentsForClass =
+        async (classId) => {
+
+            if (!classId) {
+
+                setStudents([]);
+                setAttendance({});
+                setExistingRecord(null);
+
+                return;
+            }
+
+            try {
+
+                setLoadingStudents(true);
+                setError("");
+                setMessage("");
+
+                const response =
+                    await api.get(
+                        "/students"
+                    );
+
+                const allStudents =
+                    response.data
+                        ?.students || [];
+
+                const classStudents =
+                    allStudents.filter(
+                        (student) => {
+
+                            const studentClassId =
+                                student.classId?._id ||
+                                student.classId;
+
+                            return (
+                                studentClassId &&
+                                studentClassId.toString() ===
+                                    classId.toString() &&
+                                student.active !== false
+                            );
+                        }
+                    );
+
+                setStudents(
+                    classStudents
+                );
+
+                await loadExistingAttendance(
+                    classId,
+                    selectedDate,
+                    classStudents
+                );
+
+            } catch (err) {
+
+                console.error(
+                    "Load Students Error:",
+                    err
+                );
+
+                setError(
+                    err.response?.data?.message ||
+                    "Unable to load students."
+                );
+
+            } finally {
+
+                setLoadingStudents(false);
+            }
+        };
 
 
-        const record = records.find(
-            (item) => {
-                const recordClassId =
-                    item.classId?._id ||
-                    item.classId;
+    // ==========================================
+    // LOAD EXISTING ATTENDANCE
+    // ==========================================
+
+    const loadExistingAttendance =
+        async (
+            classId,
+            date,
+            classStudents
+        ) => {
+
+            if (
+                !classId ||
+                !date
+            ) {
+
+                setExistingRecord(null);
+                return;
+            }
+
+            try {
+
+                setError("");
+                setMessage("");
+
+                console.log(
+                    "Checking attendance:",
+                    {
+                        classId,
+                        date,
+                    }
+                );
+
+                const response =
+                    await api.get(
+                        `/attendance?classId=${classId}&date=${date}`
+                    );
+
+                const records =
+                    response.data
+                        ?.attendance || [];
+
+                console.log(
+                    "Attendance records for selected date:",
+                    records
+                );
+
+                const record =
+                    records.length > 0
+                        ? records[0]
+                        : null;
+
+                console.log(
+                    "Existing Attendance:",
+                    record
+                );
+
+                setExistingRecord(
+                    record
+                );
 
 
-                if (!recordClassId) {
-                    return false;
+                // ==================================
+                // NO RECORD
+                // ==================================
+
+                if (!record) {
+
+                    const initial =
+                        {};
+
+                    classStudents.forEach(
+                        (student) => {
+
+                            initial[
+                                student._id
+                            ] =
+                                "Present";
+                        }
+                    );
+
+                    setAttendance(
+                        initial
+                    );
+
+                    return;
                 }
+
+
+                // ==================================
+                // EXISTING RECORD
+                // ==================================
+
+                const saved =
+                    {};
+
+                // Default missing students
+                // to Absent.
+
+                classStudents.forEach(
+                    (student) => {
+
+                        saved[
+                            student._id
+                        ] =
+                            "Absent";
+                    }
+                );
 
 
                 if (
-                    recordClassId.toString() !==
-                    classId.toString()
+                    Array.isArray(
+                        record.students
+                    )
                 ) {
-                    return false;
+
+                    record.students.forEach(
+                        (studentRecord) => {
+
+                            const studentId =
+                                studentRecord.studentId?._id ||
+                                studentRecord.studentId;
+
+                            if (!studentId) {
+                                return;
+                            }
+
+                            saved[
+                                studentId.toString()
+                            ] =
+                                studentRecord.status;
+                        }
+                    );
                 }
 
-
-                return (
-                    formatDate(item.date) ===
-                    date
-                );
-            }
-        );
-
-
-        console.log(
-            "Existing Attendance:",
-            record
-        );
-
-
-        setExistingRecord(
-            record || null
-        );
-
-
-        // ======================================
-        // NO EXISTING RECORD
-        // ======================================
-
-        if (!record) {
-            const initialAttendance = {};
-
-            classStudents.forEach(
-                (student) => {
-                    initialAttendance[
-                        student._id
-                    ] = "Present";
-                }
-            );
-
-            setAttendance(
-                initialAttendance
-            );
-
-            return;
-        }
-
-
-        // ======================================
-        // EXISTING RECORD
-        // LOAD SAVED VALUES
-        // ======================================
-
-        const savedAttendance = {};
-
-
-        // Default all students to Absent
-        classStudents.forEach(
-            (student) => {
-                savedAttendance[
-                    student._id
-                ] = "Absent";
-            }
-        );
-
-
-        // Replace defaults with saved status
-        if (
-            Array.isArray(record.students)
-        ) {
-            record.students.forEach(
-                (studentRecord) => {
-
-                    const studentId =
-                        studentRecord.studentId?._id ||
-                        studentRecord.studentId;
-
-
-                    if (!studentId) {
-                        return;
-                    }
-
-
-                    savedAttendance[
-                        studentId.toString()
-                    ] =
-                        studentRecord.status;
-                }
-            );
-        }
-
-
-        console.log(
-            "Loaded saved attendance:",
-            savedAttendance
-        );
-
-
-        setAttendance(
-            savedAttendance
-        );
-    };
-
-
-    // ==========================================
-    // LOAD ADMIN STUDENTS
-    // ==========================================
-
-    const loadAdminStudents = async (
-        classId,
-        date = selectedDate
-    ) => {
-        if (!classId) {
-            setStudents([]);
-            setAttendance({});
-            setExistingRecord(null);
-            return;
-        }
-
-
-        try {
-            setLoadingStudents(true);
-
-            setError("");
-            setMessage("");
-
-
-            const response =
-                await api.get("/students");
-
-
-            const allStudents =
-                response.data?.students || [];
-
-
-            const classStudents =
-                allStudents.filter(
-                    (student) => {
-                        const studentClassId =
-                            student.classId?._id ||
-                            student.classId;
-
-
-                        return (
-                            studentClassId?.toString() ===
-                                classId.toString() &&
-                            student.active !== false
-                        );
-                    }
+                setAttendance(
+                    saved
                 );
 
+            } catch (err) {
 
-            setStudents(
-                classStudents
-            );
+                console.error(
+                    "Load Existing Attendance Error:",
+                    err
+                );
 
+                // A 404 is treated as no record.
+                // Other errors are displayed.
 
-            loadExistingAttendance(
-                classId,
-                date,
-                classStudents,
-                attendanceRecords
-            );
+                if (
+                    err.response?.status ===
+                    404
+                ) {
 
-        } catch (err) {
-            console.error(
-                "Load Students Error:",
-                err
-            );
+                    setExistingRecord(
+                        null
+                    );
 
-            setError(
-                err.response?.data?.message ||
-                "Unable to load students."
-            );
+                    const initial =
+                        {};
 
-        } finally {
-            setLoadingStudents(false);
-        }
-    };
+                    classStudents.forEach(
+                        (student) => {
+
+                            initial[
+                                student._id
+                            ] =
+                                "Present";
+                        }
+                    );
+
+                    setAttendance(
+                        initial
+                    );
+
+                    return;
+                }
+
+                setError(
+                    err.response?.data?.message ||
+                    "Unable to check existing attendance."
+                );
+            }
+        };
 
 
     // ==========================================
     // CLASS CHANGE
     // ==========================================
 
-    const handleClassChange = async (
-        event
-    ) => {
-        const classId =
-            event.target.value;
+    const handleClassChange =
+        async (event) => {
 
+            const classId =
+                event.target.value;
 
-        setSelectedClass(
-            classId
-        );
-
-        setStudents([]);
-        setAttendance({});
-        setExistingRecord(null);
-
-        setError("");
-        setMessage("");
-
-
-        if (!classId) {
-            return;
-        }
-
-
-        if (isAdmin) {
-            await loadAdminStudents(
-                classId,
-                selectedDate
+            setSelectedClass(
+                classId
             );
-        }
-    };
+
+            setStudents([]);
+            setAttendance({});
+            setExistingRecord(null);
+
+            setError("");
+            setMessage("");
+
+            if (!classId) {
+                return;
+            }
+
+            await loadStudentsForClass(
+                classId
+            );
+        };
 
 
     // ==========================================
     // DATE CHANGE
     // ==========================================
 
-    const handleDateChange = (
-        event
-    ) => {
-        const date =
-            event.target.value;
+    const handleDateChange =
+        async (event) => {
 
+            const date =
+                event.target.value;
 
-        setSelectedDate(
-            date
-        );
-
-        setError("");
-        setMessage("");
-
-
-        if (
-            selectedClass &&
-            students.length > 0
-        ) {
-            loadExistingAttendance(
-                selectedClass,
-                date,
-                students,
-                attendanceRecords
+            setSelectedDate(
+                date
             );
-        }
-    };
+
+            setError("");
+            setMessage("");
+
+            if (
+                selectedClass &&
+                students.length > 0
+            ) {
+
+                await loadExistingAttendance(
+                    selectedClass,
+                    date,
+                    students
+                );
+            }
+        };
 
 
     // ==========================================
-    // CHANGE STUDENT STATUS
+    // STATUS CHANGE
     // ==========================================
 
-    const handleStatusChange = (
-        studentId,
-        status
-    ) => {
-        setAttendance(
-            (previous) => ({
-                ...previous,
+    const handleStatusChange =
+        (
+            studentId,
+            status
+        ) => {
 
-                [studentId]:
-                    status,
-            })
-        );
+            setAttendance(
+                (previous) => ({
+                    ...previous,
 
-        setError("");
-        setMessage("");
-    };
+                    [studentId]:
+                        status,
+                })
+            );
+
+            setError("");
+            setMessage("");
+        };
 
 
     // ==========================================
     // ALL PRESENT
     // ==========================================
 
-    const markAllPresent = () => {
-        const updated = {};
+    const markAllPresent =
+        () => {
 
-        students.forEach(
-            (student) => {
-                updated[
-                    student._id
-                ] = "Present";
-            }
-        );
+            const updated =
+                {};
 
-        setAttendance(
-            updated
-        );
-    };
+            students.forEach(
+                (student) => {
+
+                    updated[
+                        student._id
+                    ] =
+                        "Present";
+                }
+            );
+
+            setAttendance(
+                updated
+            );
+
+            setError("");
+            setMessage("");
+        };
 
 
     // ==========================================
     // ALL ABSENT
     // ==========================================
 
-    const markAllAbsent = () => {
-        const updated = {};
+    const markAllAbsent =
+        () => {
 
-        students.forEach(
-            (student) => {
-                updated[
-                    student._id
-                ] = "Absent";
-            }
-        );
+            const updated =
+                {};
 
-        setAttendance(
-            updated
-        );
-    };
+            students.forEach(
+                (student) => {
 
-
-    // ==========================================
-    // REFRESH ATTENDANCE
-    // ==========================================
-
-    const refreshAttendanceRecords =
-        async () => {
-
-            const response =
-                await api.get(
-                    "/attendance"
-                );
-
-
-            const records =
-                response.data
-                    ?.attendance || [];
-
-
-            setAttendanceRecords(
-                records
+                    updated[
+                        student._id
+                    ] =
+                        "Absent";
+                }
             );
 
-
-            loadExistingAttendance(
-                selectedClass,
-                selectedDate,
-                students,
-                records
+            setAttendance(
+                updated
             );
+
+            setError("");
+            setMessage("");
         };
 
 
     // ==========================================
-    // MARK / UPDATE ATTENDANCE
+    // SAVE ATTENDANCE
     // ==========================================
 
-    const handleSubmit = async (
-        event
-    ) => {
-        event.preventDefault();
+    const handleSubmit =
+        async (event) => {
 
-        setError("");
-        setMessage("");
+            event.preventDefault();
 
-
-        // ======================================
-        // VALIDATION
-        // ======================================
-
-        if (!selectedClass) {
-            setError(
-                "Please select a class."
-            );
-
-            return;
-        }
-
-
-        if (!selectedDate) {
-            setError(
-                "Please select a date."
-            );
-
-            return;
-        }
-
-
-        if (
-            !students ||
-            students.length === 0
-        ) {
-            setError(
-                "There are no active students in this class."
-            );
-
-            return;
-        }
-
-
-        try {
-            setSaving(true);
+            setError("");
+            setMessage("");
 
 
             // ==================================
-            // CREATE STUDENT ATTENDANCE ARRAY
+            // VALIDATION
             // ==================================
 
-            const studentRecords =
-                students.map(
-                    (student) => ({
-                        studentId:
-                            student._id,
+            if (!selectedClass) {
 
-                        status:
-                            attendance[
-                                student._id
-                            ] ||
-                            "Absent",
-                    })
+                setError(
+                    "Please select a class."
+                );
+
+                return;
+            }
+
+            if (!selectedDate) {
+
+                setError(
+                    "Please select a date."
+                );
+
+                return;
+            }
+
+            if (
+                !students ||
+                students.length === 0
+            ) {
+
+                setError(
+                    "There are no active students in this class."
+                );
+
+                return;
+            }
+
+
+            try {
+
+                setSaving(true);
+
+
+                const studentRecords =
+                    students.map(
+                        (student) => ({
+                            studentId:
+                                student._id,
+
+                            status:
+                                attendance[
+                                    student._id
+                                ] ||
+                                "Absent",
+                        })
+                    );
+
+
+                const payload = {
+
+                    classId:
+                        selectedClass,
+
+                    date:
+                        selectedDate,
+
+                    students:
+                        studentRecords,
+                };
+
+
+                console.log(
+                    "Attendance Payload:",
+                    payload
                 );
 
 
-            const payload = {
-                classId:
+                // ==================================
+                // EXISTING → UPDATE
+                // ==================================
+
+                if (existingRecord) {
+
+                    console.log(
+                        "Updating attendance:",
+                        existingRecord._id
+                    );
+
+                    const response =
+                        await api.put(
+                            `/attendance/${existingRecord._id}`,
+                            {
+                                students:
+                                    studentRecords,
+                            }
+                        );
+
+                    console.log(
+                        "Update Attendance Response:",
+                        response.data
+                    );
+
+                    setMessage(
+                        "Attendance updated successfully."
+                    );
+
+                }
+
+                // ==================================
+                // NEW → CREATE
+                // ==================================
+
+                else {
+
+                    console.log(
+                        "Creating new attendance"
+                    );
+
+                    const response =
+                        await api.post(
+                            "/attendance",
+                            payload
+                        );
+
+                    console.log(
+                        "Mark Attendance Response:",
+                        response.data
+                    );
+
+                    setMessage(
+                        "Attendance marked successfully."
+                    );
+                }
+
+
+                // ==================================
+                // RELOAD RECORD
+                // ==================================
+
+                await loadExistingAttendance(
                     selectedClass,
-
-                date:
                     selectedDate,
-
-                students:
-                    studentRecords,
-            };
-
-
-            console.log(
-                "Attendance Payload:",
-                payload
-            );
-
-
-            // ==================================
-            // UPDATE EXISTING ATTENDANCE
-            // ==================================
-
-            if (existingRecord) {
-
-                console.log(
-                    "Updating Attendance ID:",
-                    existingRecord._id
+                    students
                 );
 
+            } catch (err) {
 
-                const response =
-                    await api.put(
-                        `/attendance/${existingRecord._id}`,
-                        payload
-                    );
-
-
-                console.log(
-                    "Update Attendance Response:",
-                    response.data
+                console.error(
+                    existingRecord
+                        ? "Update Attendance Error:"
+                        : "Mark Attendance Error:",
+                    err
                 );
 
-
-                setMessage(
-                    "Attendance updated successfully."
+                setError(
+                    err.response?.data?.message ||
+                    "Unable to save attendance."
                 );
 
+            } finally {
+
+                setSaving(false);
             }
-
-            // ==================================
-            // CREATE NEW ATTENDANCE
-            // ==================================
-
-            else {
-
-                const response =
-                    await api.post(
-                        "/attendance",
-                        payload
-                    );
-
-
-                console.log(
-                    "Mark Attendance Response:",
-                    response.data
-                );
-
-
-                setMessage(
-                    "Attendance marked successfully."
-                );
-            }
-
-
-            // ==================================
-            // REFRESH
-            // ==================================
-
-            await refreshAttendanceRecords();
-
-        } catch (err) {
-
-            console.error(
-                existingRecord
-                    ? "Update Attendance Error:"
-                    : "Mark Attendance Error:",
-                err
-            );
-
-
-            setError(
-                err.response?.data?.message ||
-                "Unable to save attendance."
-            );
-
-        } finally {
-            setSaving(false);
-        }
-    };
+        };
 
 
     // ==========================================
@@ -826,13 +849,12 @@ const Attendance = () => {
     // ==========================================
 
     if (loading) {
+
         return (
             <div className="attendance-page">
 
                 <div className="page-loading">
-
                     Loading attendance...
-
                 </div>
 
             </div>
@@ -865,10 +887,12 @@ const Attendance = () => {
                     </h1>
 
                     <p className="page-description">
+
                         {isTeacher
                             ? "Mark and edit attendance for your assigned class."
                             : "Mark and edit attendance for any class."
                         }
+
                     </p>
 
                 </div>
@@ -881,6 +905,7 @@ const Attendance = () => {
             ====================================== */}
 
             {error && (
+
                 <div className="attendance-error">
 
                     <FaTimes />
@@ -898,6 +923,7 @@ const Attendance = () => {
             ====================================== */}
 
             {message && (
+
                 <div className="attendance-success">
 
                     <FaCheck />
@@ -929,6 +955,7 @@ const Attendance = () => {
 
 
                         {isTeacher ? (
+
                             <select
                                 value={
                                     selectedClass
@@ -938,6 +965,7 @@ const Attendance = () => {
 
                                 {classes.map(
                                     (classItem) => (
+
                                         <option
                                             key={
                                                 classItem._id
@@ -954,7 +982,9 @@ const Attendance = () => {
                                 )}
 
                             </select>
+
                         ) : (
+
                             <select
                                 value={
                                     selectedClass
@@ -968,9 +998,9 @@ const Attendance = () => {
                                     Select class
                                 </option>
 
-
                                 {classes.map(
                                     (classItem) => (
+
                                         <option
                                             key={
                                                 classItem._id
@@ -1018,10 +1048,11 @@ const Attendance = () => {
 
 
             {/* ======================================
-                EXISTING ATTENDANCE
+                EXISTING RECORD NOTICE
             ====================================== */}
 
             {existingRecord && (
+
                 <div className="existing-attendance">
 
                     <strong>
@@ -1040,9 +1071,9 @@ const Attendance = () => {
                     </span>
 
                     <span>
-                        Change the Present/Absent
-                        status below and click
-                        Update Attendance.
+                        You can edit the
+                        Present/Absent status
+                        below and save it again.
                     </span>
 
                 </div>
@@ -1059,7 +1090,7 @@ const Attendance = () => {
                     <div className="attendance-card">
 
 
-                        {/* STUDENT HEADER */}
+                        {/* HEADER */}
 
                         <div className="students-header">
 
@@ -1085,6 +1116,7 @@ const Attendance = () => {
 
 
                             {students.length > 0 && (
+
                                 <div className="bulk-actions">
 
                                     <button
@@ -1095,7 +1127,6 @@ const Attendance = () => {
                                     >
                                         All Present
                                     </button>
-
 
                                     <button
                                         type="button"
@@ -1135,9 +1166,6 @@ const Attendance = () => {
                                 }
                             >
 
-
-                                {/* STUDENT LIST */}
-
                                 <div className="attendance-list">
 
                                     {students.map(
@@ -1149,17 +1177,14 @@ const Attendance = () => {
                                                 ] ||
                                                 "Absent";
 
-
                                             return (
+
                                                 <div
                                                     className="attendance-row"
                                                     key={
                                                         student._id
                                                     }
                                                 >
-
-
-                                                    {/* STUDENT */}
 
                                                     <div className="student-info">
 
@@ -1178,12 +1203,7 @@ const Attendance = () => {
                                                     </div>
 
 
-                                                    {/* STATUS */}
-
                                                     <div className="status-buttons">
-
-
-                                                        {/* PRESENT */}
 
                                                         <button
                                                             type="button"
@@ -1203,8 +1223,6 @@ const Attendance = () => {
                                                             Present
                                                         </button>
 
-
-                                                        {/* ABSENT */}
 
                                                         <button
                                                             type="button"
@@ -1234,7 +1252,7 @@ const Attendance = () => {
                                 </div>
 
 
-                                {/* SAVE / UPDATE */}
+                                {/* SAVE */}
 
                                 <div className="submit-section">
 
@@ -1268,5 +1286,6 @@ const Attendance = () => {
         </div>
     );
 };
+
 
 export default Attendance;

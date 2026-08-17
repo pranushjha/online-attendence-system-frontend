@@ -1,4 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
 
 import {
     FaChartBar,
@@ -8,6 +12,7 @@ import {
     FaPercentage,
     FaSyncAlt,
     FaFilter,
+    FaCalendarAlt,
 } from "react-icons/fa";
 
 import api from "../../services/api";
@@ -21,231 +26,36 @@ const AdminReports = () => {
     // STATE
     // ==========================================
 
-    const [attendanceData, setAttendanceData] = useState([]);
-    const [classes, setClasses] = useState([]);
-    const [teachers, setTeachers] = useState([]);
+    const [attendanceData, setAttendanceData] =
+        useState([]);
 
-    const [selectedClass, setSelectedClass] = useState("all");
-    const [selectedTeacher, setSelectedTeacher] = useState("all");
-    const [selectedDate, setSelectedDate] = useState("");
+    const [classes, setClasses] =
+        useState([]);
 
-    const [loading, setLoading] = useState(true);
-    const [refreshing, setRefreshing] = useState(false);
+    const [teachers, setTeachers] =
+        useState([]);
 
-    const [error, setError] = useState("");
+    const [selectedClass, setSelectedClass] =
+        useState("all");
+
+    const [selectedTeacher, setSelectedTeacher] =
+        useState("all");
+
+    const [selectedDate, setSelectedDate] =
+        useState("");
+
+    const [loading, setLoading] =
+        useState(true);
+
+    const [refreshing, setRefreshing] =
+        useState(false);
+
+    const [error, setError] =
+        useState("");
 
 
     // ==========================================
-    // LOAD DATA
-    // ==========================================
-
-    useEffect(() => {
-        loadData();
-    }, []);
-
-
-    const loadData = async () => {
-
-        try {
-
-            setLoading(true);
-            setError("");
-
-            const [
-                attendanceResponse,
-                classesResponse,
-                teachersResponse,
-            ] = await Promise.all([
-                api.get("/attendance"),
-                api.get("/classes"),
-                api.get("/teachers"),
-            ]);
-
-
-            console.log(
-                "Admin Attendance:",
-                attendanceResponse.data
-            );
-
-            console.log(
-                "Admin Classes:",
-                classesResponse.data
-            );
-
-            console.log(
-                "Admin Teachers:",
-                teachersResponse.data
-            );
-
-
-            // ======================================
-            // ATTENDANCE
-            // ======================================
-
-            const attendancePayload =
-                attendanceResponse.data;
-
-
-            let attendance = [];
-
-
-            if (
-                Array.isArray(
-                    attendancePayload?.attendance
-                )
-            ) {
-
-                attendance =
-                    attendancePayload.attendance;
-
-            } else if (
-                Array.isArray(
-                    attendancePayload?.data
-                )
-            ) {
-
-                attendance =
-                    attendancePayload.data;
-
-            } else if (
-                Array.isArray(
-                    attendancePayload
-                )
-            ) {
-
-                attendance =
-                    attendancePayload;
-
-            }
-
-
-            setAttendanceData(attendance);
-
-
-            // ======================================
-            // CLASSES
-            // ======================================
-
-            const classesPayload =
-                classesResponse.data;
-
-
-            let classList = [];
-
-
-            if (
-                Array.isArray(
-                    classesPayload?.classes
-                )
-            ) {
-
-                classList =
-                    classesPayload.classes;
-
-            } else if (
-                Array.isArray(
-                    classesPayload?.data
-                )
-            ) {
-
-                classList =
-                    classesPayload.data;
-
-            } else if (
-                Array.isArray(
-                    classesPayload
-                )
-            ) {
-
-                classList =
-                    classesPayload;
-
-            }
-
-
-            setClasses(classList);
-
-
-            // ======================================
-            // TEACHERS
-            // ======================================
-
-            const teachersPayload =
-                teachersResponse.data;
-
-
-            let teacherList = [];
-
-
-            if (
-                Array.isArray(
-                    teachersPayload?.teachers
-                )
-            ) {
-
-                teacherList =
-                    teachersPayload.teachers;
-
-            } else if (
-                Array.isArray(
-                    teachersPayload?.data
-                )
-            ) {
-
-                teacherList =
-                    teachersPayload.data;
-
-            } else if (
-                Array.isArray(
-                    teachersPayload
-                )
-            ) {
-
-                teacherList =
-                    teachersPayload;
-
-            }
-
-
-            setTeachers(teacherList);
-
-        } catch (err) {
-
-            console.error(
-                "Admin Reports Error:",
-                err
-            );
-
-            setError(
-                err.response?.data?.message ||
-                "Unable to load admin reports."
-            );
-
-        } finally {
-
-            setLoading(false);
-            setRefreshing(false);
-
-        }
-
-    };
-
-
-    // ==========================================
-    // REFRESH
-    // ==========================================
-
-    const handleRefresh = async () => {
-
-        setRefreshing(true);
-
-        await loadData();
-
-    };
-
-
-    // ==========================================
-    // GET ID FROM OBJECT / VALUE
+    // GET ID
     // ==========================================
 
     const getId = (value) => {
@@ -261,11 +71,9 @@ const AdminReports = () => {
                 value.id ||
                 ""
             );
-
         }
 
         return String(value);
-
     };
 
 
@@ -278,7 +86,6 @@ const AdminReports = () => {
         return getId(
             record?.classId
         );
-
     };
 
 
@@ -298,7 +105,6 @@ const AdminReports = () => {
                 record.classId.name ||
                 "Unknown Class"
             );
-
         }
 
         return (
@@ -306,7 +112,6 @@ const AdminReports = () => {
             record?.class?.className ||
             "Unknown Class"
         );
-
     };
 
 
@@ -320,7 +125,6 @@ const AdminReports = () => {
             record?.markedBy ||
             record?.teacher
         );
-
     };
 
 
@@ -340,7 +144,6 @@ const AdminReports = () => {
                 record.markedBy.email ||
                 "Unknown Teacher"
             );
-
         }
 
         if (
@@ -353,19 +156,21 @@ const AdminReports = () => {
                 record.teacher.email ||
                 "Unknown Teacher"
             );
-
         }
 
         return (
             record?.teacherName ||
             "Unknown Teacher"
         );
-
     };
 
 
     // ==========================================
-    // GET DATE
+    // FORMAT DATE
+    //
+    // IMPORTANT:
+    // Do NOT use toISOString() here because
+    // it can shift the date because of UTC.
     // ==========================================
 
     const getDate = (record) => {
@@ -377,14 +182,34 @@ const AdminReports = () => {
         const date =
             new Date(record.date);
 
-        if (isNaN(date.getTime())) {
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
             return "";
         }
 
-        return date
-            .toISOString()
-            .split("T")[0];
+        const year =
+            date.getFullYear();
 
+        const month =
+            String(
+                date.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+        const day =
+            String(
+                date.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+        return `${year}-${month}-${day}`;
     };
 
 
@@ -395,15 +220,15 @@ const AdminReports = () => {
     const getStudentRecords = (record) => {
 
         if (
-            Array.isArray(record?.students)
+            Array.isArray(
+                record?.students
+            )
         ) {
 
             return record.students;
-
         }
 
         return [];
-
     };
 
 
@@ -417,6 +242,7 @@ const AdminReports = () => {
     ) => {
 
         if (!student) {
+
             return `unknown-${fallback}`;
         }
 
@@ -431,7 +257,6 @@ const AdminReports = () => {
                 student.studentId.id ||
                 `unknown-${fallback}`
             );
-
         }
 
 
@@ -440,7 +265,6 @@ const AdminReports = () => {
             return String(
                 student.studentId
             );
-
         }
 
 
@@ -449,7 +273,6 @@ const AdminReports = () => {
             return String(
                 student._id
             );
-
         }
 
 
@@ -458,12 +281,10 @@ const AdminReports = () => {
             return String(
                 student.id
             );
-
         }
 
 
         return `unknown-${fallback}`;
-
     };
 
 
@@ -482,19 +303,17 @@ const AdminReports = () => {
                 student.studentId.name ||
                 "Unknown Student"
             );
-
         }
 
         return (
             student?.name ||
             "Unknown Student"
         );
-
     };
 
 
     // ==========================================
-    // GET STUDENT ROLL NUMBER
+    // GET ROLL NUMBER
     // ==========================================
 
     const getStudentRollNo = (student) => {
@@ -508,14 +327,12 @@ const AdminReports = () => {
                 student.studentId.rollNo ||
                 "-"
             );
-
         }
 
         return (
             student?.rollNo ||
             "-"
         );
-
     };
 
 
@@ -529,298 +346,549 @@ const AdminReports = () => {
             student?.status ||
             student?.attendanceStatus ||
             ""
-        ).trim().toLowerCase();
-
+        )
+            .trim()
+            .toLowerCase();
     };
 
 
     // ==========================================
-    // FILTER ATTENDANCE
+    // LOAD CLASSES + TEACHERS
     // ==========================================
 
-    const filteredAttendance = useMemo(() => {
+    const loadFilterData = async () => {
 
-        return attendanceData.filter(
-            (record) => {
+        const [
+            classesResponse,
+            teachersResponse,
+        ] = await Promise.all([
 
-                // CLASS
+            api.get(
+                "/classes"
+            ),
 
-                if (
-                    selectedClass !== "all" &&
-                    getClassId(record) !==
-                    String(selectedClass)
-                ) {
-
-                    return false;
-
-                }
-
-
-                // TEACHER
-
-                if (
-                    selectedTeacher !== "all" &&
-                    getTeacherId(record) !==
-                    String(selectedTeacher)
-                ) {
-
-                    return false;
-
-                }
+            api.get(
+                "/teachers"
+            ),
+        ]);
 
 
-                // DATE
+        // ======================================
+        // CLASSES
+        // ======================================
 
-                if (
-                    selectedDate &&
-                    getDate(record) !==
-                    selectedDate
-                ) {
+        const classesPayload =
+            classesResponse.data;
 
-                    return false;
-
-                }
+        let classList = [];
 
 
-                return true;
+        if (
+            Array.isArray(
+                classesPayload?.classes
+            )
+        ) {
 
-            }
+            classList =
+                classesPayload.classes;
+
+        } else if (
+            Array.isArray(
+                classesPayload?.data
+            )
+        ) {
+
+            classList =
+                classesPayload.data;
+
+        } else if (
+            Array.isArray(
+                classesPayload
+            )
+        ) {
+
+            classList =
+                classesPayload;
+        }
+
+
+        setClasses(
+            classList
         );
 
+
+        // ======================================
+        // TEACHERS
+        // ======================================
+
+        const teachersPayload =
+            teachersResponse.data;
+
+        let teacherList = [];
+
+
+        if (
+            Array.isArray(
+                teachersPayload?.teachers
+            )
+        ) {
+
+            teacherList =
+                teachersPayload.teachers;
+
+        } else if (
+            Array.isArray(
+                teachersPayload?.data
+            )
+        ) {
+
+            teacherList =
+                teachersPayload.data;
+
+        } else if (
+            Array.isArray(
+                teachersPayload
+            )
+        ) {
+
+            teacherList =
+                teachersPayload;
+        }
+
+
+        setTeachers(
+            teacherList
+        );
+    };
+
+
+    // ==========================================
+    // LOAD ATTENDANCE
+    //
+    // If date selected:
+    //
+    // GET
+    // /attendance/report/date/:date
+    //
+    // Optional:
+    // ?classId=...
+    //
+    // If no date:
+    //
+    // GET /attendance
+    // ==========================================
+
+    const loadAttendance = async () => {
+
+        let response;
+
+
+        // ======================================
+        // DATE SELECTED
+        // ======================================
+
+        if (selectedDate) {
+
+            let url =
+                `/attendance/report/date/${selectedDate}`;
+
+
+            if (
+                selectedClass !==
+                "all"
+            ) {
+
+                url +=
+                    `?classId=${selectedClass}`;
+            }
+
+
+            response =
+                await api.get(
+                    url
+                );
+
+
+            const payload =
+                response.data;
+
+
+            /*
+             * Date report returns:
+             *
+             * {
+             *   success: true,
+             *   date: "...",
+             *   classes: [...]
+             * }
+             *
+             * Convert each class report into
+             * attendance-like data so the
+             * existing UI can use it.
+             */
+
+            const dateClasses =
+                Array.isArray(
+                    payload?.classes
+                )
+                    ? payload.classes
+                    : [];
+
+
+            const convertedRecords =
+                dateClasses.map(
+                    (classReport) => {
+
+                        return {
+
+                            _id:
+                                classReport.attendanceId,
+
+                            attendanceId:
+                                classReport.attendanceId,
+
+                            date:
+                                classReport.date ||
+                                selectedDate,
+
+                            classId: {
+
+                                _id:
+                                    classReport.classId,
+
+                                className:
+                                    classReport.className,
+                            },
+
+                            markedBy:
+                                classReport.markedBy,
+
+                            students:
+                                Array.isArray(
+                                    classReport.students
+                                )
+                                    ? classReport.students.map(
+                                          (
+                                              student
+                                          ) => ({
+
+                                              studentId: {
+
+                                                  _id:
+                                                      student.studentId,
+
+                                                  name:
+                                                      student.name,
+
+                                                  rollNo:
+                                                      student.rollNo,
+                                              },
+
+                                              status:
+                                                  student.status,
+                                          })
+                                      )
+                                    : [],
+                        };
+                    }
+                );
+
+
+            setAttendanceData(
+                convertedRecords
+            );
+
+
+            return;
+        }
+
+
+        // ======================================
+        // NO DATE FILTER
+        // ======================================
+
+        let url =
+            "/attendance";
+
+
+        const params = [];
+
+
+        if (
+            selectedClass !==
+            "all"
+        ) {
+
+            params.push(
+                `classId=${selectedClass}`
+            );
+        }
+
+
+        if (
+            params.length > 0
+        ) {
+
+            url +=
+                `?${params.join("&")}`;
+        }
+
+
+        response =
+            await api.get(
+                url
+            );
+
+
+        const attendancePayload =
+            response.data;
+
+
+        let attendance = [];
+
+
+        if (
+            Array.isArray(
+                attendancePayload?.attendance
+            )
+        ) {
+
+            attendance =
+                attendancePayload.attendance;
+
+        } else if (
+            Array.isArray(
+                attendancePayload?.data
+            )
+        ) {
+
+            attendance =
+                attendancePayload.data;
+
+        } else if (
+            Array.isArray(
+                attendancePayload
+            )
+        ) {
+
+            attendance =
+                attendancePayload;
+        }
+
+
+        setAttendanceData(
+            attendance
+        );
+    };
+
+
+    // ==========================================
+    // LOAD EVERYTHING
+    // ==========================================
+
+    const loadData = async (
+        showLoading = true
+    ) => {
+
+        try {
+
+            if (
+                showLoading
+            ) {
+
+                setLoading(
+                    true
+                );
+            }
+
+
+            setError("");
+
+
+            await Promise.all([
+
+                loadFilterData(),
+
+                loadAttendance(),
+
+            ]);
+
+        } catch (err) {
+
+            console.error(
+                "Admin Reports Error:",
+                err
+            );
+
+
+            setError(
+                err.response?.data?.message ||
+                "Unable to load admin reports."
+            );
+
+        } finally {
+
+            setLoading(
+                false
+            );
+
+            setRefreshing(
+                false
+            );
+        }
+    };
+
+
+    // ==========================================
+    // INITIAL LOAD
+    // ==========================================
+
+    useEffect(() => {
+
+        loadData();
+
+    }, []);
+
+
+    // ==========================================
+    // RELOAD WHEN CLASS OR DATE CHANGES
+    // ==========================================
+
+    useEffect(() => {
+
+        // Don't run on the first render.
+        // Initial load is handled above.
+
+        if (
+            !loading
+        ) {
+
+            loadAttendance()
+                .catch(
+                    (err) => {
+
+                        console.error(
+                            "Filter Attendance Error:",
+                            err
+                        );
+
+                        setError(
+                            err.response?.data?.message ||
+                            "Unable to load filtered attendance."
+                        );
+                    }
+                );
+        }
+
     }, [
-        attendanceData,
         selectedClass,
-        selectedTeacher,
         selectedDate,
     ]);
+
+
+    // ==========================================
+    // REFRESH
+    // ==========================================
+
+    const handleRefresh = async () => {
+
+        try {
+
+            setRefreshing(
+                true
+            );
+
+            setError("");
+
+
+            await loadFilterData();
+
+            await loadAttendance();
+
+        } catch (err) {
+
+            console.error(
+                "Refresh Admin Reports Error:",
+                err
+            );
+
+
+            setError(
+                err.response?.data?.message ||
+                "Unable to refresh reports."
+            );
+
+        } finally {
+
+            setRefreshing(
+                false
+            );
+        }
+    };
+
+
+    // ==========================================
+    // TEACHER FILTER
+    //
+    // Teacher filtering is performed locally
+    // because the main requirement is:
+    //
+    // Class + Date
+    //
+    // ==========================================
+
+    const filteredAttendance =
+        useMemo(() => {
+
+            return attendanceData.filter(
+                (record) => {
+
+                    if (
+                        selectedTeacher !==
+                        "all"
+                    ) {
+
+                        if (
+                            getTeacherId(
+                                record
+                            ) !==
+                            String(
+                                selectedTeacher
+                            )
+                        ) {
+
+                            return false;
+                        }
+                    }
+
+
+                    return true;
+                }
+            );
+
+        }, [
+            attendanceData,
+            selectedTeacher,
+        ]);
 
 
     // ==========================================
     // SUMMARY
     // ==========================================
 
-    const summary = useMemo(() => {
+    const summary =
+        useMemo(() => {
 
-        let present = 0;
-        let absent = 0;
+            let present = 0;
 
-        const studentIds = new Set();
+            let absent = 0;
 
 
-        filteredAttendance.forEach(
-            (record) => {
+            const studentIds =
+                new Set();
 
-                const students =
-                    getStudentRecords(record);
 
-
-                students.forEach(
-                    (student, index) => {
-
-                        const studentId =
-                            getStudentId(
-                                student,
-                                index
-                            );
-
-
-                        studentIds.add(
-                            String(studentId)
-                        );
-
-
-                        const status =
-                            getStudentStatus(
-                                student
-                            );
-
-
-                        if (
-                            status === "present"
-                        ) {
-
-                            present++;
-
-                        }
-
-
-                        if (
-                            status === "absent"
-                        ) {
-
-                            absent++;
-
-                        }
-
-                    }
-                );
-
-            }
-        );
-
-
-        const total =
-            present + absent;
-
-
-        const percentage =
-            total > 0
-                ? (present / total) * 100
-                : 0;
-
-
-        return {
-
-            totalStudents:
-                studentIds.size,
-
-            attendanceDays:
-                filteredAttendance.length,
-
-            present,
-
-            absent,
-
-            percentage,
-
-        };
-
-    }, [
-        filteredAttendance,
-    ]);
-
-
-    // ==========================================
-    // CLASS REPORTS
-    // ==========================================
-
-    const classReports = useMemo(() => {
-
-        const grouped = {};
-
-
-        filteredAttendance.forEach(
-            (record) => {
-
-                const classId =
-                    getClassId(record) ||
-                    getClassName(record);
-
-
-                if (!grouped[classId]) {
-
-                    grouped[classId] = {
-
-                        classId,
-
-                        className:
-                            getClassName(
-                                record
-                            ),
-
-                        teacherName:
-                            getTeacherName(
-                                record
-                            ),
-
-                        days: 0,
-
-                        present: 0,
-
-                        absent: 0,
-
-                    };
-
-                }
-
-
-                grouped[classId].days++;
-
-
-                const students =
-                    getStudentRecords(record);
-
-
-                students.forEach(
-                    (student) => {
-
-                        const status =
-                            getStudentStatus(
-                                student
-                            );
-
-
-                        if (
-                            status === "present"
-                        ) {
-
-                            grouped[
-                                classId
-                            ].present++;
-
-                        }
-
-
-                        if (
-                            status === "absent"
-                        ) {
-
-                            grouped[
-                                classId
-                            ].absent++;
-
-                        }
-
-                    }
-                );
-
-            }
-        );
-
-
-        return Object.values(
-            grouped
-        ).map(
-            (item) => {
-
-                const total =
-                    item.present +
-                    item.absent;
-
-
-                const percentage =
-                    total > 0
-                        ? (
-                            item.present /
-                            total
-                        ) * 100
-                        : 0;
-
-
-                return {
-
-                    ...item,
-
-                    percentage,
-
-                };
-
-            }
-        );
-
-    }, [
-        filteredAttendance,
-    ]);
-
-
-    // ==========================================
-    // ATTENDANCE ACTIVITY
-    // ==========================================
-
-    const attendanceActivity = useMemo(() => {
-
-        return filteredAttendance
-            .map(
+            filteredAttendance.forEach(
                 (record) => {
 
                     const students =
@@ -829,8 +897,153 @@ const AdminReports = () => {
                         );
 
 
-                    let present = 0;
-                    let absent = 0;
+                    students.forEach(
+                        (
+                            student,
+                            index
+                        ) => {
+
+                            const studentId =
+                                getStudentId(
+                                    student,
+                                    index
+                                );
+
+
+                            studentIds.add(
+                                String(
+                                    studentId
+                                )
+                            );
+
+
+                            const status =
+                                getStudentStatus(
+                                    student
+                                );
+
+
+                            if (
+                                status ===
+                                "present"
+                            ) {
+
+                                present++;
+                            }
+
+
+                            if (
+                                status ===
+                                "absent"
+                            ) {
+
+                                absent++;
+                            }
+                        }
+                    );
+                }
+            );
+
+
+            const total =
+                present +
+                absent;
+
+
+            const percentage =
+                total > 0
+                    ? (
+                          present /
+                          total
+                      ) * 100
+                    : 0;
+
+
+            return {
+
+                totalStudents:
+                    studentIds.size,
+
+                attendanceDays:
+                    filteredAttendance.length,
+
+                present,
+
+                absent,
+
+                percentage,
+            };
+
+        }, [
+            filteredAttendance,
+        ]);
+
+
+    // ==========================================
+    // CLASS REPORTS
+    // ==========================================
+
+    const classReports =
+        useMemo(() => {
+
+            const grouped = {};
+
+
+            filteredAttendance.forEach(
+                (record) => {
+
+                    const classId =
+                        getClassId(
+                            record
+                        ) ||
+                        getClassName(
+                            record
+                        );
+
+
+                    if (
+                        !grouped[
+                            classId
+                        ]
+                    ) {
+
+                        grouped[
+                            classId
+                        ] = {
+
+                            classId,
+
+                            className:
+                                getClassName(
+                                    record
+                                ),
+
+                            teacherName:
+                                getTeacherName(
+                                    record
+                                ),
+
+                            days:
+                                0,
+
+                            present:
+                                0,
+
+                            absent:
+                                0,
+                        };
+                    }
+
+
+                    grouped[
+                        classId
+                    ].days++;
+
+
+                    const students =
+                        getStudentRecords(
+                            record
+                        );
 
 
                     students.forEach(
@@ -843,45 +1056,132 @@ const AdminReports = () => {
 
 
                             if (
-                                status === "present"
+                                status ===
+                                "present"
                             ) {
 
-                                present++;
-
+                                grouped[
+                                    classId
+                                ].present++;
                             }
 
 
                             if (
-                                status === "absent"
+                                status ===
+                                "absent"
                             ) {
 
-                                absent++;
-
+                                grouped[
+                                    classId
+                                ].absent++;
                             }
-
                         }
                     );
+                }
+            );
+
+
+            return Object.values(
+                grouped
+            ).map(
+                (item) => {
+
+                    const total =
+                        item.present +
+                        item.absent;
+
+
+                    const percentage =
+                        total > 0
+                            ? (
+                                  item.present /
+                                  total
+                              ) * 100
+                            : 0;
 
 
                     return {
 
-                        ...record,
+                        ...item,
 
-                        totalStudents:
-                            students.length,
-
-                        present,
-
-                        absent,
-
+                        percentage,
                     };
-
                 }
             );
 
-    }, [
-        filteredAttendance,
-    ]);
+        }, [
+            filteredAttendance,
+        ]);
+
+
+    // ==========================================
+    // ATTENDANCE ACTIVITY
+    // ==========================================
+
+    const attendanceActivity =
+        useMemo(() => {
+
+            return filteredAttendance
+                .map(
+                    (record) => {
+
+                        const students =
+                            getStudentRecords(
+                                record
+                            );
+
+
+                        let present = 0;
+
+                        let absent = 0;
+
+
+                        students.forEach(
+                            (student) => {
+
+                                const status =
+                                    getStudentStatus(
+                                        student
+                                    );
+
+
+                                if (
+                                    status ===
+                                    "present"
+                                ) {
+
+                                    present++;
+                                }
+
+
+                                if (
+                                    status ===
+                                    "absent"
+                                ) {
+
+                                    absent++;
+                                }
+                            }
+                        );
+
+
+                        return {
+
+                            ...record,
+
+                            totalStudents:
+                                students.length,
+
+                            present,
+
+                            absent,
+                        };
+                    }
+                );
+
+        }, [
+            filteredAttendance,
+        ]);
 
 
     // ==========================================
@@ -892,16 +1192,23 @@ const AdminReports = () => {
         percentage
     ) => {
 
-        if (percentage >= 75) {
+        if (
+            percentage >= 75
+        ) {
+
             return "percentage-good";
         }
 
-        if (percentage >= 50) {
+
+        if (
+            percentage >= 50
+        ) {
+
             return "percentage-warning";
         }
 
-        return "percentage-danger";
 
+        return "percentage-danger";
     };
 
 
@@ -909,12 +1216,19 @@ const AdminReports = () => {
     // CLEAR FILTERS
     // ==========================================
 
-    const clearFilters = () => {
+    const clearFilters = async () => {
 
-        setSelectedClass("all");
-        setSelectedTeacher("all");
-        setSelectedDate("");
+        setSelectedClass(
+            "all"
+        );
 
+        setSelectedTeacher(
+            "all"
+        );
+
+        setSelectedDate(
+            ""
+        );
     };
 
 
@@ -922,7 +1236,10 @@ const AdminReports = () => {
     // LOADING
     // ==========================================
 
-    if (loading) {
+    if (
+        loading &&
+        attendanceData.length === 0
+    ) {
 
         return (
 
@@ -935,9 +1252,7 @@ const AdminReports = () => {
                 </div>
 
             </div>
-
         );
-
     }
 
 
@@ -962,13 +1277,17 @@ const AdminReports = () => {
                         ADMIN REPORTS
                     </p>
 
+
                     <h1>
                         Attendance Reports
                     </h1>
 
+
                     <p className="reports-description">
+
                         View attendance performance
-                        across all classes and teachers.
+                        by class and date.
+
                     </p>
 
                 </div>
@@ -976,8 +1295,12 @@ const AdminReports = () => {
 
                 <button
                     className="refresh-button"
-                    onClick={handleRefresh}
-                    disabled={refreshing}
+                    onClick={
+                        handleRefresh
+                    }
+                    disabled={
+                        refreshing
+                    }
                 >
 
                     <FaSyncAlt
@@ -987,6 +1310,7 @@ const AdminReports = () => {
                                 : ""
                         }
                     />
+
 
                     {refreshing
                         ? "Refreshing..."
@@ -1010,12 +1334,12 @@ const AdminReports = () => {
                         Unable to load reports
                     </strong>
 
+
                     <span>
                         {error}
                     </span>
 
                 </div>
-
             )}
 
 
@@ -1030,13 +1354,15 @@ const AdminReports = () => {
                     <FaFilter />
 
                     <strong>
-                        Filters
+                        Report Filters
                     </strong>
 
                 </div>
 
 
-                {/* CLASS */}
+                {/* ==================================
+                    CLASS
+                ================================== */}
 
                 <div className="filter-group">
 
@@ -1044,9 +1370,14 @@ const AdminReports = () => {
                         Class
                     </label>
 
+
                     <select
-                        value={selectedClass}
-                        onChange={(event) =>
+                        value={
+                            selectedClass
+                        }
+                        onChange={(
+                            event
+                        ) =>
                             setSelectedClass(
                                 event.target.value
                             )
@@ -1056,6 +1387,7 @@ const AdminReports = () => {
                         <option value="all">
                             All Classes
                         </option>
+
 
                         {classes.map(
                             (classItem) => (
@@ -1075,7 +1407,6 @@ const AdminReports = () => {
                                     }
 
                                 </option>
-
                             )
                         )}
 
@@ -1084,7 +1415,46 @@ const AdminReports = () => {
                 </div>
 
 
-                {/* TEACHER */}
+                {/* ==================================
+                    DATE
+                ================================== */}
+
+                <div className="filter-group">
+
+                    <label>
+
+                        <FaCalendarAlt
+                            style={{
+                                marginRight:
+                                    "6px",
+                            }}
+                        />
+
+                        Date
+
+                    </label>
+
+
+                    <input
+                        type="date"
+                        value={
+                            selectedDate
+                        }
+                        onChange={(
+                            event
+                        ) =>
+                            setSelectedDate(
+                                event.target.value
+                            )
+                        }
+                    />
+
+                </div>
+
+
+                {/* ==================================
+                    TEACHER
+                ================================== */}
 
                 <div className="filter-group">
 
@@ -1092,9 +1462,14 @@ const AdminReports = () => {
                         Teacher
                     </label>
 
+
                     <select
-                        value={selectedTeacher}
-                        onChange={(event) =>
+                        value={
+                            selectedTeacher
+                        }
+                        onChange={(
+                            event
+                        ) =>
                             setSelectedTeacher(
                                 event.target.value
                             )
@@ -1104,6 +1479,7 @@ const AdminReports = () => {
                         <option value="all">
                             All Teachers
                         </option>
+
 
                         {teachers.map(
                             (teacher) => (
@@ -1123,7 +1499,6 @@ const AdminReports = () => {
                                     }
 
                                 </option>
-
                             )
                         )}
 
@@ -1132,37 +1507,99 @@ const AdminReports = () => {
                 </div>
 
 
-                {/* DATE */}
-
-                <div className="filter-group">
-
-                    <label>
-                        Date
-                    </label>
-
-                    <input
-                        type="date"
-                        value={selectedDate}
-                        onChange={(event) =>
-                            setSelectedDate(
-                                event.target.value
-                            )
-                        }
-                    />
-
-                </div>
-
-
-                {/* CLEAR */}
+                {/* ==================================
+                    CLEAR
+                ================================== */}
 
                 <button
                     className="clear-filter-button"
-                    onClick={clearFilters}
+                    onClick={
+                        clearFilters
+                    }
                 >
                     Clear Filters
                 </button>
 
             </div>
+
+
+            {/* ======================================
+                CURRENT FILTER INFORMATION
+            ====================================== */}
+
+            {(selectedDate !== "" ||
+                selectedClass !== "all" ||
+                selectedTeacher !== "all") && (
+
+                <div
+                    style={{
+                        marginBottom:
+                            "20px",
+
+                        padding:
+                            "14px 18px",
+
+                        background:
+                            "#f5f7ff",
+
+                        border:
+                            "1px solid #e0e5ff",
+
+                        borderRadius:
+                            "10px",
+
+                        color:
+                            "#475569",
+                    }}
+                >
+
+                    <strong>
+                        Showing:
+                    </strong>{" "}
+
+
+                    {selectedClass ===
+                    "all"
+                        ? "All Classes"
+                        : classes.find(
+                              (item) =>
+                                  String(
+                                      item._id
+                                  ) ===
+                                  String(
+                                      selectedClass
+                                  )
+                          )?.className ||
+                          "Selected Class"}
+
+
+                    {" • "}
+
+
+                    {selectedDate
+                        ? `Date: ${selectedDate}`
+                        : "All Dates"}
+
+
+                    {" • "}
+
+
+                    {selectedTeacher ===
+                    "all"
+                        ? "All Teachers"
+                        : teachers.find(
+                              (teacher) =>
+                                  String(
+                                      teacher._id
+                                  ) ===
+                                  String(
+                                      selectedTeacher
+                                  )
+                          )?.name ||
+                          "Selected Teacher"}
+
+                </div>
+            )}
 
 
             {/* ======================================
@@ -1177,14 +1614,18 @@ const AdminReports = () => {
                 <div className="summary-card">
 
                     <div className="summary-icon">
+
                         <FaUsers />
+
                     </div>
+
 
                     <div>
 
                         <span>
                             Students
                         </span>
+
 
                         <strong>
                             {
@@ -1202,14 +1643,18 @@ const AdminReports = () => {
                 <div className="summary-card">
 
                     <div className="summary-icon">
+
                         <FaChartBar />
+
                     </div>
+
 
                     <div>
 
                         <span>
                             Attendance Days
                         </span>
+
 
                         <strong>
                             {
@@ -1227,14 +1672,18 @@ const AdminReports = () => {
                 <div className="summary-card">
 
                     <div className="summary-icon">
+
                         <FaCheckCircle />
+
                     </div>
+
 
                     <div>
 
                         <span>
                             Present
                         </span>
+
 
                         <strong>
                             {
@@ -1252,14 +1701,18 @@ const AdminReports = () => {
                 <div className="summary-card">
 
                     <div className="summary-icon">
+
                         <FaTimesCircle />
+
                     </div>
+
 
                     <div>
 
                         <span>
                             Absent
                         </span>
+
 
                         <strong>
                             {
@@ -1277,14 +1730,18 @@ const AdminReports = () => {
                 <div className="summary-card">
 
                     <div className="summary-icon">
+
                         <FaPercentage />
+
                     </div>
+
 
                     <div>
 
                         <span>
                             Overall Attendance
                         </span>
+
 
                         <strong
                             className={
@@ -1323,6 +1780,7 @@ const AdminReports = () => {
                             CLASS PERFORMANCE
                         </p>
 
+
                         <h2>
                             Class Reports
                         </h2>
@@ -1338,13 +1796,16 @@ const AdminReports = () => {
 
                         <FaChartBar />
 
+
                         <h3>
                             No attendance records
                         </h3>
 
+
                         <p>
                             No attendance records
-                            match the selected filters.
+                            match the selected
+                            filters.
                         </p>
 
                     </div>
@@ -1363,21 +1824,26 @@ const AdminReports = () => {
                                         Class
                                     </th>
 
+
                                     <th>
                                         Teacher
                                     </th>
+
 
                                     <th>
                                         Attendance Days
                                     </th>
 
+
                                     <th>
                                         Present
                                     </th>
 
+
                                     <th>
                                         Absent
                                     </th>
+
 
                                     <th>
                                         Attendance
@@ -1490,6 +1956,7 @@ const AdminReports = () => {
                             ATTENDANCE ACTIVITY
                         </p>
 
+
                         <h2>
                             Attendance Records
                         </h2>
@@ -1505,12 +1972,15 @@ const AdminReports = () => {
 
                         <FaChartBar />
 
+
                         <h3>
                             No records found
                         </h3>
 
+
                         <p>
-                            Try changing the filters.
+                            Try changing the
+                            filters.
                         </p>
 
                     </div>
@@ -1529,24 +1999,34 @@ const AdminReports = () => {
                                         Date
                                     </th>
 
+
                                     <th>
                                         Class
                                     </th>
+
 
                                     <th>
                                         Teacher
                                     </th>
 
+
                                     <th>
                                         Students
                                     </th>
+
 
                                     <th>
                                         Present
                                     </th>
 
+
                                     <th>
                                         Absent
+                                    </th>
+
+
+                                    <th>
+                                        Attendance
                                     </th>
 
                                 </tr>
@@ -1560,65 +2040,119 @@ const AdminReports = () => {
                                     (
                                         record,
                                         index
-                                    ) => (
+                                    ) => {
 
-                                        <tr
-                                            key={
-                                                record._id ||
-                                                index
-                                            }
-                                        >
+                                        const total =
+                                            record.present +
+                                            record.absent;
 
-                                            <td>
-                                                {
-                                                    getDate(
-                                                        record
-                                                    )
+
+                                        const percentage =
+                                            total > 0
+                                                ? (
+                                                      record.present /
+                                                      total
+                                                  ) *
+                                                  100
+                                                : 0;
+
+
+                                        return (
+
+                                            <tr
+                                                key={
+                                                    record._id ||
+                                                    record.attendanceId ||
+                                                    index
                                                 }
-                                            </td>
+                                            >
+
+                                                <td>
+
+                                                    {
+                                                        getDate(
+                                                            record
+                                                        )
+                                                    }
+
+                                                </td>
 
 
-                                            <td>
-                                                {
-                                                    getClassName(
-                                                        record
-                                                    )
-                                                }
-                                            </td>
+                                                <td>
+
+                                                    {
+                                                        getClassName(
+                                                            record
+                                                        )
+                                                    }
+
+                                                </td>
 
 
-                                            <td>
-                                                {
-                                                    getTeacherName(
-                                                        record
-                                                    )
-                                                }
-                                            </td>
+                                                <td>
+
+                                                    {
+                                                        getTeacherName(
+                                                            record
+                                                        )
+                                                    }
+
+                                                </td>
 
 
-                                            <td>
-                                                {
-                                                    record.totalStudents
-                                                }
-                                            </td>
+                                                <td>
+
+                                                    {
+                                                        record.totalStudents
+                                                    }
+
+                                                </td>
 
 
-                                            <td className="present-cell">
-                                                {
-                                                    record.present
-                                                }
-                                            </td>
+                                                <td className="present-cell">
+
+                                                    {
+                                                        record.present
+                                                    }
+
+                                                </td>
 
 
-                                            <td className="absent-cell">
-                                                {
-                                                    record.absent
-                                                }
-                                            </td>
+                                                <td className="absent-cell">
 
-                                        </tr>
+                                                    {
+                                                        record.absent
+                                                    }
 
-                                    )
+                                                </td>
+
+
+                                                <td>
+
+                                                    <span
+                                                        className={
+                                                            `percentage-badge ${
+                                                                getPercentageClass(
+                                                                    percentage
+                                                                )
+                                                            }`
+                                                        }
+                                                    >
+
+                                                        {
+                                                            percentage.toFixed(
+                                                                1
+                                                            )
+                                                        }%
+
+                                                    </span>
+
+                                                </td>
+
+                                            </tr>
+
+                                        );
+                                    }
                                 )}
 
                             </tbody>
@@ -1631,11 +2165,8 @@ const AdminReports = () => {
 
             </div>
 
-
         </div>
-
     );
-
 };
 
 

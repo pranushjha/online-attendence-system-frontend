@@ -1,11 +1,30 @@
 import axios from "axios";
 
+// ==========================================
+// API BASE URL
+// ==========================================
+
+const configuredApiUrl = import.meta.env.VITE_API_URL;
+
+const apiBaseUrl = configuredApiUrl
+    ? configuredApiUrl.replace(/\/+$/, "").endsWith("/api")
+        ? configuredApiUrl.replace(/\/+$/, "")
+        : `${configuredApiUrl.replace(/\/+$/, "")}/api`
+    : "http://localhost:5001/api";
+
+
+// ==========================================
+// AXIOS INSTANCE
+// ==========================================
+
 const api = axios.create({
-    baseURL: `${import.meta.env.VITE_API_URL}/api`,
+    baseURL: apiBaseUrl,
+
     headers: {
         "Content-Type": "application/json",
     },
 });
+
 
 // ==========================================
 // REQUEST INTERCEPTOR
@@ -21,10 +40,12 @@ api.interceptors.request.use(
 
         return config;
     },
+
     (error) => {
         return Promise.reject(error);
     }
 );
+
 
 // ==========================================
 // RESPONSE INTERCEPTOR
@@ -34,17 +55,21 @@ api.interceptors.response.use(
     (response) => {
         return response;
     },
+
     (error) => {
+
         if (error.response?.status === 401) {
+
             localStorage.removeItem("token");
             localStorage.removeItem("user");
 
-            // Optional: redirect to login
+            // Redirect to login
             window.location.href = "/login";
         }
 
         return Promise.reject(error);
     }
 );
+
 
 export default api;
