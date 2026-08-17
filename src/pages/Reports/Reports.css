@@ -1,0 +1,537 @@
+/* ==========================================
+   REPORTS PAGE
+========================================== */
+
+.reports-page {
+    min-height: 100%;
+    padding: 40px 48px;
+    background: #f8fafc;
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.reports-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.reports-label {
+    margin: 0 0 10px;
+    color: #635bff;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.reports-header h1 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 38px;
+    font-weight: 700;
+}
+
+.reports-description {
+    margin: 10px 0 0;
+    color: #64748b;
+    font-size: 17px;
+}
+
+
+/* ==========================================
+   REFRESH BUTTON
+========================================== */
+
+.refresh-button {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 12px 18px;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+
+    background: white;
+    color: #334155;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.refresh-button:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.refresh-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.refresh-spinning {
+    animation: report-spin 1s linear infinite;
+}
+
+@keyframes report-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+.reports-error {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    margin-bottom: 24px;
+    padding: 18px 20px;
+
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.reports-error strong {
+    font-size: 15px;
+}
+
+.reports-error span {
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   CLASS INFORMATION
+========================================== */
+
+.class-report-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 30px;
+
+    padding: 28px 30px;
+
+    margin-bottom: 24px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+
+    background: white;
+
+    box-shadow:
+        0 4px 15px rgba(15, 23, 42, 0.04);
+}
+
+.card-label {
+    margin: 0 0 8px;
+
+    color: #635bff;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 0.8px;
+}
+
+.class-report-card h2 {
+    margin: 0;
+
+    color: #0f172a;
+
+    font-size: 27px;
+}
+
+
+.class-details {
+    display: flex;
+    gap: 55px;
+}
+
+.class-details div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.class-details span {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.class-details strong {
+    color: #0f172a;
+    font-size: 16px;
+}
+
+
+/* ==========================================
+   SUMMARY
+========================================== */
+
+.summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 28px;
+}
+
+.summary-card {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    min-height: 110px;
+
+    padding: 20px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+
+    background: white;
+
+    box-shadow:
+        0 4px 15px rgba(15, 23, 42, 0.04);
+}
+
+.summary-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: #eef2ff;
+    color: #635bff;
+
+    font-size: 18px;
+}
+
+.summary-card span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+.summary-card strong {
+    color: #0f172a;
+    font-size: 25px;
+}
+
+
+/* ==========================================
+   STUDENT REPORT
+========================================== */
+
+.student-report-card {
+    padding: 28px 30px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+
+    background: white;
+
+    box-shadow:
+        0 4px 15px rgba(15, 23, 42, 0.04);
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 24px;
+}
+
+.section-heading h2 {
+    margin: 0;
+
+    color: #0f172a;
+
+    font-size: 23px;
+}
+
+
+/* ==========================================
+   TABLE
+========================================== */
+
+.table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 700px;
+}
+
+thead {
+    background: #f8fafc;
+}
+
+th {
+    padding: 15px 16px;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    color: #64748b;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-align: left;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+td {
+    padding: 17px 16px;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    color: #334155;
+
+    font-size: 14px;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+}
+
+td strong {
+    color: #0f172a;
+}
+
+
+/* ==========================================
+   PRESENT / ABSENT
+========================================== */
+
+.present-cell {
+    color: #059669;
+    font-weight: 700;
+}
+
+.absent-cell {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+
+/* ==========================================
+   PERCENTAGE BADGE
+========================================== */
+
+.percentage-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 65px;
+
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.percentage-good {
+    color: #047857;
+    background: #ecfdf5;
+}
+
+.percentage-warning {
+    color: #b45309;
+    background: #fffbeb;
+}
+
+.percentage-danger {
+    color: #b91c1c;
+    background: #fef2f2;
+}
+
+
+/* ==========================================
+   EMPTY STATE
+========================================== */
+
+.report-empty,
+.reports-empty {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 60px 30px;
+
+    text-align: center;
+
+    color: #64748b;
+}
+
+.report-empty svg,
+.reports-empty svg {
+    margin-bottom: 15px;
+
+    color: #94a3b8;
+
+    font-size: 38px;
+}
+
+.report-empty h3,
+.reports-empty h2 {
+    margin: 0 0 8px;
+
+    color: #334155;
+}
+
+.report-empty p,
+.reports-empty p {
+    margin: 0;
+
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   LOADING
+========================================== */
+
+.reports-loading {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 400px;
+
+    color: #64748b;
+
+    font-size: 16px;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 1200px) {
+
+    .summary-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .reports-page {
+        padding: 25px 20px;
+    }
+
+
+    .reports-header {
+        flex-direction: column;
+    }
+
+
+    .class-report-card {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .class-details {
+        gap: 35px;
+    }
+
+
+    .summary-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .reports-header h1 {
+        font-size: 30px;
+    }
+
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .class-details {
+        flex-direction: column;
+
+        gap: 18px;
+    }
+
+
+    .student-report-card,
+    .class-report-card {
+        padding: 20px;
+    }
+
+}

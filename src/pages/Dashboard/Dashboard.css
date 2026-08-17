@@ -1,0 +1,251 @@
+/* ==========================================
+   DASHBOARD PAGE
+========================================== */
+
+.dashboard-page {
+    min-height: 100vh;
+    padding: 40px;
+    background: #f8fafc;
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.dashboard-header {
+    max-width: 1200px;
+    margin: 0 auto 36px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.dashboard-label {
+    margin-bottom: 6px;
+    color: #6366f1;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.dashboard-header h1 {
+    color: #111827;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.dashboard-welcome {
+    margin-top: 5px;
+    color: #6b7280;
+    font-size: 15px;
+}
+
+.dashboard-logout {
+    padding: 10px 18px;
+    border: 0;
+    border-radius: 8px;
+    background: #111827;
+    color: white;
+    font-weight: 600;
+}
+
+.dashboard-logout:hover {
+    background: #374151;
+}
+
+
+/* ==========================================
+   STATISTICS
+========================================== */
+
+.statistics-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(190px, 1fr));
+
+    gap: 18px;
+}
+
+.stat-card {
+    padding: 24px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background: white;
+    box-shadow:
+        0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+.stat-card p {
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.stat-card h2 {
+    margin-top: 10px;
+    color: #111827;
+    font-size: 30px;
+}
+
+.attendance-stat h2 {
+    color: #16a34a;
+}
+
+
+/* ==========================================
+   RECENT ATTENDANCE
+========================================== */
+
+.recent-section {
+    max-width: 1200px;
+    margin: 42px auto 0;
+}
+
+.section-header {
+    margin-bottom: 18px;
+}
+
+.section-header h2 {
+    color: #111827;
+    font-size: 22px;
+}
+
+
+/* ==========================================
+   ATTENDANCE LIST
+========================================== */
+
+.attendance-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.attendance-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 20px 22px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    background: white;
+}
+
+.attendance-card h3 {
+    color: #111827;
+    font-size: 16px;
+}
+
+.attendance-card > div:first-child p {
+    margin-top: 4px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.attendance-summary {
+    display: flex;
+    gap: 28px;
+}
+
+.attendance-summary div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.attendance-summary span {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.attendance-summary strong {
+    margin-top: 3px;
+    color: #111827;
+    font-size: 16px;
+}
+
+
+/* ==========================================
+   EMPTY / LOADING / ERROR
+========================================== */
+
+.empty-state,
+.dashboard-loading,
+.dashboard-error-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.empty-state {
+    padding: 40px;
+    border: 1px dashed #d1d5db;
+    border-radius: 12px;
+    background: white;
+    color: #6b7280;
+    text-align: center;
+}
+
+.dashboard-loading,
+.dashboard-error-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.dashboard-error-page {
+    gap: 12px;
+}
+
+.dashboard-error-page h2 {
+    color: #b91c1c;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 700px) {
+
+    .dashboard-page {
+        padding: 24px 16px;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+    }
+
+    .dashboard-header h1 {
+        font-size: 27px;
+    }
+
+    .dashboard-logout {
+        align-self: flex-start;
+    }
+
+    .attendance-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .attendance-summary {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .attendance-summary div {
+        align-items: flex-start;
+    }
+}
