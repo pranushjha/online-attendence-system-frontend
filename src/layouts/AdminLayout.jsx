@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
 import {
@@ -8,17 +9,18 @@ import {
     FaClipboardCheck,
     FaFileAlt,
     FaSignOutAlt,
+    FaBars,
+    FaTimes,
 } from "react-icons/fa";
 
 import { useAuth } from "../context/AuthContext";
 
 import "./AdminLayout.css";
 
-
 const AdminLayout = () => {
-
     const { user, logout } = useAuth();
 
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     // ==========================================
     // ADMIN NAVIGATION
@@ -30,31 +32,26 @@ const AdminLayout = () => {
             path: "/dashboard",
             icon: <FaChartPie />,
         },
-
         {
             name: "Teachers",
             path: "/teachers",
             icon: <FaChalkboardTeacher />,
         },
-
         {
             name: "Classes",
             path: "/classes",
             icon: <FaSchool />,
         },
-
         {
             name: "Students",
             path: "/students",
             icon: <FaUsers />,
         },
-
         {
             name: "Attendance",
             path: "/admin/attendance",
             icon: <FaClipboardCheck />,
         },
-
         {
             name: "Reports",
             path: "/admin/reports",
@@ -62,15 +59,81 @@ const AdminLayout = () => {
         },
     ];
 
+    // ==========================================
+    // CLOSE SIDEBAR
+    // ==========================================
+
+    const closeSidebar = () => {
+        setSidebarOpen(false);
+    };
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
+
+    const handleLogout = () => {
+        setSidebarOpen(false);
+        logout();
+    };
 
     return (
         <div className="admin-layout">
 
             {/* ==========================================
+                MOBILE HEADER
+            ========================================== */}
+
+            <header className="mobile-header">
+
+                <button
+                    className="mobile-menu-button"
+                    onClick={() => setSidebarOpen(true)}
+                    aria-label="Open navigation menu"
+                >
+                    <FaBars />
+                </button>
+
+                <div className="mobile-header-title">
+                    <strong>Attendance</strong>
+                    <span>Admin Panel</span>
+                </div>
+
+            </header>
+
+
+            {/* ==========================================
+                MOBILE OVERLAY
+            ========================================== */}
+
+            {sidebarOpen && (
+                <div
+                    className="sidebar-overlay"
+                    onClick={closeSidebar}
+                />
+            )}
+
+
+            {/* ==========================================
                 SIDEBAR
             ========================================== */}
 
-            <aside className="sidebar">
+            <aside
+                className={`sidebar ${
+                    sidebarOpen ? "sidebar-open" : ""
+                }`}
+            >
+
+                {/* ======================================
+                    MOBILE CLOSE BUTTON
+                ====================================== */}
+
+                <button
+                    className="mobile-close-button"
+                    onClick={closeSidebar}
+                    aria-label="Close navigation menu"
+                >
+                    <FaTimes />
+                </button>
 
 
                 {/* ======================================
@@ -101,6 +164,7 @@ const AdminLayout = () => {
                         <NavLink
                             key={item.path}
                             to={item.path}
+                            onClick={closeSidebar}
                             className={({ isActive }) =>
                                 isActive
                                     ? "nav-item active"
@@ -144,7 +208,7 @@ const AdminLayout = () => {
 
                     <button
                         className="logout-button"
-                        onClick={logout}
+                        onClick={handleLogout}
                     >
 
                         <FaSignOutAlt />
@@ -173,6 +237,5 @@ const AdminLayout = () => {
         </div>
     );
 };
-
 
 export default AdminLayout;

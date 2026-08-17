@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
 import {
@@ -6,17 +7,18 @@ import {
     FaFileAlt,
     FaSchool,
     FaSignOutAlt,
+    FaBars,
+    FaTimes,
 } from "react-icons/fa";
 
 import { useAuth } from "../context/AuthContext";
 
 import "./AdminLayout.css";
 
-
 const TeacherLayout = () => {
-
     const { user, logout } = useAuth();
 
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     // ==========================================
     // TEACHER NAVIGATION
@@ -28,19 +30,16 @@ const TeacherLayout = () => {
             path: "/teacher-dashboard",
             icon: <FaChartPie />,
         },
-
         {
             name: "My Class",
             path: "/my-class",
             icon: <FaSchool />,
         },
-
         {
             name: "Attendance",
             path: "/attendance",
             icon: <FaClipboardCheck />,
         },
-
         {
             name: "Reports",
             path: "/teacher-reports",
@@ -48,16 +47,81 @@ const TeacherLayout = () => {
         },
     ];
 
+    // ==========================================
+    // CLOSE SIDEBAR
+    // ==========================================
+
+    const closeSidebar = () => {
+        setSidebarOpen(false);
+    };
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
+
+    const handleLogout = () => {
+        setSidebarOpen(false);
+        logout();
+    };
 
     return (
         <div className="admin-layout">
+
+            {/* ==========================================
+                MOBILE HEADER
+            ========================================== */}
+
+            <header className="mobile-header">
+
+                <button
+                    className="mobile-menu-button"
+                    onClick={() => setSidebarOpen(true)}
+                    aria-label="Open navigation menu"
+                >
+                    <FaBars />
+                </button>
+
+                <div className="mobile-header-title">
+                    <strong>Attendance</strong>
+                    <span>Teacher Panel</span>
+                </div>
+
+            </header>
+
+
+            {/* ==========================================
+                MOBILE OVERLAY
+            ========================================== */}
+
+            {sidebarOpen && (
+                <div
+                    className="sidebar-overlay"
+                    onClick={closeSidebar}
+                />
+            )}
 
 
             {/* ==========================================
                 SIDEBAR
             ========================================== */}
 
-            <aside className="sidebar">
+            <aside
+                className={`sidebar ${
+                    sidebarOpen ? "sidebar-open" : ""
+                }`}
+            >
+
+                {/* ======================================
+                    MOBILE CLOSE BUTTON
+                ====================================== */}
+
+                <button
+                    className="mobile-close-button"
+                    onClick={closeSidebar}
+                    aria-label="Close navigation menu"
+                >
+                    <FaTimes />
+                </button>
 
 
                 {/* ======================================
@@ -88,6 +152,7 @@ const TeacherLayout = () => {
                         <NavLink
                             key={item.path}
                             to={item.path}
+                            onClick={closeSidebar}
                             className={({ isActive }) =>
                                 isActive
                                     ? "nav-item active"
@@ -131,7 +196,7 @@ const TeacherLayout = () => {
 
                     <button
                         className="logout-button"
-                        onClick={logout}
+                        onClick={handleLogout}
                     >
 
                         <FaSignOutAlt />
@@ -160,6 +225,5 @@ const TeacherLayout = () => {
         </div>
     );
 };
-
 
 export default TeacherLayout;
