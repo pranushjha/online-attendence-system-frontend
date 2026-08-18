@@ -5,6 +5,7 @@
 .admin-layout {
     min-height: 100vh;
     display: flex;
+
     background:
         radial-gradient(
             circle at 20% 0%,
@@ -334,7 +335,7 @@
 
 
 /* =========================================================
-   MOBILE CLOSE
+   MOBILE CLOSE BUTTON
 ========================================================= */
 
 .mobile-close-button {
@@ -374,6 +375,11 @@
         display: block;
     }
 
+
+    /* ================================================
+       MOBILE HEADER
+    ================================================ */
+
     .mobile-header {
         height: 62px;
 
@@ -382,10 +388,11 @@
 
         position: fixed;
 
-        inset:
-            0 0 auto 0;
+        top: 0;
+        left: 0;
+        right: 0;
 
-        z-index: 900;
+        z-index: 1100;
 
         padding: 0 15px;
 
@@ -396,6 +403,7 @@
         box-shadow:
             0 5px 20px rgba(15,23,42,0.18);
     }
+
 
     .mobile-menu-button {
         width: 40px;
@@ -421,6 +429,7 @@
         background: rgba(255,255,255,0.08);
     }
 
+
     .mobile-header-title {
         display: flex;
         flex-direction: column;
@@ -441,6 +450,11 @@
         font-size: 10px;
     }
 
+
+    /* ================================================
+       MOBILE SIDEBAR
+    ================================================ */
+
     .sidebar {
         width: 280px;
         height: 100vh;
@@ -451,15 +465,25 @@
         top: 0;
         left: 0;
 
+        z-index: 1200;
+
         transform: translateX(-105%);
 
         box-shadow:
             15px 0 45px rgba(0,0,0,0.25);
+
+        transition:
+            transform 0.3s ease;
     }
 
     .sidebar.sidebar-open {
         transform: translateX(0);
     }
+
+
+    /* ================================================
+       CLOSE BUTTON
+    ================================================ */
 
     .mobile-close-button {
         width: 38px;
@@ -473,6 +497,8 @@
 
         top: 14px;
         right: 12px;
+
+        z-index: 1210;
 
         border: none;
         border-radius: 9px;
@@ -491,6 +517,11 @@
         color: white;
     }
 
+
+    /* ================================================
+       MOBILE BRAND
+    ================================================ */
+
     .sidebar-brand {
         padding:
             23px 20px;
@@ -498,9 +529,22 @@
         padding-right: 55px;
     }
 
+
+    /* ================================================
+       MOBILE NAVIGATION
+    ================================================ */
+
     .sidebar-nav {
         padding: 18px 12px;
     }
+
+
+    /* ================================================
+       MOBILE OVERLAY
+       
+       IMPORTANT:
+       Overlay MUST be BELOW sidebar.
+    ================================================ */
 
     .sidebar-overlay {
         display: block;
@@ -509,18 +553,28 @@
 
         inset: 0;
 
-        z-index: 1050;
+        z-index: 1150;
 
         background: rgba(15,23,42,0.55);
 
         backdrop-filter: blur(2px);
+
+        -webkit-backdrop-filter: blur(2px);
     }
+
+
+    /* ================================================
+       MOBILE CONTENT
+    ================================================ */
 
     .layout-content {
         width: 100%;
 
+        min-height: 100vh;
+
         padding-top: 62px;
     }
+
 }
 
 
