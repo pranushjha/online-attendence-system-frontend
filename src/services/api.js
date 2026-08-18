@@ -9,19 +9,34 @@ const configuredApiUrl =
     import.meta.env.VITE_API_URL;
 
 
-const apiBaseUrl = configuredApiUrl
-    ? configuredApiUrl
-        .replace(/\/+$/, "")
-        .endsWith("/api")
-        ? configuredApiUrl.replace(
-            /\/+$/,
-            ""
-        )
-        : `${configuredApiUrl.replace(
-            /\/+$/,
-            ""
-        )}/api`
-    : "http://localhost:5001/api";
+// ==========================================
+// NORMALIZE API URL
+// ==========================================
+
+const normalizeApiUrl = (url) => {
+
+    if (!url) {
+        return "http://localhost:5001/api";
+    }
+
+
+    const cleanedUrl =
+        url.replace(/\/+$/, "");
+
+
+    // Already contains /api
+    if (cleanedUrl.endsWith("/api")) {
+        return cleanedUrl;
+    }
+
+
+    // Add /api
+    return `${cleanedUrl}/api`;
+};
+
+
+const apiBaseUrl =
+    normalizeApiUrl(configuredApiUrl);
 
 
 // ==========================================
@@ -30,12 +45,10 @@ const apiBaseUrl = configuredApiUrl
 
 const api = axios.create({
 
-    baseURL:
-        apiBaseUrl,
+    baseURL: apiBaseUrl,
 
     headers: {
-        "Content-Type":
-            "application/json",
+        "Content-Type": "application/json",
     },
 
 });
@@ -54,9 +67,7 @@ api.interceptors.request.use(
         // ==========================================
 
         const token =
-            sessionStorage.getItem(
-                "token"
-            );
+            sessionStorage.getItem("token");
 
 
         if (token) {
@@ -64,23 +75,18 @@ api.interceptors.request.use(
             config.headers =
                 config.headers || {};
 
-
             config.headers.Authorization =
                 `Bearer ${token}`;
-
         }
 
 
         return config;
-
     },
+
 
     (error) => {
 
-        return Promise.reject(
-            error
-        );
-
+        return Promise.reject(error);
     }
 
 );
@@ -92,49 +98,67 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
 
+    // ==========================================
+    // SUCCESS
+    // ==========================================
+
     (response) => {
 
         return response;
-
     },
+
+
+    // ==========================================
+    // ERROR
+    // ==========================================
 
     (error) => {
 
+        const status =
+            error.response?.status;
+
+
         // ==========================================
-        // AUTHENTICATION EXPIRED / INVALID
+        // 401 = AUTHENTICATION INVALID/EXPIRED
         // ==========================================
 
-        if (
-            error.response?.status === 401
-        ) {
+        if (status === 401) {
 
-            // ==========================================
-            // CLEAR ONLY CURRENT TAB'S LOGIN
-            // ==========================================
-
-            sessionStorage.removeItem(
-                "token"
-            );
-
-            sessionStorage.removeItem(
-                "user"
+            console.warn(
+                "Authentication expired or invalid."
             );
 
 
-            // ==========================================
-            // REDIRECT TO LOGIN
-            // ==========================================
+            // Clear CURRENT TAB only
+            sessionStorage.removeItem("token");
+            sessionStorage.removeItem("user");
 
-            window.location.href =
-                "/login";
 
+            // Redirect CURRENT TAB only
+            window.location.href = "/login";
         }
 
 
-        return Promise.reject(
-            error
-        );
+        // ==========================================
+        // 403 = AUTHENTICATED BUT NOT AUTHORIZED
+        // ==========================================
 
+        if (status === 403) {
+
+            console.warn(
+                "Access denied: insufficient permissions."
+            );
+
+            // IMPORTANT:
+            // Do NOT logout here.
+            //
+            // A 403 means the user is authenticated,
+            // but their role does not have permission
+            // for that endpoint.
+        }
+
+
+        return Promise.reject(error);
     }
 
 );

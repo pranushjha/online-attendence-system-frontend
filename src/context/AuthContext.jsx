@@ -7,7 +7,6 @@ import {
 
 import api from "../services/api";
 
-
 const AuthContext = createContext(null);
 
 
@@ -21,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     // INITIAL TOKEN
     // ==========================================
 
-    const [token, setToken] = useState(
+    const [token, setToken] = useState(() =>
         sessionStorage.getItem("token")
     );
 
@@ -35,24 +34,17 @@ export const AuthProvider = ({ children }) => {
         const savedUser =
             sessionStorage.getItem("user");
 
-
         try {
-
             return savedUser
                 ? JSON.parse(savedUser)
                 : null;
-
         } catch {
-
             return null;
-
         }
-
     });
 
 
-    const [loading, setLoading] =
-        useState(true);
+    const [loading, setLoading] = useState(true);
 
 
     // ==========================================
@@ -75,50 +67,39 @@ export const AuthProvider = ({ children }) => {
                 const parsedUser =
                     JSON.parse(savedUser);
 
-
                 setToken(savedToken);
-
                 setUser(parsedUser);
 
-            } catch {
+            } catch (error) {
 
-                sessionStorage.removeItem(
-                    "token"
+                console.error(
+                    "Failed to restore authentication:",
+                    error
                 );
 
-                sessionStorage.removeItem(
-                    "user"
-                );
-
+                sessionStorage.removeItem("token");
+                sessionStorage.removeItem("user");
 
                 setToken(null);
-
                 setUser(null);
-
             }
 
         } else {
 
             // ==================================
-            // CLEAN UP INCOMPLETE AUTH STATE
+            // REMOVE INCOMPLETE AUTH STATE
             // ==================================
 
             if (!savedToken) {
-
-                sessionStorage.removeItem(
-                    "user"
-                );
-
+                sessionStorage.removeItem("user");
             }
 
             if (!savedUser) {
-
-                sessionStorage.removeItem(
-                    "token"
-                );
-
+                sessionStorage.removeItem("token");
             }
 
+            setToken(null);
+            setUser(null);
         }
 
 
@@ -131,39 +112,43 @@ export const AuthProvider = ({ children }) => {
     // ADMIN LOGIN
     // ==========================================
 
-    const adminLogin = async (
-        email,
-        password
-    ) => {
+    const adminLogin = async (email, password) => {
 
-        const response =
-            await api.post(
-                "/auth/admin/login",
-                {
-                    email,
-                    password,
-                }
-            );
+        const response = await api.post(
+            "/auth/admin/login",
+            {
+                email,
+                password,
+            }
+        );
 
 
         const {
-            token,
-            user,
+            token: receivedToken,
+            user: receivedUser,
         } = response.data;
 
 
+        if (!receivedToken || !receivedUser) {
+
+            throw new Error(
+                "Invalid login response from server"
+            );
+        }
+
+
         // ==========================================
-        // SAVE LOGIN FOR THIS TAB ONLY
+        // SAVE ONLY IN CURRENT TAB
         // ==========================================
 
         sessionStorage.setItem(
             "token",
-            token
+            receivedToken
         );
 
         sessionStorage.setItem(
             "user",
-            JSON.stringify(user)
+            JSON.stringify(receivedUser)
         );
 
 
@@ -171,13 +156,11 @@ export const AuthProvider = ({ children }) => {
         // UPDATE REACT STATE
         // ==========================================
 
-        setToken(token);
-
-        setUser(user);
+        setToken(receivedToken);
+        setUser(receivedUser);
 
 
         return response.data;
-
     };
 
 
@@ -185,39 +168,43 @@ export const AuthProvider = ({ children }) => {
     // TEACHER LOGIN
     // ==========================================
 
-    const teacherLogin = async (
-        email,
-        password
-    ) => {
+    const teacherLogin = async (email, password) => {
 
-        const response =
-            await api.post(
-                "/auth/teacher/login",
-                {
-                    email,
-                    password,
-                }
-            );
+        const response = await api.post(
+            "/auth/teacher/login",
+            {
+                email,
+                password,
+            }
+        );
 
 
         const {
-            token,
-            user,
+            token: receivedToken,
+            user: receivedUser,
         } = response.data;
 
 
+        if (!receivedToken || !receivedUser) {
+
+            throw new Error(
+                "Invalid login response from server"
+            );
+        }
+
+
         // ==========================================
-        // SAVE LOGIN FOR THIS TAB ONLY
+        // SAVE ONLY IN CURRENT TAB
         // ==========================================
 
         sessionStorage.setItem(
             "token",
-            token
+            receivedToken
         );
 
         sessionStorage.setItem(
             "user",
-            JSON.stringify(user)
+            JSON.stringify(receivedUser)
         );
 
 
@@ -225,13 +212,11 @@ export const AuthProvider = ({ children }) => {
         // UPDATE REACT STATE
         // ==========================================
 
-        setToken(token);
-
-        setUser(user);
+        setToken(receivedToken);
+        setUser(receivedUser);
 
 
         return response.data;
-
     };
 
 
@@ -241,19 +226,16 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
 
-        sessionStorage.removeItem(
-            "token"
-        );
+        // ==========================================
+        // CLEAR CURRENT TAB ONLY
+        // ==========================================
 
-        sessionStorage.removeItem(
-            "user"
-        );
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("user");
 
 
         setToken(null);
-
         setUser(null);
-
     };
 
 
@@ -262,10 +244,7 @@ export const AuthProvider = ({ children }) => {
     // ==========================================
 
     const isAuthenticated =
-        Boolean(
-            token &&
-            user
-        );
+        Boolean(token && user);
 
 
     // ==========================================
@@ -273,7 +252,6 @@ export const AuthProvider = ({ children }) => {
     // ==========================================
 
     return (
-
         <AuthContext.Provider
             value={{
                 token,
@@ -285,13 +263,9 @@ export const AuthProvider = ({ children }) => {
                 logout,
             }}
         >
-
             {children}
-
         </AuthContext.Provider>
-
     );
-
 };
 
 
@@ -301,8 +275,7 @@ export const AuthProvider = ({ children }) => {
 
 export const useAuth = () => {
 
-    const context =
-        useContext(AuthContext);
+    const context = useContext(AuthContext);
 
 
     if (!context) {
@@ -310,10 +283,8 @@ export const useAuth = () => {
         throw new Error(
             "useAuth must be used inside AuthProvider"
         );
-
     }
 
 
     return context;
-
 };
