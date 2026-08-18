@@ -9,6 +9,7 @@ import {
     FaSignOutAlt,
     FaBars,
     FaTimes,
+    FaGraduationCap,
 } from "react-icons/fa";
 
 import { useAuth } from "../context/AuthContext";
@@ -19,10 +20,6 @@ const TeacherLayout = () => {
     const { user, logout } = useAuth();
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
-
-    // ==========================================
-    // TEACHER NAVIGATION
-    // ==========================================
 
     const navigation = [
         {
@@ -47,17 +44,9 @@ const TeacherLayout = () => {
         },
     ];
 
-    // ==========================================
-    // CLOSE SIDEBAR
-    // ==========================================
-
     const closeSidebar = () => {
         setSidebarOpen(false);
     };
-
-    // ==========================================
-    // LOGOUT
-    // ==========================================
 
     const handleLogout = () => {
         setSidebarOpen(false);
@@ -65,12 +54,9 @@ const TeacherLayout = () => {
     };
 
     return (
-        <div className="admin-layout">
+        <div className="admin-layout teacher-layout">
 
-            {/* ==========================================
-                MOBILE HEADER
-            ========================================== */}
-
+            {/* MOBILE HEADER */}
             <header className="mobile-header">
 
                 <button
@@ -88,11 +74,7 @@ const TeacherLayout = () => {
 
             </header>
 
-
-            {/* ==========================================
-                MOBILE OVERLAY
-            ========================================== */}
-
+            {/* OVERLAY */}
             {sidebarOpen && (
                 <div
                     className="sidebar-overlay"
@@ -100,20 +82,12 @@ const TeacherLayout = () => {
                 />
             )}
 
-
-            {/* ==========================================
-                SIDEBAR
-            ========================================== */}
-
+            {/* SIDEBAR */}
             <aside
                 className={`sidebar ${
                     sidebarOpen ? "sidebar-open" : ""
                 }`}
             >
-
-                {/* ======================================
-                    MOBILE CLOSE BUTTON
-                ====================================== */}
 
                 <button
                     className="mobile-close-button"
@@ -123,29 +97,26 @@ const TeacherLayout = () => {
                     <FaTimes />
                 </button>
 
-
-                {/* ======================================
-                    BRAND
-                ====================================== */}
-
+                {/* BRAND */}
                 <div className="sidebar-brand">
 
-                    <h2>
-                        Attendance
-                    </h2>
+                    <div className="brand-icon">
+                        <FaGraduationCap />
+                    </div>
 
-                    <span>
-                        Teacher Panel
-                    </span>
+                    <div>
+                        <h2>Attendance</h2>
+                        <span>Teacher Panel</span>
+                    </div>
 
                 </div>
 
-
-                {/* ======================================
-                    NAVIGATION
-                ====================================== */}
-
+                {/* NAVIGATION */}
                 <nav className="sidebar-nav">
+
+                    <p className="sidebar-section-label">
+                        TEACHER MENU
+                    </p>
 
                     {navigation.map((item) => (
 
@@ -159,67 +130,60 @@ const TeacherLayout = () => {
                                     : "nav-item"
                             }
                         >
-
                             <span className="nav-icon">
                                 {item.icon}
                             </span>
 
-                            <span>
-                                {item.name}
-                            </span>
-
+                            <span>{item.name}</span>
                         </NavLink>
 
                     ))}
 
                 </nav>
 
-
-                {/* ======================================
-                    USER / LOGOUT
-                ====================================== */}
-
+                {/* USER AREA */}
                 <div className="sidebar-bottom">
 
-                    <div className="sidebar-user">
+                    <div className="teacher-profile">
 
-                        <strong>
-                            {user?.name}
-                        </strong>
+                        <div className="teacher-avatar">
+                            {(user?.name || "T")
+                                .charAt(0)
+                                .toUpperCase()}
+                        </div>
 
-                        <span>
-                            Class Teacher
-                        </span>
+                        <div className="sidebar-user">
+
+                            <strong>
+                                {user?.name || "Teacher"}
+                            </strong>
+
+                            <span>
+                                Class Teacher
+                            </span>
+
+                        </div>
 
                     </div>
-
 
                     <button
                         className="logout-button"
                         onClick={handleLogout}
                     >
-
                         <FaSignOutAlt />
 
                         <span>
                             Logout
                         </span>
-
                     </button>
 
                 </div>
 
             </aside>
 
-
-            {/* ==========================================
-                MAIN CONTENT
-            ========================================== */}
-
+            {/* CONTENT */}
             <main className="layout-content">
-
                 <Outlet />
-
             </main>
 
         </div>

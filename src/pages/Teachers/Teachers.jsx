@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
+
 import {
     FaEdit,
     FaPlus,
     FaTrash,
     FaTimes,
+    FaUserTie,
 } from "react-icons/fa";
 
 import api from "../../services/api";
+
 import "./Teachers.css";
 
+
 const Teachers = () => {
+
     const [teachers, setTeachers] = useState([]);
     const [classes, setClasses] = useState([]);
 
@@ -19,6 +24,8 @@ const Teachers = () => {
     const [showModal, setShowModal] = useState(false);
     const [editingTeacher, setEditingTeacher] = useState(null);
 
+    const [saving, setSaving] = useState(false);
+
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -26,33 +33,42 @@ const Teachers = () => {
         assignedClass: "",
     });
 
-    const [saving, setSaving] = useState(false);
 
-    // ==========================================
+    // =========================================================
     // LOAD TEACHERS + CLASSES
-    // ==========================================
+    // =========================================================
 
     const loadData = async () => {
+
         try {
+
             setLoading(true);
             setError("");
 
-            const [teachersResponse, classesResponse] =
-                await Promise.all([
-                    api.get("/teachers"),
-                    api.get("/classes"),
-                ]);
+            const [
+                teachersResponse,
+                classesResponse,
+            ] = await Promise.all([
+                api.get("/teachers"),
+                api.get("/classes"),
+            ]);
+
 
             setTeachers(
                 teachersResponse.data.teachers || []
             );
+
 
             setClasses(
                 classesResponse.data.classes || []
             );
 
         } catch (err) {
-            console.error("Teachers Load Error:", err);
+
+            console.error(
+                "Teachers Load Error:",
+                err
+            );
 
             setError(
                 err.response?.data?.message ||
@@ -60,35 +76,45 @@ const Teachers = () => {
             );
 
         } finally {
+
             setLoading(false);
+
         }
     };
 
+
     useEffect(() => {
+
         loadData();
+
     }, []);
 
 
-    // ==========================================
-    // FORM HANDLING
-    // ==========================================
+    // =========================================================
+    // FORM CHANGE
+    // =========================================================
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleChange = (event) => {
+
+        const {
+            name,
+            value,
+        } = event.target;
+
 
         setForm((previous) => ({
             ...previous,
             [name]: value,
         }));
+
     };
 
 
-    // ==========================================
-    // OPEN ADD MODAL
-    // ==========================================
+    // =========================================================
+    // RESET FORM
+    // =========================================================
 
-    const openAddModal = () => {
-        setEditingTeacher(null);
+    const resetForm = () => {
 
         setForm({
             name: "",
@@ -97,16 +123,32 @@ const Teachers = () => {
             assignedClass: "",
         });
 
-        setError("");
-        setShowModal(true);
     };
 
 
-    // ==========================================
+    // =========================================================
+    // OPEN ADD MODAL
+    // =========================================================
+
+    const openAddModal = () => {
+
+        setEditingTeacher(null);
+
+        resetForm();
+
+        setError("");
+
+        setShowModal(true);
+
+    };
+
+
+    // =========================================================
     // OPEN EDIT MODAL
-    // ==========================================
+    // =========================================================
 
     const openEditModal = (teacher) => {
+
         setEditingTeacher(teacher);
 
         setForm({
@@ -118,73 +160,140 @@ const Teachers = () => {
         });
 
         setError("");
+
         setShowModal(true);
+
     };
 
 
-    // ==========================================
+    // =========================================================
     // CLOSE MODAL
-    // ==========================================
+    // =========================================================
 
     const closeModal = () => {
-        if (saving) return;
+
+        if (saving) {
+            return;
+        }
 
         setShowModal(false);
+
         setEditingTeacher(null);
+
+        resetForm();
+
     };
 
 
-    // ==========================================
+    // =========================================================
     // SAVE TEACHER
-    // ==========================================
+    // =========================================================
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+
+        event.preventDefault();
+
+        setError("");
+
+
+        const name = form.name.trim();
+        const email = form.email.trim();
+        const password = form.password.trim();
+
+
+        if (!name) {
+
+            setError(
+                "Teacher name is required."
+            );
+
+            return;
+        }
+
+
+        if (!email) {
+
+            setError(
+                "Teacher email is required."
+            );
+
+            return;
+        }
+
+
+        if (!editingTeacher && !password) {
+
+            setError(
+                "Password is required when creating a teacher."
+            );
+
+            return;
+        }
+
 
         try {
+
             setSaving(true);
-            setError("");
+
 
             const payload = {
-                name: form.name.trim(),
-                email: form.email.trim(),
+                name,
+                email,
+                assignedClass:
+                    form.assignedClass || null,
             };
 
-            // Password is required when creating
+
+            // Password is required when creating.
             if (!editingTeacher) {
-                payload.password = form.password;
+
+                payload.password = password;
+
             }
 
-            // Password is optional when editing
+
+            // Password is optional when editing.
             if (
                 editingTeacher &&
-                form.password.trim()
+                password
             ) {
-                payload.password = form.password;
+
+                payload.password = password;
+
             }
 
-            // Send null when no class is selected
-            payload.assignedClass =
-                form.assignedClass || null;
 
             if (editingTeacher) {
+
                 await api.put(
                     `/teachers/${editingTeacher._id}`,
                     payload
                 );
+
             } else {
+
                 await api.post(
                     "/teachers",
                     payload
                 );
+
             }
 
-            closeModal();
+
+            setShowModal(false);
+
+            setEditingTeacher(null);
+
+            resetForm();
 
             await loadData();
 
         } catch (err) {
-            console.error("Save Teacher Error:", err);
+
+            console.error(
+                "Save Teacher Error:",
+                err
+            );
 
             setError(
                 err.response?.data?.message ||
@@ -192,100 +301,140 @@ const Teachers = () => {
             );
 
         } finally {
+
             setSaving(false);
+
         }
+
     };
 
 
-    // ==========================================
+    // =========================================================
     // DELETE TEACHER
-    // ==========================================
+    // =========================================================
 
     const handleDelete = async (teacher) => {
-        const confirmed = window.confirm(
-            `Are you sure you want to delete ${teacher.name}?`
-        );
+
+        const confirmed =
+            window.confirm(
+                `Are you sure you want to delete ${teacher.name}?`
+            );
+
 
         if (!confirmed) {
             return;
         }
 
+
         try {
+
             setError("");
+
 
             await api.delete(
                 `/teachers/${teacher._id}`
             );
 
+
             await loadData();
 
         } catch (err) {
-            console.error("Delete Teacher Error:", err);
+
+            console.error(
+                "Delete Teacher Error:",
+                err
+            );
 
             setError(
                 err.response?.data?.message ||
                 "Unable to delete teacher."
             );
+
         }
+
     };
 
 
-    // ==========================================
+    // =========================================================
     // AVAILABLE CLASSES
-    // ==========================================
+    // =========================================================
 
-    const availableClasses = classes.filter((classItem) => {
+    const availableClasses =
+        classes.filter((classItem) => {
 
-        // New teacher:
-        // only classes without a teacher
-        if (!editingTeacher) {
+            // Creating teacher:
+            // only show unassigned classes.
+
+            if (!editingTeacher) {
+
+                return !classItem.classTeacher;
+
+            }
+
+
+            // Editing teacher:
+            // keep their currently assigned class available.
+
+            if (
+                editingTeacher.assignedClass?._id ===
+                classItem._id
+            ) {
+
+                return true;
+
+            }
+
+
+            // Other classes must be unassigned.
+
             return !classItem.classTeacher;
-        }
 
-        // Editing teacher:
-        // allow the teacher's current class
-        if (
-            editingTeacher.assignedClass?._id ===
-            classItem._id
-        ) {
-            return true;
-        }
-
-        // Otherwise only unassigned classes
-        return !classItem.classTeacher;
-    });
+        });
 
 
-    // ==========================================
+    // =========================================================
     // LOADING
-    // ==========================================
+    // =========================================================
 
     if (loading) {
+
         return (
             <div className="teachers-page">
-                <div className="page-loading">
-                    Loading teachers...
+
+                <div className="teachers-loading">
+
+                    <div className="teachers-loading-spinner" />
+
+                    <span>
+                        Loading teachers...
+                    </span>
+
                 </div>
+
             </div>
         );
+
     }
 
 
-    // ==========================================
+    // =========================================================
     // PAGE
-    // ==========================================
+    // =========================================================
 
     return (
+
         <div className="teachers-page">
 
-            {/* ======================================
+
+            {/* =================================================
                 HEADER
-            ====================================== */}
+            ================================================= */}
 
             <div className="teachers-header">
 
-                <div>
-                    <p className="page-label">
+                <div className="teachers-heading">
+
+                    <p className="teachers-label">
                         ADMINISTRATION
                     </p>
 
@@ -293,42 +442,61 @@ const Teachers = () => {
                         Teachers
                     </h1>
 
-                    <p className="page-description">
+                    <p className="teachers-description">
                         Manage teachers and their class assignments.
                     </p>
+
                 </div>
 
+
                 <button
+                    type="button"
                     className="add-teacher-button"
                     onClick={openAddModal}
                 >
+
                     <FaPlus />
-                    Add Teacher
+
+                    <span>
+                        Add Teacher
+                    </span>
+
                 </button>
 
             </div>
 
 
-            {/* ======================================
+            {/* =================================================
                 ERROR
-            ====================================== */}
+            ================================================= */}
 
             {error && (
+
                 <div className="teachers-error">
-                    {error}
+
+                    <span>
+                        {error}
+                    </span>
+
                 </div>
+
             )}
 
 
-            {/* ======================================
-                TEACHERS TABLE
-            ====================================== */}
+            {/* =================================================
+                TABLE CARD
+            ================================================= */}
 
             <div className="teachers-card">
 
                 {teachers.length === 0 ? (
 
-                    <div className="empty-teachers">
+                    <div className="teachers-empty">
+
+                        <div className="teachers-empty-icon">
+                            <FaUserTie />
+                        </div>
+
                         <h3>
                             No teachers found
                         </h3>
@@ -336,91 +504,184 @@ const Teachers = () => {
                         <p>
                             Add your first teacher to get started.
                         </p>
+
+                        <button
+                            type="button"
+                            onClick={openAddModal}
+                        >
+                            <FaPlus />
+                            Add Teacher
+                        </button>
+
                     </div>
 
                 ) : (
 
-                    <div className="table-wrapper">
+                    <div className="teachers-table-wrapper">
 
                         <table className="teachers-table">
 
                             <thead>
+
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Assigned Class</th>
-                                    <th>Role</th>
-                                    <th>Actions</th>
+
+                                    <th>
+                                        Teacher
+                                    </th>
+
+                                    <th>
+                                        Email
+                                    </th>
+
+                                    <th>
+                                        Assigned Class
+                                    </th>
+
+                                    <th>
+                                        Role
+                                    </th>
+
+                                    <th>
+                                        Actions
+                                    </th>
+
                                 </tr>
+
                             </thead>
+
 
                             <tbody>
 
-                                {teachers.map((teacher) => (
+                                {teachers.map(
+                                    (teacher) => {
 
-                                    <tr key={teacher._id}>
+                                        const initials =
+                                            teacher.name
+                                                ?.split(" ")
+                                                .map(
+                                                    (part) =>
+                                                        part[0]
+                                                )
+                                                .join("")
+                                                .slice(0, 2)
+                                                .toUpperCase() ||
+                                            "T";
 
-                                        <td>
-                                            <strong>
-                                                {teacher.name}
-                                            </strong>
-                                        </td>
 
-                                        <td>
-                                            {teacher.email}
-                                        </td>
+                                        return (
 
-                                        <td>
-                                            {teacher.assignedClass
-                                                ? teacher.assignedClass.className
-                                                : (
-                                                    <span className="not-assigned">
-                                                        Not assigned
+                                            <tr
+                                                key={
+                                                    teacher._id
+                                                }
+                                            >
+
+                                                <td>
+
+                                                    <div className="teacher-name-cell">
+
+                                                        <div className="teacher-list-avatar">
+                                                            {initials}
+                                                        </div>
+
+                                                        <strong>
+                                                            {
+                                                                teacher.name
+                                                            }
+                                                        </strong>
+
+                                                    </div>
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    <span className="teacher-email">
+                                                        {
+                                                            teacher.email
+                                                        }
                                                     </span>
-                                                )}
-                                        </td>
 
-                                        <td>
-                                            <span className="role-badge">
-                                                {teacher.role}
-                                            </span>
-                                        </td>
+                                                </td>
 
-                                        <td>
 
-                                            <div className="action-buttons">
+                                                <td>
 
-                                                <button
-                                                    className="edit-button"
-                                                    title="Edit teacher"
-                                                    onClick={() =>
-                                                        openEditModal(
-                                                            teacher
+                                                    {teacher.assignedClass
+                                                        ? (
+                                                            <span className="assigned-class-badge">
+                                                                {
+                                                                    teacher
+                                                                        .assignedClass
+                                                                        .className
+                                                                }
+                                                            </span>
                                                         )
-                                                    }
-                                                >
-                                                    <FaEdit />
-                                                </button>
+                                                        : (
+                                                            <span className="teacher-not-assigned">
+                                                                Not assigned
+                                                            </span>
+                                                        )}
 
-                                                <button
-                                                    className="delete-button"
-                                                    title="Delete teacher"
-                                                    onClick={() =>
-                                                        handleDelete(
-                                                            teacher
-                                                        )
-                                                    }
-                                                >
-                                                    <FaTrash />
-                                                </button>
+                                                </td>
 
-                                            </div>
 
-                                        </td>
+                                                <td>
 
-                                    </tr>
+                                                    <span className="teacher-role-badge">
+                                                        {
+                                                            teacher.role ||
+                                                            "teacher"
+                                                        }
+                                                    </span>
 
-                                ))}
+                                                </td>
+
+
+                                                <td>
+
+                                                    <div className="teacher-action-buttons">
+
+                                                        <button
+                                                            type="button"
+                                                            className="teacher-edit-button"
+                                                            title="Edit teacher"
+                                                            aria-label="Edit teacher"
+                                                            onClick={() =>
+                                                                openEditModal(
+                                                                    teacher
+                                                                )
+                                                            }
+                                                        >
+                                                            <FaEdit />
+                                                        </button>
+
+
+                                                        <button
+                                                            type="button"
+                                                            className="teacher-delete-button"
+                                                            title="Delete teacher"
+                                                            aria-label="Delete teacher"
+                                                            onClick={() =>
+                                                                handleDelete(
+                                                                    teacher
+                                                                )
+                                                            }
+                                                        >
+                                                            <FaTrash />
+                                                        </button>
+
+                                                    </div>
+
+                                                </td>
+
+                                            </tr>
+
+                                        );
+
+                                    }
+                                )}
 
                             </tbody>
 
@@ -433,19 +694,33 @@ const Teachers = () => {
             </div>
 
 
-            {/* ======================================
-                ADD / EDIT MODAL
-            ====================================== */}
+            {/* =================================================
+                MODAL
+            ================================================= */}
 
             {showModal && (
 
-                <div className="modal-overlay">
+                <div className="teacher-modal-overlay">
 
-                    <div className="teacher-modal">
+                    <div
+                        className="teacher-modal"
+                        role="dialog"
+                        aria-modal="true"
+                    >
 
-                        <div className="modal-header">
+
+                        {/* HEADER */}
+
+                        <div className="teacher-modal-header">
 
                             <div>
+
+                                <p className="teacher-modal-label">
+                                    {editingTeacher
+                                        ? "UPDATE ACCOUNT"
+                                        : "NEW ACCOUNT"}
+                                </p>
+
                                 <h2>
                                     {editingTeacher
                                         ? "Edit Teacher"
@@ -454,15 +729,19 @@ const Teachers = () => {
 
                                 <p>
                                     {editingTeacher
-                                        ? "Update teacher information."
-                                        : "Create a new teacher account."}
+                                        ? "Update teacher information and class assignment."
+                                        : "Create a new teacher account and assign a class."}
                                 </p>
+
                             </div>
 
+
                             <button
-                                className="close-modal"
+                                type="button"
+                                className="teacher-modal-close"
                                 onClick={closeModal}
                                 disabled={saving}
+                                aria-label="Close modal"
                             >
                                 <FaTimes />
                             </button>
@@ -470,13 +749,17 @@ const Teachers = () => {
                         </div>
 
 
+                        {/* FORM */}
+
                         <form
                             className="teacher-form"
                             onSubmit={handleSubmit}
                         >
 
+
                             <label>
-                                Name
+
+                                Teacher Name
 
                                 <input
                                     type="text"
@@ -484,13 +767,16 @@ const Teachers = () => {
                                     value={form.name}
                                     onChange={handleChange}
                                     placeholder="Enter teacher name"
+                                    autoComplete="name"
                                     required
                                 />
+
                             </label>
 
 
                             <label>
-                                Email
+
+                                Email Address
 
                                 <input
                                     type="email"
@@ -498,12 +784,15 @@ const Teachers = () => {
                                     value={form.email}
                                     onChange={handleChange}
                                     placeholder="Enter teacher email"
+                                    autoComplete="email"
                                     required
                                 />
+
                             </label>
 
 
                             <label>
+
                                 Password
 
                                 <input
@@ -516,12 +805,25 @@ const Teachers = () => {
                                             ? "Leave blank to keep current password"
                                             : "Enter password"
                                     }
+                                    autoComplete={
+                                        editingTeacher
+                                            ? "new-password"
+                                            : "new-password"
+                                    }
                                     required={!editingTeacher}
                                 />
+
+                                {editingTeacher && (
+                                    <small className="teacher-form-help">
+                                        Leave blank if you do not want to change the password.
+                                    </small>
+                                )}
+
                             </label>
 
 
                             <label>
+
                                 Assigned Class
 
                                 <select
@@ -529,18 +831,28 @@ const Teachers = () => {
                                     value={form.assignedClass}
                                     onChange={handleChange}
                                 >
+
                                     <option value="">
                                         No class assigned
                                     </option>
 
+
                                     {availableClasses.map(
                                         (classItem) => (
+
                                             <option
-                                                key={classItem._id}
-                                                value={classItem._id}
+                                                key={
+                                                    classItem._id
+                                                }
+                                                value={
+                                                    classItem._id
+                                                }
                                             >
-                                                {classItem.className}
+                                                {
+                                                    classItem.className
+                                                }
                                             </option>
+
                                         )
                                     )}
 
@@ -549,27 +861,42 @@ const Teachers = () => {
                             </label>
 
 
-                            <div className="modal-actions">
+                            {availableClasses.length === 0 &&
+                                !form.assignedClass && (
+
+                                    <p className="teacher-class-warning">
+                                        No unassigned classes are currently available.
+                                    </p>
+
+                                )}
+
+
+                            {/* ACTIONS */}
+
+                            <div className="teacher-modal-actions">
 
                                 <button
                                     type="button"
-                                    className="cancel-button"
+                                    className="teacher-cancel-button"
                                     onClick={closeModal}
                                     disabled={saving}
                                 >
                                     Cancel
                                 </button>
 
+
                                 <button
                                     type="submit"
-                                    className="save-button"
+                                    className="teacher-save-button"
                                     disabled={saving}
                                 >
+
                                     {saving
                                         ? "Saving..."
                                         : editingTeacher
                                             ? "Update Teacher"
                                             : "Create Teacher"}
+
                                 </button>
 
                             </div>
@@ -583,7 +910,10 @@ const Teachers = () => {
             )}
 
         </div>
+
     );
+
 };
+
 
 export default Teachers;

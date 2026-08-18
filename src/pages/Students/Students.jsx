@@ -1,4 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import {
+    useEffect,
+    useRef,
+    useState,
+} from "react";
+
 import { Navigate } from "react-router-dom";
 
 import {
@@ -7,6 +12,10 @@ import {
     FaTrash,
     FaTimes,
     FaFileExcel,
+    FaUserGraduate,
+    FaUsers,
+    FaChevronDown,
+    FaFilter,
 } from "react-icons/fa";
 
 import api from "../../services/api";
@@ -22,9 +31,9 @@ const Students = () => {
     const fileInputRef = useRef(null);
 
 
-    // ==========================================
+    // =========================================================
     // STATE
-    // ==========================================
+    // =========================================================
 
     const [students, setStudents] = useState([]);
     const [classes, setClasses] = useState([]);
@@ -36,10 +45,18 @@ const Students = () => {
     const [editingStudent, setEditingStudent] = useState(null);
 
     const [saving, setSaving] = useState(false);
-
     const [uploading, setUploading] = useState(false);
 
     const [uploadResult, setUploadResult] = useState(null);
+
+
+    // =========================================================
+    // CLASS FILTER
+    // =========================================================
+
+    const [selectedClassId, setSelectedClassId] =
+        useState("all");
+
 
     const [form, setForm] = useState({
         rollNo: "",
@@ -49,26 +66,9 @@ const Students = () => {
     });
 
 
-    // ==========================================
-    // REDIRECT TEACHER
-    // ==========================================
-    //
-    // Students page is ADMIN ONLY.
-    //
-    // Teachers should use /my-class.
-    //
-    // This also prevents a teacher from accidentally
-    // calling GET /api/classes, which is admin-only.
-    // ==========================================
-
-    if (user?.role === "teacher") {
-        return <Navigate to="/my-class" replace />;
-    }
-
-
-    // ==========================================
-    // LOAD STUDENTS + CLASSES
-    // ==========================================
+    // =========================================================
+    // LOAD DATA
+    // =========================================================
 
     const loadData = async () => {
 
@@ -76,10 +76,6 @@ const Students = () => {
 
             setLoading(true);
             setError("");
-
-            // ==========================================
-            // ADMIN ONLY
-            // ==========================================
 
             const [
                 studentsResponse,
@@ -106,7 +102,6 @@ const Students = () => {
                 err
             );
 
-
             setError(
                 err.response?.data?.message ||
                 "Unable to load students."
@@ -117,34 +112,37 @@ const Students = () => {
             setLoading(false);
 
         }
+
     };
 
 
-    // ==========================================
-    // LOAD DATA
-    // ==========================================
+    // =========================================================
+    // LOAD ONLY FOR ADMIN
+    // =========================================================
 
     useEffect(() => {
 
         if (user?.role === "admin") {
+
             loadData();
+
         }
 
     }, [user?.role]);
 
 
-    // ==========================================
+    // =========================================================
     // FORM CHANGE
-    // ==========================================
+    // =========================================================
 
-    const handleChange = (e) => {
+    const handleChange = (event) => {
 
         const {
             name,
             value,
             type,
             checked,
-        } = e.target;
+        } = event.target;
 
 
         setForm((previous) => ({
@@ -159,14 +157,11 @@ const Students = () => {
     };
 
 
-    // ==========================================
-    // OPEN ADD MODAL
-    // ==========================================
+    // =========================================================
+    // RESET FORM
+    // =========================================================
 
-    const openAddModal = () => {
-
-        setEditingStudent(null);
-
+    const resetForm = () => {
 
         setForm({
             rollNo: "",
@@ -175,26 +170,41 @@ const Students = () => {
             active: true,
         });
 
+    };
+
+
+    // =========================================================
+    // OPEN ADD MODAL
+    // =========================================================
+
+    const openAddModal = () => {
+
+        setEditingStudent(null);
+
+        resetForm();
 
         setError("");
+
         setShowModal(true);
 
     };
 
 
-    // ==========================================
+    // =========================================================
     // OPEN EDIT MODAL
-    // ==========================================
+    // =========================================================
 
     const openEditModal = (student) => {
 
         setEditingStudent(student);
 
-
         setForm({
-            rollNo: student.rollNo || "",
 
-            name: student.name || "",
+            rollNo:
+                student.rollNo || "",
+
+            name:
+                student.name || "",
 
             classId:
                 student.classId?._id ||
@@ -203,18 +213,19 @@ const Students = () => {
 
             active:
                 student.active ?? true,
+
         });
 
-
         setError("");
+
         setShowModal(true);
 
     };
 
 
-    // ==========================================
+    // =========================================================
     // CLOSE MODAL
-    // ==========================================
+    // =========================================================
 
     const closeModal = () => {
 
@@ -222,85 +233,82 @@ const Students = () => {
             return;
         }
 
-
         setShowModal(false);
+
         setEditingStudent(null);
+
+        resetForm();
 
     };
 
 
-    // ==========================================
+    // =========================================================
     // SAVE STUDENT
-    // ==========================================
+    // =========================================================
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (event) => {
 
-        e.preventDefault();
+        event.preventDefault();
+
+        setError("");
+
+
+        const rollNo =
+            form.rollNo.trim();
+
+        const name =
+            form.name.trim();
+
+
+        if (!rollNo) {
+
+            setError(
+                "Roll number is required."
+            );
+
+            return;
+        }
+
+
+        if (!name) {
+
+            setError(
+                "Student name is required."
+            );
+
+            return;
+        }
+
+
+        if (!form.classId) {
+
+            setError(
+                "Please select a class."
+            );
+
+            return;
+        }
 
 
         try {
 
             setSaving(true);
-            setError("");
 
-
-            // ==========================================
-            // VALIDATION
-            // ==========================================
-
-            if (!form.rollNo.trim()) {
-
-                setError(
-                    "Roll number is required."
-                );
-
-                return;
-            }
-
-
-            if (!form.name.trim()) {
-
-                setError(
-                    "Student name is required."
-                );
-
-                return;
-            }
-
-
-            if (!form.classId) {
-
-                setError(
-                    "Please select a class."
-                );
-
-                return;
-            }
-
-
-            // ==========================================
-            // PAYLOAD
-            // ==========================================
 
             const payload = {
 
-                rollNo:
-                    form.rollNo.trim(),
+                rollNo,
 
-                name:
-                    form.name.trim(),
+                name,
 
                 classId:
                     form.classId,
 
                 active:
                     form.active,
+
             };
 
-
-            // ==========================================
-            // UPDATE
-            // ==========================================
 
             if (editingStudent) {
 
@@ -309,13 +317,7 @@ const Students = () => {
                     payload
                 );
 
-            }
-
-            // ==========================================
-            // CREATE
-            // ==========================================
-
-            else {
+            } else {
 
                 await api.post(
                     "/students",
@@ -325,12 +327,11 @@ const Students = () => {
             }
 
 
-            // ==========================================
-            // CLOSE + REFRESH
-            // ==========================================
-
             setShowModal(false);
+
             setEditingStudent(null);
+
+            resetForm();
 
             await loadData();
 
@@ -340,7 +341,6 @@ const Students = () => {
                 "Save Student Error:",
                 err
             );
-
 
             setError(
                 err.response?.data?.message ||
@@ -352,12 +352,13 @@ const Students = () => {
             setSaving(false);
 
         }
+
     };
 
 
-    // ==========================================
+    // =========================================================
     // DELETE STUDENT
-    // ==========================================
+    // =========================================================
 
     const handleDelete = async (student) => {
 
@@ -376,11 +377,9 @@ const Students = () => {
 
             setError("");
 
-
             await api.delete(
                 `/students/${student._id}`
             );
-
 
             await loadData();
 
@@ -390,7 +389,6 @@ const Students = () => {
                 "Delete Student Error:",
                 err
             );
-
 
             setError(
                 err.response?.data?.message ||
@@ -402,13 +400,14 @@ const Students = () => {
     };
 
 
-    // ==========================================
-    // OPEN FILE PICKER
-    // ==========================================
+    // =========================================================
+    // FILE PICKER
+    // =========================================================
 
     const openFilePicker = () => {
 
         setError("");
+
         setUploadResult(null);
 
 
@@ -421,20 +420,17 @@ const Students = () => {
     };
 
 
-    // ==========================================
-    // BULK EXCEL UPLOAD
-    // ==========================================
+    // =========================================================
+    // EXCEL UPLOAD
+    // =========================================================
 
-    const handleExcelUpload = async (e) => {
+    const handleExcelUpload = async (event) => {
 
         const file =
-            e.target.files?.[0];
+            event.target.files?.[0];
 
 
-        // Reset input so the same file can
-        // be selected again.
-
-        e.target.value = "";
+        event.target.value = "";
 
 
         if (!file) {
@@ -442,17 +438,17 @@ const Students = () => {
         }
 
 
-        // ==========================================
-        // FILE TYPE CHECK
-        // ==========================================
+        // =====================================================
+        // FILE TYPE
+        // =====================================================
+
+        const fileName =
+            file.name.toLowerCase();
+
 
         const validExtension =
-            file.name
-                .toLowerCase()
-                .endsWith(".xlsx") ||
-            file.name
-                .toLowerCase()
-                .endsWith(".xls");
+            fileName.endsWith(".xlsx") ||
+            fileName.endsWith(".xls");
 
 
         if (!validExtension) {
@@ -465,9 +461,9 @@ const Students = () => {
         }
 
 
-        // ==========================================
-        // FILE SIZE CHECK
-        // ==========================================
+        // =====================================================
+        // FILE SIZE
+        // =====================================================
 
         if (file.size > 5 * 1024 * 1024) {
 
@@ -488,10 +484,6 @@ const Students = () => {
             setUploadResult(null);
 
 
-            // ==========================================
-            // CREATE FORM DATA
-            // ==========================================
-
             const formData =
                 new FormData();
 
@@ -502,10 +494,6 @@ const Students = () => {
             );
 
 
-            // ==========================================
-            // UPLOAD EXCEL
-            // ==========================================
-
             const response =
                 await api.post(
                     "/students/bulk",
@@ -513,18 +501,10 @@ const Students = () => {
                 );
 
 
-            // ==========================================
-            // SAVE RESULT
-            // ==========================================
-
             setUploadResult(
                 response.data
             );
 
-
-            // ==========================================
-            // REFRESH STUDENTS
-            // ==========================================
 
             await loadData();
 
@@ -546,9 +526,6 @@ const Students = () => {
             );
 
 
-            // Keep detailed validation response
-            // from backend.
-
             if (responseData) {
 
                 setUploadResult(
@@ -566,92 +543,324 @@ const Students = () => {
     };
 
 
-    // ==========================================
-    // LOADING
-    // ==========================================
+    // =========================================================
+    // REDIRECT TEACHER
+    // =========================================================
 
-    if (loading) {
+    if (user?.role === "teacher") {
 
         return (
-            <div className="students-page">
-
-                <div className="page-loading">
-
-                    Loading students...
-
-                </div>
-
-            </div>
+            <Navigate
+                to="/my-class"
+                replace
+            />
         );
 
     }
 
 
-    // ==========================================
+    // =========================================================
+    // LOADING
+    // =========================================================
+
+    if (loading) {
+
+        return (
+
+            <div className="students-page">
+
+                <div className="students-loading">
+
+                    <div className="students-loading-spinner" />
+
+                    <span>
+                        Loading students...
+                    </span>
+
+                </div>
+
+            </div>
+
+        );
+
+    }
+
+
+    // =========================================================
+    // FILTER STUDENTS
+    // =========================================================
+
+    const filteredStudents =
+        selectedClassId === "all"
+            ? students
+            : students.filter((student) => {
+
+                const studentClassId =
+                    student.classId?._id ||
+                    student.classId;
+
+                return (
+                    studentClassId &&
+                    studentClassId.toString() ===
+                        selectedClassId.toString()
+                );
+
+            });
+
+
+    // =========================================================
+    // GROUP FILTERED STUDENTS BY CLASS
+    // =========================================================
+
+    const groupedStudents = [];
+
+
+    classes.forEach((classItem) => {
+
+        const classStudents =
+            filteredStudents.filter((student) => {
+
+                const studentClassId =
+                    student.classId?._id ||
+                    student.classId;
+
+                return (
+                    studentClassId &&
+                    studentClassId.toString() ===
+                        classItem._id.toString()
+                );
+
+            });
+
+
+        if (classStudents.length > 0) {
+
+            groupedStudents.push({
+
+                classId:
+                    classItem._id,
+
+                className:
+                    classItem.className,
+
+                students:
+                    classStudents,
+
+            });
+
+        }
+
+    });
+
+
+    // =========================================================
+    // UNASSIGNED STUDENTS
+    // =========================================================
+
+    const unassignedStudents =
+        filteredStudents.filter((student) => {
+
+            const studentClassId =
+                student.classId?._id ||
+                student.classId;
+
+            if (!studentClassId) {
+                return true;
+            }
+
+            return !classes.some(
+                (classItem) =>
+                    classItem._id.toString() ===
+                    studentClassId.toString()
+            );
+
+        });
+
+
+    if (
+        unassignedStudents.length > 0 &&
+        selectedClassId === "all"
+    ) {
+
+        groupedStudents.push({
+
+            classId: "unassigned",
+
+            className: "Unassigned Students",
+
+            students:
+                unassignedStudents,
+
+        });
+
+    }
+
+
+    // =========================================================
+    // SORT STUDENTS INSIDE EACH CLASS
+    // =========================================================
+
+    const sortStudentsByRoll = (studentList) => {
+
+        return [...studentList].sort((a, b) => {
+
+            const aRoll =
+                String(a.rollNo ?? "").trim();
+
+            const bRoll =
+                String(b.rollNo ?? "").trim();
+
+
+            const aNumber =
+                Number(aRoll);
+
+            const bNumber =
+                Number(bRoll);
+
+
+            const aIsNumber =
+                aRoll !== "" &&
+                Number.isFinite(aNumber);
+
+            const bIsNumber =
+                bRoll !== "" &&
+                Number.isFinite(bNumber);
+
+
+            if (aIsNumber && bIsNumber) {
+
+                return aNumber - bNumber;
+
+            }
+
+
+            if (aIsNumber) {
+
+                return -1;
+
+            }
+
+
+            if (bIsNumber) {
+
+                return 1;
+
+            }
+
+
+            return aRoll.localeCompare(
+                bRoll,
+                undefined,
+                {
+                    numeric: true,
+                    sensitivity: "base",
+                }
+            );
+
+        });
+
+    };
+
+
+    groupedStudents.forEach((group) => {
+
+        group.students =
+            sortStudentsByRoll(
+                group.students
+            );
+
+    });
+
+
+    // =========================================================
+    // FILTERED TOTALS
+    // =========================================================
+
+    const activeStudents =
+        filteredStudents.filter(
+            (student) =>
+                student.active !== false
+        ).length;
+
+    const inactiveStudents =
+        filteredStudents.length -
+        activeStudents;
+
+
+    // =========================================================
+    // FILTERED CLASS COUNT
+    // =========================================================
+
+    const displayedClassCount =
+        groupedStudents.length;
+
+
+    // =========================================================
+    // SELECTED CLASS NAME
+    // =========================================================
+
+    const selectedClass =
+        classes.find(
+            (classItem) =>
+                classItem._id.toString() ===
+                selectedClassId.toString()
+        );
+
+
+    // =========================================================
     // PAGE
-    // ==========================================
+    // =========================================================
 
     return (
+
         <div className="students-page">
 
 
-            {/* ======================================
+            {/* =================================================
                 HEADER
-            ====================================== */}
+            ================================================= */}
 
             <div className="students-header">
 
-                <div>
+                <div className="students-heading">
 
-                    <p className="page-label">
+                    <p className="students-label">
                         ADMINISTRATION
                     </p>
-
 
                     <h1>
                         Students
                     </h1>
 
-
-                    <p className="page-description">
+                    <p className="students-description">
                         Manage students and their class assignments.
                     </p>
 
                 </div>
 
 
-                <div
-                    style={{
-                        display: "flex",
-                        gap: "10px",
-                        flexWrap: "wrap",
-                    }}
-                >
-
-                    {/* ==================================
-                        IMPORT EXCEL
-                    ================================== */}
+                <div className="students-actions">
 
                     <button
-                        className="add-student-button"
+                        type="button"
+                        className="import-excel-button"
                         onClick={openFilePicker}
                         disabled={uploading}
                     >
 
                         <FaFileExcel />
 
-                        {uploading
-                            ? "Uploading..."
-                            : "Import Excel"}
+                        <span>
+                            {uploading
+                                ? "Uploading..."
+                                : "Import Excel"}
+                        </span>
 
                     </button>
 
 
-                    {/* ==================================
-                        ADD STUDENT
-                    ================================== */}
-
                     <button
+                        type="button"
                         className="add-student-button"
                         onClick={openAddModal}
                         disabled={uploading}
@@ -659,67 +868,287 @@ const Students = () => {
 
                         <FaPlus />
 
-                        Add Student
+                        <span>
+                            Add Student
+                        </span>
 
                     </button>
 
                 </div>
 
 
-                {/* ==================================
-                    HIDDEN FILE INPUT
-                ================================== */}
-
                 <input
                     ref={fileInputRef}
                     type="file"
                     accept=".xlsx,.xls"
-                    style={{
-                        display: "none",
-                    }}
-                    onChange={
-                        handleExcelUpload
-                    }
+                    className="students-file-input"
+                    onChange={handleExcelUpload}
                 />
 
             </div>
 
 
-            {/* ======================================
-                EXCEL SUCCESS / RESULT
-            ====================================== */}
+            {/* =================================================
+                CLASS FILTER
+            ================================================= */}
+
+            <div className="students-filter-card">
+
+                <div className="students-filter-heading">
+
+                    <div className="students-filter-icon">
+                        <FaFilter />
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Filter Students
+                        </h3>
+
+                        <p>
+                            Choose a class to view only its students.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div className="students-filter-control">
+
+                    <label htmlFor="student-class-filter">
+                        Class
+                    </label>
+
+                    <div className="students-filter-select-wrapper">
+
+                        <select
+                            id="student-class-filter"
+                            value={selectedClassId}
+                            onChange={(event) =>
+                                setSelectedClassId(
+                                    event.target.value
+                                )
+                            }
+                        >
+
+                            <option value="all">
+                                All Classes
+                            </option>
+
+
+                            {classes.map(
+                                (classItem) => (
+
+                                    <option
+                                        key={
+                                            classItem._id
+                                        }
+                                        value={
+                                            classItem._id
+                                        }
+                                    >
+
+                                        {
+                                            classItem.className
+                                        }
+
+                                    </option>
+
+                                )
+                            )}
+
+                        </select>
+
+                        <FaChevronDown
+                            className="students-filter-chevron"
+                        />
+
+                    </div>
+
+                </div>
+
+
+                {selectedClassId !== "all" && (
+
+                    <button
+                        type="button"
+                        className="clear-student-filter"
+                        onClick={() =>
+                            setSelectedClassId("all")
+                        }
+                    >
+
+                        Clear Filter
+
+                    </button>
+
+                )}
+
+            </div>
+
+
+            {/* =================================================
+                OVERVIEW
+            ================================================= */}
+
+            <div className="students-overview">
+
+                <div className="student-overview-item">
+
+                    <div className="overview-icon total">
+                        <FaUsers />
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Students
+                        </span>
+
+                        <strong>
+                            {filteredStudents.length}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div className="student-overview-item">
+
+                    <div className="overview-icon active">
+                        <span className="overview-dot" />
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Active
+                        </span>
+
+                        <strong>
+                            {activeStudents}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div className="student-overview-item">
+
+                    <div className="overview-icon inactive">
+                        <span className="overview-dot" />
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Inactive
+                        </span>
+
+                        <strong>
+                            {inactiveStudents}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div className="student-overview-item">
+
+                    <div className="overview-icon classes">
+                        <FaUsers />
+                    </div>
+
+                    <div>
+
+                        <span>
+                            {selectedClassId === "all"
+                                ? "Classes"
+                                : "Selected Class"}
+                        </span>
+
+                        <strong>
+                            {displayedClassCount}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {/* =================================================
+                ACTIVE FILTER INDICATOR
+            ================================================= */}
+
+            {selectedClassId !== "all" && (
+
+                <div className="students-active-filter">
+
+                    <div className="students-active-filter-left">
+
+                        <span className="students-active-filter-dot" />
+
+                        <span>
+                            Showing students from
+                        </span>
+
+                        <strong>
+                            {selectedClass?.className ||
+                                "Selected Class"}
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            setSelectedClassId("all")
+                        }
+                    >
+                        Show All Classes
+                    </button>
+
+                </div>
+
+            )}
+
+
+            {/* =================================================
+                UPLOAD RESULT
+            ================================================= */}
 
             {uploadResult?.success && (
 
-                <div
-                    style={{
-                        marginBottom: "20px",
-                        padding: "18px",
-                        background: "#ecfdf5",
-                        border: "1px solid #a7f3d0",
-                        borderRadius: "10px",
-                        color: "#065f46",
-                    }}
-                >
+                <div className="students-upload-success">
 
-                    <strong>
-                        Excel upload completed successfully.
-                    </strong>
+                    <div className="students-upload-title">
+
+                        <FaFileExcel />
+
+                        <strong>
+                            Excel upload completed successfully.
+                        </strong>
+
+                    </div>
 
 
                     {uploadResult.summary && (
 
-                        <div
-                            style={{
-                                display: "flex",
-                                gap: "20px",
-                                flexWrap: "wrap",
-                                marginTop: "10px",
-                            }}
-                        >
+                        <div className="students-upload-summary">
 
-                            <span>
-                                Total:{" "}
+                            <div>
+                                <span>
+                                    Total
+                                </span>
+
                                 <strong>
                                     {
                                         uploadResult
@@ -727,11 +1156,14 @@ const Students = () => {
                                             .total
                                     }
                                 </strong>
-                            </span>
+                            </div>
 
 
-                            <span>
-                                Created:{" "}
+                            <div>
+                                <span>
+                                    Created
+                                </span>
+
                                 <strong>
                                     {
                                         uploadResult
@@ -739,11 +1171,14 @@ const Students = () => {
                                             .created
                                     }
                                 </strong>
-                            </span>
+                            </div>
 
 
-                            <span>
-                                Updated:{" "}
+                            <div>
+                                <span>
+                                    Updated
+                                </span>
+
                                 <strong>
                                     {
                                         uploadResult
@@ -751,11 +1186,14 @@ const Students = () => {
                                             .updated
                                     }
                                 </strong>
-                            </span>
+                            </div>
 
 
-                            <span>
-                                Unchanged:{" "}
+                            <div>
+                                <span>
+                                    Unchanged
+                                </span>
+
                                 <strong>
                                     {
                                         uploadResult
@@ -763,7 +1201,7 @@ const Students = () => {
                                             .unchanged
                                     }
                                 </strong>
-                            </span>
+                            </div>
 
                         </div>
 
@@ -774,28 +1212,34 @@ const Students = () => {
             )}
 
 
-            {/* ======================================
+            {/* =================================================
                 ERROR
-            ====================================== */}
+            ================================================= */}
 
             {error && (
 
                 <div className="students-error">
+
                     {error}
+
                 </div>
 
             )}
 
 
-            {/* ======================================
-                STUDENTS TABLE
-            ====================================== */}
+            {/* =================================================
+                STUDENT CONTENT
+            ================================================= */}
 
-            <div className="students-card">
+            {students.length === 0 ? (
 
-                {students.length === 0 ? (
+                <div className="students-card">
 
-                    <div className="empty-students">
+                    <div className="students-empty">
+
+                        <div className="students-empty-icon">
+                            <FaUserGraduate />
+                        </div>
 
                         <h3>
                             No students found
@@ -805,207 +1249,372 @@ const Students = () => {
                             Add your first student to get started.
                         </p>
 
+                        <button
+                            type="button"
+                            onClick={openAddModal}
+                        >
+
+                            <FaPlus />
+
+                            Add Student
+
+                        </button>
+
                     </div>
 
-                ) : (
+                </div>
 
-                    <div className="table-wrapper">
+            ) : filteredStudents.length === 0 ? (
 
-                        <table className="students-table">
+                <div className="students-card">
 
-                            <thead>
+                    <div className="students-empty">
 
-                                <tr>
+                        <div className="students-empty-icon">
+                            <FaUsers />
+                        </div>
 
-                                    <th>
-                                        Roll No
-                                    </th>
+                        <h3>
+                            No students in this class
+                        </h3>
 
-                                    <th>
-                                        Name
-                                    </th>
+                        <p>
+                            There are currently no students
+                            assigned to{" "}
+                            <strong>
+                                {selectedClass?.className ||
+                                    "this class"}
+                            </strong>.
+                        </p>
 
-                                    <th>
-                                        Class
-                                    </th>
+                        <button
+                            type="button"
+                            onClick={() =>
+                                setSelectedClassId("all")
+                            }
+                        >
 
-                                    <th>
-                                        Status
-                                    </th>
+                            <FaUsers />
 
-                                    <th>
-                                        Actions
-                                    </th>
+                            Show All Classes
 
-                                </tr>
+                        </button>
 
-                            </thead>
+                    </div>
+
+                </div>
+
+            ) : (
+
+                <div className="student-class-groups">
+
+                    {groupedStudents.map(
+                        (group) => {
+
+                            const classActive =
+                                group.students.filter(
+                                    (student) =>
+                                        student.active !== false
+                                ).length;
+
+                            const classInactive =
+                                group.students.length -
+                                classActive;
 
 
-                            <tbody>
+                            return (
 
-                                {students.map(
-                                    (student) => (
+                                <section
+                                    className="student-class-section"
+                                    key={
+                                        group.classId
+                                    }
+                                >
 
-                                        <tr
-                                            key={
-                                                student._id
-                                            }
-                                        >
+                                    <div className="student-class-header">
 
-                                            {/* ROLL */}
+                                        <div className="student-class-title">
 
-                                            <td>
+                                            <div className="student-class-icon">
+                                                <FaUsers />
+                                            </div>
+
+                                            <div>
+
+                                                <h2>
+                                                    {
+                                                        group.className
+                                                    }
+                                                </h2>
+
+                                                <p>
+                                                    Manage students
+                                                    assigned to this class.
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div className="student-class-stats">
+
+                                            <span className="class-student-count">
 
                                                 <strong>
                                                     {
-                                                        student.rollNo
+                                                        group.students.length
                                                     }
                                                 </strong>
 
-                                            </td>
-
-
-                                            {/* NAME */}
-
-                                            <td>
                                                 {
-                                                    student.name
+                                                    group.students.length === 1
+                                                        ? " Student"
+                                                        : " Students"
                                                 }
-                                            </td>
+
+                                            </span>
 
 
-                                            {/* CLASS */}
+                                            {classActive > 0 && (
 
-                                            <td>
+                                                <span className="class-active-count">
 
-                                                {student.classId
-                                                    ? student.classId.className
-                                                    : (
-                                                        <span className="not-assigned">
-                                                            —
-                                                        </span>
-                                                    )}
+                                                    <span className="class-status-dot" />
 
-                                            </td>
-
-
-                                            {/* STATUS */}
-
-                                            <td>
-
-                                                <span
-                                                    className={
-                                                        student.active
-                                                            ? "status-badge active"
-                                                            : "status-badge inactive"
-                                                    }
-                                                >
-
-                                                    {student.active
-                                                        ? "Active"
-                                                        : "Inactive"}
+                                                    {classActive} Active
 
                                                 </span>
 
-                                            </td>
+                                            )}
 
 
-                                            {/* ACTIONS */}
+                                            {classInactive > 0 && (
 
-                                            <td>
+                                                <span className="class-inactive-count">
 
-                                                <div className="action-buttons">
+                                                    {classInactive} Inactive
 
-                                                    <button
-                                                        className="edit-button"
-                                                        title="Edit student"
-                                                        onClick={() =>
-                                                            openEditModal(
-                                                                student
-                                                            )
-                                                        }
-                                                    >
+                                                </span>
 
-                                                        <FaEdit />
+                                            )}
 
-                                                    </button>
+                                        </div>
+
+                                    </div>
 
 
-                                                    <button
-                                                        className="delete-button"
-                                                        title="Delete student"
-                                                        onClick={() =>
-                                                            handleDelete(
-                                                                student
-                                                            )
-                                                        }
-                                                    >
+                                    <div className="students-card">
 
-                                                        <FaTrash />
+                                        <div className="students-table-wrapper">
 
-                                                    </button>
+                                            <table className="students-table">
 
-                                                </div>
+                                                <thead>
 
-                                            </td>
+                                                    <tr>
 
-                                        </tr>
+                                                        <th>
+                                                            Roll No
+                                                        </th>
 
-                                    )
-                                )}
+                                                        <th>
+                                                            Student
+                                                        </th>
 
-                            </tbody>
+                                                        <th>
+                                                            Status
+                                                        </th>
 
-                        </table>
+                                                        <th>
+                                                            Actions
+                                                        </th>
 
-                    </div>
+                                                    </tr>
 
-                )}
-
-            </div>
+                                                </thead>
 
 
-            {/* ======================================
-                ADD / EDIT MODAL
-            ====================================== */}
+                                                <tbody>
+
+                                                    {group.students.map(
+                                                        (student) => (
+
+                                                            <tr
+                                                                key={
+                                                                    student._id
+                                                                }
+                                                            >
+
+                                                                <td>
+
+                                                                    <span className="student-roll-badge">
+                                                                        {
+                                                                            student.rollNo
+                                                                        }
+                                                                    </span>
+
+                                                                </td>
+
+
+                                                                <td>
+
+                                                                    <div className="student-name-cell">
+
+                                                                        <div className="student-list-avatar">
+
+                                                                            {
+                                                                                student.name
+                                                                                    ?.charAt(0)
+                                                                                    ?.toUpperCase() ||
+                                                                                "S"
+                                                                            }
+
+                                                                        </div>
+
+                                                                        <strong>
+                                                                            {
+                                                                                student.name
+                                                                            }
+                                                                        </strong>
+
+                                                                    </div>
+
+                                                                </td>
+
+
+                                                                <td>
+
+                                                                    <span
+                                                                        className={
+                                                                            student.active
+                                                                                ? "student-status-badge active"
+                                                                                : "student-status-badge inactive"
+                                                                        }
+                                                                    >
+
+                                                                        <span className="student-status-dot" />
+
+                                                                        {student.active
+                                                                            ? "Active"
+                                                                            : "Inactive"}
+
+                                                                    </span>
+
+                                                                </td>
+
+
+                                                                <td>
+
+                                                                    <div className="student-action-buttons">
+
+                                                                        <button
+                                                                            type="button"
+                                                                            className="student-edit-button"
+                                                                            title="Edit student"
+                                                                            aria-label="Edit student"
+                                                                            onClick={() =>
+                                                                                openEditModal(
+                                                                                    student
+                                                                                )
+                                                                            }
+                                                                        >
+
+                                                                            <FaEdit />
+
+                                                                        </button>
+
+
+                                                                        <button
+                                                                            type="button"
+                                                                            className="student-delete-button"
+                                                                            title="Delete student"
+                                                                            aria-label="Delete student"
+                                                                            onClick={() =>
+                                                                                handleDelete(
+                                                                                    student
+                                                                                )
+                                                                            }
+                                                                        >
+
+                                                                            <FaTrash />
+
+                                                                        </button>
+
+                                                                    </div>
+
+                                                                </td>
+
+                                                            </tr>
+
+                                                        )
+                                                    )}
+
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+
+                                    </div>
+
+                                </section>
+
+                            );
+
+                        }
+                    )}
+
+                </div>
+
+            )}
+
+
+            {/* =================================================
+                MODAL
+            ================================================= */}
 
             {showModal && (
 
-                <div className="modal-overlay">
+                <div className="student-modal-overlay">
 
-                    <div className="student-modal">
+                    <div
+                        className="student-modal"
+                        role="dialog"
+                        aria-modal="true"
+                    >
 
-                        {/* MODAL HEADER */}
-
-                        <div className="modal-header">
+                        <div className="student-modal-header">
 
                             <div>
 
-                                <h2>
+                                <p className="student-modal-label">
+                                    {editingStudent
+                                        ? "UPDATE STUDENT"
+                                        : "NEW STUDENT"}
+                                </p>
 
+                                <h2>
                                     {editingStudent
                                         ? "Edit Student"
                                         : "Add Student"}
-
                                 </h2>
 
-
                                 <p>
-
                                     {editingStudent
-                                        ? "Update student information."
-                                        : "Create a new student."}
-
+                                        ? "Update student information and class assignment."
+                                        : "Create a new student record."}
                                 </p>
 
                             </div>
 
 
                             <button
-                                className="close-modal"
+                                type="button"
+                                className="student-modal-close"
                                 onClick={closeModal}
                                 disabled={saving}
+                                aria-label="Close modal"
                             >
 
                                 <FaTimes />
@@ -1015,16 +1624,10 @@ const Students = () => {
                         </div>
 
 
-                        {/* FORM */}
-
                         <form
                             className="student-form"
-                            onSubmit={
-                                handleSubmit
-                            }
+                            onSubmit={handleSubmit}
                         >
-
-                            {/* ROLL NUMBER */}
 
                             <label>
 
@@ -1039,14 +1642,12 @@ const Students = () => {
                                     onChange={
                                         handleChange
                                     }
-                                    placeholder="Example: BCA002"
+                                    placeholder="Example: 1"
                                     required
                                 />
 
                             </label>
 
-
-                            {/* NAME */}
 
                             <label>
 
@@ -1067,8 +1668,6 @@ const Students = () => {
 
                             </label>
 
-
-                            {/* CLASS */}
 
                             <label>
 
@@ -1116,13 +1715,9 @@ const Students = () => {
                             </label>
 
 
-                            {/* ACTIVE */}
-
                             {editingStudent && (
 
-                                <label
-                                    className="active-checkbox"
-                                >
+                                <label className="student-active-checkbox">
 
                                     <input
                                         type="checkbox"
@@ -1144,32 +1739,22 @@ const Students = () => {
                             )}
 
 
-                            {/* MODAL ACTIONS */}
-
-                            <div className="modal-actions">
+                            <div className="student-modal-actions">
 
                                 <button
                                     type="button"
-                                    className="cancel-button"
-                                    onClick={
-                                        closeModal
-                                    }
-                                    disabled={
-                                        saving
-                                    }
+                                    className="student-cancel-button"
+                                    onClick={closeModal}
+                                    disabled={saving}
                                 >
-
                                     Cancel
-
                                 </button>
 
 
                                 <button
                                     type="submit"
-                                    className="save-button"
-                                    disabled={
-                                        saving
-                                    }
+                                    className="student-save-button"
+                                    disabled={saving}
                                 >
 
                                     {saving
@@ -1191,7 +1776,9 @@ const Students = () => {
             )}
 
         </div>
+
     );
+
 };
 
 

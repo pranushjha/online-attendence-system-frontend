@@ -4,6 +4,13 @@ import {
     FaCheck,
     FaSave,
     FaTimes,
+    FaCalendarAlt,
+    FaUsers,
+    FaUserCheck,
+    FaUserTimes,
+    FaChartPie,
+    FaClipboardCheck,
+    FaInfoCircle,
 } from "react-icons/fa";
 
 import api from "../../services/api";
@@ -67,8 +74,7 @@ const Attendance = () => {
 
     const getToday = () => {
 
-        const today =
-            new Date();
+        const today = new Date();
 
         const year =
             today.getFullYear();
@@ -97,12 +103,9 @@ const Attendance = () => {
             return "";
         }
 
-        // Already YYYY-MM-DD
         if (
             typeof date === "string" &&
-            /^\d{4}-\d{2}-\d{2}$/.test(
-                date
-            )
+            /^\d{4}-\d{2}-\d{2}$/.test(date)
         ) {
             return date;
         }
@@ -363,14 +366,6 @@ const Attendance = () => {
                 setError("");
                 setMessage("");
 
-                console.log(
-                    "Checking attendance:",
-                    {
-                        classId,
-                        date,
-                    }
-                );
-
                 const response =
                     await api.get(
                         `/attendance?classId=${classId}&date=${date}`
@@ -380,20 +375,10 @@ const Attendance = () => {
                     response.data
                         ?.attendance || [];
 
-                console.log(
-                    "Attendance records for selected date:",
-                    records
-                );
-
                 const record =
                     records.length > 0
                         ? records[0]
                         : null;
-
-                console.log(
-                    "Existing Attendance:",
-                    record
-                );
 
                 setExistingRecord(
                     record
@@ -433,9 +418,6 @@ const Attendance = () => {
 
                 const saved =
                     {};
-
-                // Default missing students
-                // to Absent.
 
                 classStudents.forEach(
                     (student) => {
@@ -483,9 +465,6 @@ const Attendance = () => {
                     "Load Existing Attendance Error:",
                     err
                 );
-
-                // A 404 is treated as no record.
-                // Other errors are displayed.
 
                 if (
                     err.response?.status ===
@@ -749,22 +728,11 @@ const Attendance = () => {
                 };
 
 
-                console.log(
-                    "Attendance Payload:",
-                    payload
-                );
-
-
                 // ==================================
                 // EXISTING → UPDATE
                 // ==================================
 
                 if (existingRecord) {
-
-                    console.log(
-                        "Updating attendance:",
-                        existingRecord._id
-                    );
 
                     const response =
                         await api.put(
@@ -791,10 +759,6 @@ const Attendance = () => {
                 // ==================================
 
                 else {
-
-                    console.log(
-                        "Creating new attendance"
-                    );
 
                     const response =
                         await api.post(
@@ -845,6 +809,98 @@ const Attendance = () => {
 
 
     // ==========================================
+    // CALCULATE SUMMARY
+    // ==========================================
+
+    const presentCount =
+        students.filter(
+            (student) =>
+                attendance[student._id] ===
+                "Present"
+        ).length;
+
+    const absentCount =
+        students.filter(
+            (student) =>
+                attendance[student._id] ===
+                "Absent"
+        ).length;
+
+    const totalStudents =
+        students.length;
+
+    const attendancePercentage =
+        totalStudents > 0
+            ? Math.round(
+                (presentCount /
+                    totalStudents) *
+                    100
+            )
+            : 0;
+
+
+    // ==========================================
+    // INITIALS
+    // ==========================================
+
+    const getInitials =
+        (name = "") => {
+
+            const words =
+                name
+                    .trim()
+                    .split(/\s+/)
+                    .filter(Boolean);
+
+            if (!words.length) {
+                return "?";
+            }
+
+            if (words.length === 1) {
+                return words[0]
+                    .substring(0, 2)
+                    .toUpperCase();
+            }
+
+            return (
+                words[0][0] +
+                words[words.length - 1][0]
+            ).toUpperCase();
+        };
+
+
+    // ==========================================
+    // FORMAT SELECTED DATE
+    // ==========================================
+
+    const formatDisplayDate =
+        (date) => {
+
+            if (!date) {
+                return "Select date";
+            }
+
+            const parts =
+                date.split("-");
+
+            if (parts.length !== 3) {
+                return date;
+            }
+
+            return `${parts[2]} ${new Date(
+                Number(parts[0]),
+                Number(parts[1]) - 1,
+                1
+            ).toLocaleString(
+                "en-US",
+                {
+                    month: "short",
+                }
+            )} ${parts[0]}`;
+        };
+
+
+    // ==========================================
     // LOADING
     // ==========================================
 
@@ -853,8 +909,22 @@ const Attendance = () => {
         return (
             <div className="attendance-page">
 
-                <div className="page-loading">
-                    Loading attendance...
+                <div className="attendance-loading-card">
+
+                    <div className="attendance-loading-icon">
+                        <FaClipboardCheck />
+                    </div>
+
+                    <div className="attendance-spinner" />
+
+                    <h3>
+                        Loading attendance
+                    </h3>
+
+                    <p>
+                        Preparing your attendance workspace...
+                    </p>
+
                 </div>
 
             </div>
@@ -876,24 +946,40 @@ const Attendance = () => {
 
             <div className="attendance-header">
 
-                <div>
+                <div className="attendance-header-content">
 
-                    <p className="page-label">
-                        ATTENDANCE MANAGEMENT
-                    </p>
+                    <div>
 
-                    <h1>
-                        Attendance
-                    </h1>
+                        <div className="attendance-title-row">
 
-                    <p className="page-description">
+                            <div className="attendance-title-icon">
+                                <FaClipboardCheck />
+                            </div>
 
-                        {isTeacher
-                            ? "Mark and edit attendance for your assigned class."
-                            : "Mark and edit attendance for any class."
-                        }
+                            <div>
 
-                    </p>
+                                <p className="attendance-page-label">
+                                    ATTENDANCE MANAGEMENT
+                                </p>
+
+                                <h1>
+                                    Attendance
+                                </h1>
+
+                            </div>
+
+                        </div>
+
+                        <p className="attendance-page-description">
+
+                            {isTeacher
+                                ? "Mark and edit attendance for your assigned class."
+                                : "Mark and edit attendance for any class."
+                            }
+
+                        </p>
+
+                    </div>
 
                 </div>
 
@@ -906,13 +992,21 @@ const Attendance = () => {
 
             {error && (
 
-                <div className="attendance-error">
+                <div className="attendance-alert attendance-alert-error">
 
-                    <FaTimes />
+                    <div className="attendance-alert-icon">
+                        <FaTimes />
+                    </div>
 
-                    <span>
-                        {error}
-                    </span>
+                    <div>
+                        <strong>
+                            Something went wrong
+                        </strong>
+
+                        <span>
+                            {error}
+                        </span>
+                    </div>
 
                 </div>
             )}
@@ -924,23 +1018,63 @@ const Attendance = () => {
 
             {message && (
 
-                <div className="attendance-success">
+                <div className="attendance-alert attendance-alert-success">
 
-                    <FaCheck />
+                    <div className="attendance-alert-icon">
+                        <FaCheck />
+                    </div>
 
-                    <span>
-                        {message}
-                    </span>
+                    <div>
+                        <strong>
+                            Success
+                        </strong>
+
+                        <span>
+                            {message}
+                        </span>
+                    </div>
 
                 </div>
             )}
 
 
             {/* ======================================
-                CLASS + DATE
+                SETUP CARD
             ====================================== */}
 
-            <div className="attendance-card">
+            <div className="attendance-setup-card">
+
+                <div className="attendance-setup-header">
+
+                    <div className="setup-heading">
+
+                        <div className="setup-heading-icon">
+                            <FaCalendarAlt />
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Attendance Setup
+                            </h2>
+
+                            <p>
+                                Select the class and date you want to manage.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {existingRecord && (
+                        <div className="record-badge">
+                            <FaCheck />
+                            Already marked
+                        </div>
+                    )}
+
+                </div>
+
 
                 <div className="attendance-filters">
 
@@ -949,75 +1083,85 @@ const Attendance = () => {
 
                     <div className="filter-group">
 
-                        <label>
+                        <label htmlFor="attendance-class">
                             Class
                         </label>
 
+                        <div className="input-wrapper">
 
-                        {isTeacher ? (
+                            <FaUsers className="input-icon" />
 
-                            <select
-                                value={
-                                    selectedClass
-                                }
-                                disabled
-                            >
+                            {isTeacher ? (
 
-                                {classes.map(
-                                    (classItem) => (
+                                <select
+                                    id="attendance-class"
+                                    value={
+                                        selectedClass
+                                    }
+                                    disabled
+                                >
 
-                                        <option
-                                            key={
-                                                classItem._id
-                                            }
-                                            value={
-                                                classItem._id
-                                            }
-                                        >
-                                            {
-                                                classItem.className
-                                            }
-                                        </option>
-                                    )
-                                )}
+                                    {classes.map(
+                                        (classItem) => (
 
-                            </select>
+                                            <option
+                                                key={
+                                                    classItem._id
+                                                }
+                                                value={
+                                                    classItem._id
+                                                }
+                                            >
+                                                {
+                                                    classItem.className
+                                                }
+                                            </option>
 
-                        ) : (
+                                        )
+                                    )}
 
-                            <select
-                                value={
-                                    selectedClass
-                                }
-                                onChange={
-                                    handleClassChange
-                                }
-                            >
+                                </select>
 
-                                <option value="">
-                                    Select class
-                                </option>
+                            ) : (
 
-                                {classes.map(
-                                    (classItem) => (
+                                <select
+                                    id="attendance-class"
+                                    value={
+                                        selectedClass
+                                    }
+                                    onChange={
+                                        handleClassChange
+                                    }
+                                >
 
-                                        <option
-                                            key={
-                                                classItem._id
-                                            }
-                                            value={
-                                                classItem._id
-                                            }
-                                        >
-                                            {
-                                                classItem.className
-                                            }
-                                        </option>
-                                    )
-                                )}
+                                    <option value="">
+                                        Select class
+                                    </option>
 
-                            </select>
-                        )}
+                                    {classes.map(
+                                        (classItem) => (
+
+                                            <option
+                                                key={
+                                                    classItem._id
+                                                }
+                                                value={
+                                                    classItem._id
+                                                }
+                                            >
+                                                {
+                                                    classItem.className
+                                                }
+                                            </option>
+
+                                        )
+                                    )}
+
+                                </select>
+
+                            )}
+
+                        </div>
 
                     </div>
 
@@ -1026,19 +1170,30 @@ const Attendance = () => {
 
                     <div className="filter-group">
 
-                        <label>
-                            Date
+                        <label htmlFor="attendance-date">
+                            Attendance Date
                         </label>
 
-                        <input
-                            type="date"
-                            value={
-                                selectedDate
-                            }
-                            onChange={
-                                handleDateChange
-                            }
-                        />
+                        <div className="input-wrapper">
+
+                            <FaCalendarAlt className="input-icon" />
+
+                            <input
+                                id="attendance-date"
+                                type="date"
+                                value={
+                                    selectedDate
+                                }
+                                onChange={
+                                    handleDateChange
+                                }
+                            />
+
+                        </div>
+
+                        <span className="filter-helper">
+                            {formatDisplayDate(selectedDate)}
+                        </span>
 
                     </div>
 
@@ -1048,69 +1203,85 @@ const Attendance = () => {
 
 
             {/* ======================================
-                EXISTING RECORD NOTICE
+                EXISTING RECORD
             ====================================== */}
 
             {existingRecord && (
 
                 <div className="existing-attendance">
 
-                    <strong>
-                        Attendance already exists
-                        for this class and date.
-                    </strong>
+                    <div className="existing-attendance-icon">
+                        <FaInfoCircle />
+                    </div>
 
-                    <span>
-                        Marked by{" "}
-                        {
-                            existingRecord
-                                .markedBy
-                                ?.name ||
-                            "user"
-                        }
-                    </span>
+                    <div className="existing-attendance-content">
 
-                    <span>
-                        You can edit the
-                        Present/Absent status
-                        below and save it again.
-                    </span>
+                        <strong>
+                            Attendance already exists
+                        </strong>
+
+                        <span>
+                            This class already has an attendance record
+                            for the selected date.
+                        </span>
+
+                        <p>
+                            Marked by{" "}
+                            <strong>
+                                {
+                                    existingRecord
+                                        .markedBy
+                                        ?.name ||
+                                    "user"
+                                }
+                            </strong>
+                            . You can edit the Present/Absent
+                            status below and save it again.
+                        </p>
+
+                    </div>
 
                 </div>
             )}
 
 
             {/* ======================================
-                STUDENTS
+                ATTENDANCE WORKSPACE
             ====================================== */}
 
             {selectedClass &&
                 selectedDate && (
 
-                    <div className="attendance-card">
+                    <div className="attendance-workspace">
 
 
-                        {/* HEADER */}
+                        {/* ==================================
+                            STUDENTS HEADER
+                        ================================== */}
 
                         <div className="students-header">
 
-                            <div>
+                            <div className="students-heading">
 
-                                <h2>
-                                    Students
-                                </h2>
+                                <div className="students-heading-icon">
+                                    <FaUsers />
+                                </div>
 
-                                <p>
-                                    {
-                                        students.length
-                                    } active student
-                                    {
-                                        students.length !==
-                                        1
-                                            ? "s"
-                                            : ""
-                                    }
-                                </p>
+                                <div>
+
+                                    <h2>
+                                        Students
+                                    </h2>
+
+                                    <p>
+                                        {students.length} active{" "}
+                                        {students.length === 1
+                                            ? "student"
+                                            : "students"
+                                        }
+                                    </p>
+
+                                </div>
 
                             </div>
 
@@ -1121,41 +1292,167 @@ const Attendance = () => {
 
                                     <button
                                         type="button"
+                                        className="bulk-button bulk-present"
                                         onClick={
                                             markAllPresent
                                         }
                                     >
+                                        <FaUserCheck />
                                         All Present
                                     </button>
 
                                     <button
                                         type="button"
+                                        className="bulk-button bulk-absent"
                                         onClick={
                                             markAllAbsent
                                         }
                                     >
+                                        <FaUserTimes />
                                         All Absent
                                     </button>
 
                                 </div>
+
                             )}
 
                         </div>
 
 
-                        {/* LOADING */}
+                        {/* ==================================
+                            SUMMARY
+                        ================================== */}
+
+                        {students.length > 0 && (
+
+                            <div className="attendance-summary">
+
+                                <div className="summary-item">
+
+                                    <div className="summary-icon summary-total-icon">
+                                        <FaUsers />
+                                    </div>
+
+                                    <div>
+                                        <span>
+                                            Students
+                                        </span>
+
+                                        <strong>
+                                            {totalStudents}
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+
+                                <div className="summary-divider" />
+
+
+                                <div className="summary-item">
+
+                                    <div className="summary-icon summary-present-icon">
+                                        <FaUserCheck />
+                                    </div>
+
+                                    <div>
+                                        <span>
+                                            Present
+                                        </span>
+
+                                        <strong>
+                                            {presentCount}
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+
+                                <div className="summary-divider" />
+
+
+                                <div className="summary-item">
+
+                                    <div className="summary-icon summary-absent-icon">
+                                        <FaUserTimes />
+                                    </div>
+
+                                    <div>
+                                        <span>
+                                            Absent
+                                        </span>
+
+                                        <strong>
+                                            {absentCount}
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+
+                                <div className="summary-divider" />
+
+
+                                <div className="summary-item">
+
+                                    <div className="summary-icon summary-percent-icon">
+                                        <FaChartPie />
+                                    </div>
+
+                                    <div>
+                                        <span>
+                                            Attendance
+                                        </span>
+
+                                        <strong>
+                                            {attendancePercentage}%
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        )}
+
+
+                        {/* ==================================
+                            LOADING
+                        ================================== */}
 
                         {loadingStudents ? (
 
                             <div className="students-loading">
-                                Loading students...
+
+                                <div className="attendance-spinner" />
+
+                                <strong>
+                                    Loading students...
+                                </strong>
+
+                                <span>
+                                    Please wait while we prepare the class list.
+                                </span>
+
                             </div>
 
                         ) : students.length === 0 ? (
 
                             <div className="empty-students">
-                                No active students
-                                found in this class.
+
+                                <div className="empty-students-icon">
+                                    <FaUsers />
+                                </div>
+
+                                <h3>
+                                    No active students
+                                </h3>
+
+                                <p>
+                                    There are no active students found
+                                    in this class.
+                                </p>
+
                             </div>
 
                         ) : (
@@ -1166,10 +1463,34 @@ const Attendance = () => {
                                 }
                             >
 
+                                {/* ==================================
+                                    LIST HEADER
+                                ================================== */}
+
+                                <div className="attendance-list-header">
+
+                                    <span>
+                                        STUDENT
+                                    </span>
+
+                                    <span>
+                                        ATTENDANCE STATUS
+                                    </span>
+
+                                </div>
+
+
+                                {/* ==================================
+                                    STUDENT LIST
+                                ================================== */}
+
                                 <div className="attendance-list">
 
                                     {students.map(
-                                        (student) => {
+                                        (
+                                            student,
+                                            index
+                                        ) => {
 
                                             const status =
                                                 attendance[
@@ -1180,81 +1501,135 @@ const Attendance = () => {
                                             return (
 
                                                 <div
-                                                    className="attendance-row"
+                                                    className={`attendance-row ${
+                                                        status === "Present"
+                                                            ? "row-present"
+                                                            : "row-absent"
+                                                    }`}
                                                     key={
                                                         student._id
                                                     }
                                                 >
 
+
+                                                    {/* STUDENT */}
+
                                                     <div className="student-info">
 
-                                                        <strong>
-                                                            {
-                                                                student.rollNo
-                                                            }
-                                                        </strong>
+                                                        <div className="student-roll">
+                                                            {student.rollNo}
+                                                        </div>
 
-                                                        <span>
+                                                        <div className="student-avatar">
                                                             {
-                                                                student.name
+                                                                getInitials(
+                                                                    student.name
+                                                                )
                                                             }
-                                                        </span>
+                                                        </div>
+
+                                                        <div className="student-details">
+
+                                                            <strong>
+                                                                {
+                                                                    student.name
+                                                                }
+                                                            </strong>
+
+                                                            <span>
+                                                                Student #{index + 1}
+                                                            </span>
+
+                                                        </div>
 
                                                     </div>
 
 
-                                                    <div className="status-buttons">
+                                                    {/* STATUS */}
 
-                                                        <button
-                                                            type="button"
-                                                            className={
-                                                                status ===
-                                                                "Present"
-                                                                    ? "status-button present selected"
-                                                                    : "status-button present"
-                                                            }
-                                                            onClick={() =>
-                                                                handleStatusChange(
-                                                                    student._id,
+                                                    <div className="status-area">
+
+                                                        <div className="status-buttons">
+
+                                                            <button
+                                                                type="button"
+                                                                className={
+                                                                    status ===
                                                                     "Present"
-                                                                )
-                                                            }
-                                                        >
-                                                            Present
-                                                        </button>
+                                                                        ? "status-button present selected"
+                                                                        : "status-button present"
+                                                                }
+                                                                onClick={() =>
+                                                                    handleStatusChange(
+                                                                        student._id,
+                                                                        "Present"
+                                                                    )
+                                                                }
+                                                            >
+
+                                                                <FaCheck />
+
+                                                                <span>
+                                                                    Present
+                                                                </span>
+
+                                                            </button>
 
 
-                                                        <button
-                                                            type="button"
-                                                            className={
-                                                                status ===
-                                                                "Absent"
-                                                                    ? "status-button absent selected"
-                                                                    : "status-button absent"
-                                                            }
-                                                            onClick={() =>
-                                                                handleStatusChange(
-                                                                    student._id,
+                                                            <button
+                                                                type="button"
+                                                                className={
+                                                                    status ===
                                                                     "Absent"
-                                                                )
-                                                            }
-                                                        >
-                                                            Absent
-                                                        </button>
+                                                                        ? "status-button absent selected"
+                                                                        : "status-button absent"
+                                                                }
+                                                                onClick={() =>
+                                                                    handleStatusChange(
+                                                                        student._id,
+                                                                        "Absent"
+                                                                    )
+                                                                }
+                                                            >
+
+                                                                <FaTimes />
+
+                                                                <span>
+                                                                    Absent
+                                                                </span>
+
+                                                            </button>
+
+                                                        </div>
 
                                                     </div>
 
                                                 </div>
+
                                             );
+
                                         }
                                     )}
 
                                 </div>
 
 
-                                {/* SAVE */}
+                                {/* ==================================
+                                    SAVE FOOTER
+                                ================================== */}
 
                                 <div className="submit-section">
+
+                                    <div className="submit-info">
+
+                                        <span>
+                                            {existingRecord
+                                                ? "Changes will update the existing attendance record."
+                                                : "Review all student statuses before saving."
+                                            }
+                                        </span>
+
+                                    </div>
 
                                     <button
                                         type="submit"
@@ -1266,18 +1641,21 @@ const Attendance = () => {
 
                                         <FaSave />
 
-                                        {saving
-                                            ? "Saving..."
-                                            : existingRecord
-                                                ? "Update Attendance"
-                                                : "Mark Attendance"
-                                        }
+                                        <span>
+                                            {saving
+                                                ? "Saving..."
+                                                : existingRecord
+                                                    ? "Update Attendance"
+                                                    : "Mark Attendance"
+                                            }
+                                        </span>
 
                                     </button>
 
                                 </div>
 
                             </form>
+
                         )}
 
                     </div>

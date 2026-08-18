@@ -1,226 +1,1024 @@
-/* ==========================================
+/* =========================================================
    DASHBOARD PAGE
-========================================== */
+========================================================= */
 
 .dashboard-page {
     min-height: 100vh;
-    padding: 40px;
-    background: #f8fafc;
+    padding: 34px 42px 50px;
+
+    background:
+        radial-gradient(
+            circle at 12% 8%,
+            rgba(99, 102, 241, 0.07),
+            transparent 28%
+        ),
+        #f8fafc;
+
+    color: #0f172a;
 }
 
 
-/* ==========================================
+/* =========================================================
    HEADER
-========================================== */
+========================================================= */
 
 .dashboard-header {
-    max-width: 1200px;
-    margin: 0 auto 36px;
+    max-width: 1400px;
+    margin: 0 auto 30px;
 
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 20px;
+
+    gap: 25px;
+}
+
+.dashboard-heading {
+    min-width: 0;
 }
 
 .dashboard-label {
-    margin-bottom: 6px;
-    color: #6366f1;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    margin: 0 0 7px;
+
+    color: #635bff;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    letter-spacing: 0.1em;
 }
 
 .dashboard-header h1 {
-    color: #111827;
-    font-size: 32px;
-    font-weight: 700;
+    margin: 0;
+
+    color: #0b132b;
+
+    font-size: 38px;
+    line-height: 1.15;
+
+    font-weight: 800;
 }
 
-.dashboard-welcome {
-    margin-top: 5px;
-    color: #6b7280;
-    font-size: 15px;
-}
-
-.dashboard-logout {
-    padding: 10px 18px;
-    border: 0;
-    border-radius: 8px;
-    background: #111827;
-    color: white;
-    font-weight: 600;
-}
-
-.dashboard-logout:hover {
-    background: #374151;
-}
-
-
-/* ==========================================
-   STATISTICS
-========================================== */
-
-.statistics-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-
-    display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(190px, 1fr));
-
-    gap: 18px;
-}
-
-.stat-card {
-    padding: 24px;
-    border: 1px solid #e5e7eb;
-    border-radius: 14px;
-    background: white;
-    box-shadow:
-        0 4px 12px rgba(15, 23, 42, 0.04);
-}
-
-.stat-card p {
-    color: #6b7280;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.stat-card h2 {
-    margin-top: 10px;
-    color: #111827;
+.dashboard-header h1 span {
     font-size: 30px;
 }
 
-.attendance-stat h2 {
+.dashboard-welcome {
+    margin: 8px 0 0;
+
+    color: #718096;
+
+    font-size: 16px;
+}
+
+.dashboard-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 13px 21px;
+
+    border: none;
+    border-radius: 11px;
+
+    background: #0f172a;
+    color: white;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dashboard-logout:hover {
+    background: #1e293b;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(15, 23, 42, 0.15);
+}
+
+.logout-icon {
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   STATISTICS
+========================================================= */
+
+.statistics-grid {
+    max-width: 1400px;
+    margin: 0 auto 31px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 17px;
+}
+
+.stat-card {
+    min-height: 108px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 18px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+
+    background: white;
+
+    box-shadow:
+        0 5px 18px rgba(15, 23, 42, 0.045);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 28px rgba(15, 23, 42, 0.08);
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 23px;
+}
+
+.stat-icon.purple {
+    background: #ede9fe;
+}
+
+.stat-icon.green {
+    background: #dcfce7;
+}
+
+.stat-icon.orange {
+    background: #ffedd5;
+}
+
+.stat-icon.red {
+    background: #ffe4e6;
+}
+
+.stat-icon.blue {
+    background: #e0f2fe;
+}
+
+.stat-content {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-content p {
+    margin: 0;
+
+    color: #475569;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.stat-content h2 {
+    margin: 5px 0 0;
+
+    color: #0f172a;
+
+    font-size: 30px;
+    line-height: 1.1;
+
+    font-weight: 800;
+}
+
+.stat-content small {
+    margin-top: 4px;
+
+    color: #64748b;
+
+    font-size: 11px;
+}
+
+.overall-stat .stat-content h2 {
     color: #16a34a;
 }
 
 
-/* ==========================================
-   RECENT ATTENDANCE
-========================================== */
+/* =========================================================
+   RECENT ATTENDANCE CONTAINER
+========================================================= */
 
 .recent-section {
-    max-width: 1200px;
-    margin: 42px auto 0;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    padding: 25px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 21px;
+
+    background: white;
+
+    box-shadow:
+        0 8px 30px rgba(15, 23, 42, 0.055);
 }
 
-.section-header {
-    margin-bottom: 18px;
-}
 
-.section-header h2 {
-    color: #111827;
-    font-size: 22px;
-}
+/* =========================================================
+   RECENT HEADER
+========================================================= */
 
-
-/* ==========================================
-   ATTENDANCE LIST
-========================================== */
-
-.attendance-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.attendance-card {
+.recent-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     gap: 20px;
 
-    padding: 20px 22px;
-
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-
-    background: white;
+    margin-bottom: 23px;
 }
 
-.attendance-card h3 {
-    color: #111827;
-    font-size: 16px;
-}
-
-.attendance-card > div:first-child p {
-    margin-top: 4px;
-    color: #6b7280;
-    font-size: 14px;
-}
-
-.attendance-summary {
+.recent-title {
     display: flex;
-    gap: 28px;
+    align-items: center;
+
+    gap: 15px;
 }
 
-.attendance-summary div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
+.recent-icon {
+    width: 57px;
+    height: 57px;
 
-.attendance-summary span {
-    color: #6b7280;
-    font-size: 12px;
-}
+    flex-shrink: 0;
 
-.attendance-summary strong {
-    margin-top: 3px;
-    color: #111827;
-    font-size: 16px;
-}
-
-
-/* ==========================================
-   EMPTY / LOADING / ERROR
-========================================== */
-
-.empty-state,
-.dashboard-loading,
-.dashboard-error-page {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.empty-state {
-    padding: 40px;
-    border: 1px dashed #d1d5db;
-    border-radius: 12px;
-    background: white;
-    color: #6b7280;
-    text-align: center;
-}
-
-.dashboard-loading,
-.dashboard-error-page {
-    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4f46e5,
+            #6847e8
+        );
+
+    color: white;
+
+    font-size: 24px;
+
+    box-shadow:
+        0 8px 18px rgba(79, 70, 229, 0.24);
+}
+
+.recent-title h2 {
+    margin: 0;
+
+    color: #0f172a;
+
+    font-size: 27px;
+
+    font-weight: 800;
+}
+
+.recent-title p {
+    margin: 4px 0 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   FILTER ACTIONS
+========================================================= */
+
+.recent-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    flex-wrap: wrap;
+}
+
+.filter-button {
+    height: 41px;
+
+    padding: 0 14px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+
+    background: #f8fafc;
+    color: #64748b;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.filter-button:hover {
+    color: #4f46e5;
+
+    border-color: #a5b4fc;
+
+    background: #f5f3ff;
+}
+
+.filter-button.active {
+    color: #4f46e5;
+
+    border-color: #6366f1;
+
+    background: #f5f3ff;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.dashboard-search {
+    width: 205px;
+    height: 41px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 0 13px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 22px;
+
+    background: white;
+
+    color: #64748b;
+}
+
+.dashboard-search span {
+    font-size: 20px;
+}
+
+.dashboard-search input {
+    width: 100%;
+
+    border: none;
+    outline: none;
+
+    color: #334155;
+
+    background: transparent;
+
+    font-size: 12px;
+}
+
+.dashboard-search input::placeholder {
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+.attendance-summary-cards {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 14px;
+
+    margin-bottom: 24px;
+}
+
+.summary-card {
+    min-height: 68px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 12px 15px;
+
+    border-radius: 14px;
+}
+
+.total-summary {
+    background: #ecfdf5;
+}
+
+.average-summary {
+    background: #eff6ff;
+}
+
+.best-summary {
+    background: #f0fdf4;
+}
+
+.attention-summary {
+    background: #fff1f2;
+}
+
+.summary-icon {
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.65);
+
+    font-size: 17px;
+}
+
+.summary-card > div:not(.summary-icon) {
+    min-width: 0;
+
+    display: flex;
     flex-direction: column;
 }
 
+.summary-card span {
+    color: #64748b;
+
+    font-size: 11px;
+}
+
+.summary-card strong {
+    margin-top: 2px;
+
+    color: #0f172a;
+
+    font-size: 15px;
+}
+
+.summary-card b {
+    margin-left: auto;
+
+    color: #16a34a;
+
+    font-size: 14px;
+}
+
+.attention-summary b {
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   ATTENDANCE TABLE
+========================================================= */
+
+.attendance-table-wrapper {
+    overflow-x: auto;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
+}
+
+.attendance-table {
+    width: 100%;
+
+    min-width: 950px;
+
+    border-collapse: collapse;
+}
+
+.attendance-table thead {
+    background:
+        linear-gradient(
+            90deg,
+            #3155ed,
+            #6547e8
+        );
+
+    color: white;
+}
+
+.attendance-table th {
+    padding: 14px 16px;
+
+    text-align: left;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.attendance-table tbody tr {
+    border-bottom: 1px solid #eef2f7;
+
+    transition: background 0.15s ease;
+}
+
+.attendance-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.attendance-table tbody tr:hover {
+    background: #f8faff;
+}
+
+.attendance-table td {
+    padding: 10px 16px;
+
+    color: #334155;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   CLASS
+========================================================= */
+
+.class-cell {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+}
+
+.class-icon {
+    width: 37px;
+    height: 37px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eef2ff;
+
+    color: #4f46e5;
+
+    font-size: 16px;
+}
+
+.class-cell strong {
+    color: #111827;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+.date-badge {
+    display: inline-block;
+
+    padding: 6px 10px;
+
+    border-radius: 16px;
+
+    background: #f1f5f9;
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   PRESENT / ABSENT
+========================================================= */
+
+.count-badge {
+    width: 35px;
+    height: 35px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-weight: 800;
+}
+
+.count-badge.present {
+    color: #16a34a;
+
+    background: #dcfce7;
+}
+
+.count-badge.absent {
+    color: #dc2626;
+
+    background: #ffe4e6;
+}
+
+
+/* =========================================================
+   ATTENDANCE PROGRESS
+========================================================= */
+
+.percentage-cell {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.progress-bar {
+    width: 120px;
+    height: 8px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #e8edf5;
+}
+
+.progress-fill {
+    height: 100%;
+
+    border-radius: 20px;
+
+    transition: width 0.4s ease;
+}
+
+.progress-fill.excellent {
+    background: #10b981;
+}
+
+.progress-fill.good {
+    background: #10b981;
+}
+
+.progress-fill.average {
+    background: #f59e0b;
+}
+
+.progress-fill.low {
+    background: #cbd5e1;
+}
+
+.percentage-cell strong {
+    min-width: 48px;
+
+    color: #0f172a;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 11px;
+
+    border-radius: 18px;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.status-badge.excellent {
+    color: #059669;
+
+    border: 1px solid #a7f3d0;
+
+    background: #d1fae5;
+}
+
+.status-badge.good {
+    color: #059669;
+
+    border: 1px solid #a7f3d0;
+
+    background: #ecfdf5;
+}
+
+.status-badge.average {
+    color: #d97706;
+
+    border: 1px solid #fed7aa;
+
+    background: #fff7ed;
+}
+
+.status-badge.low {
+    color: #dc2626;
+
+    border: 1px solid #fecdd3;
+
+    background: #fff1f2;
+}
+
+
+/* =========================================================
+   VIEW BUTTON
+========================================================= */
+
+.view-button {
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e0e7ff;
+    border-radius: 50%;
+
+    background: #f8faff;
+
+    color: #4f46e5;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.view-button:hover {
+    transform: scale(1.06);
+
+    background: #eef2ff;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.attendance-footer {
+    padding: 14px 17px;
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+.attendance-footer strong {
+    color: #334155;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+    padding: 55px 20px;
+
+    border: 1px dashed #cbd5e1;
+    border-radius: 15px;
+
+    background: #f8fafc;
+
+    text-align: center;
+}
+
+.empty-icon {
+    width: 55px;
+    height: 55px;
+
+    margin: 0 auto 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eef2ff;
+
+    font-size: 24px;
+}
+
+.empty-state h3 {
+    margin: 0;
+
+    color: #334155;
+
+    font-size: 16px;
+}
+
+.empty-state p {
+    margin: 7px 0 0;
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.dashboard-loading {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+    gap: 13px;
+
+    background: #f8fafc;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+.loading-spinner {
+    width: 38px;
+    height: 38px;
+
+    border: 4px solid #e0e7ff;
+    border-top-color: #4f46e5;
+
+    border-radius: 50%;
+
+    animation: dashboard-spin 0.8s linear infinite;
+}
+
+@keyframes dashboard-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
 .dashboard-error-page {
-    gap: 12px;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    padding: 30px;
+
+    background: #f8fafc;
+
+    text-align: center;
+}
+
+.error-icon {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #fee2e2;
+
+    color: #dc2626;
+
+    font-size: 25px;
+    font-weight: 800;
 }
 
 .dashboard-error-page h2 {
+    margin: 0;
+
     color: #b91c1c;
 }
 
+.dashboard-error-page p {
+    margin: 0 0 10px;
 
-/* ==========================================
-   MOBILE
-========================================== */
+    color: #64748b;
+}
 
-@media (max-width: 700px) {
+
+/* =========================================================
+   RESPONSIVE - TABLET
+========================================================= */
+
+@media (max-width: 1250px) {
 
     .dashboard-page {
-        padding: 24px 16px;
+        padding: 30px 25px 45px;
+    }
+
+    .statistics-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+    .recent-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .recent-actions {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - SMALL TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .statistics-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .attendance-summary-cards {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-header h1 {
+        font-size: 32px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .dashboard-page {
+        padding: 22px 14px 40px;
     }
 
     .dashboard-header {
@@ -228,24 +1026,75 @@
     }
 
     .dashboard-header h1 {
-        font-size: 27px;
+        font-size: 28px;
     }
 
     .dashboard-logout {
         align-self: flex-start;
     }
 
-    .attendance-card {
+    .statistics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .attendance-summary-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .recent-section {
+        padding: 17px;
+    }
+
+    .recent-title h2 {
+        font-size: 22px;
+    }
+
+    .recent-title p {
+        font-size: 12px;
+    }
+
+    .recent-actions {
+        align-items: stretch;
+
         flex-direction: column;
-        align-items: flex-start;
     }
 
-    .attendance-summary {
+    .filter-button {
         width: 100%;
-        justify-content: space-between;
     }
 
-    .attendance-summary div {
+    .dashboard-search {
+        width: auto;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .dashboard-page {
+        padding: 18px 10px 35px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 25px;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .recent-section {
+        padding: 13px;
+        border-radius: 16px;
+    }
+
+    .recent-title {
         align-items: flex-start;
     }
+
 }

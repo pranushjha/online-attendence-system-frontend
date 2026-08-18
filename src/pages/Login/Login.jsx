@@ -1,13 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+
 import {
     FaUserShield,
     FaChalkboardTeacher,
+    FaEye,
+    FaEyeSlash,
+    FaArrowRight,
+    FaGraduationCap,
+    FaLock,
 } from "react-icons/fa";
+
+import { useAuth } from "../../context/AuthContext";
+
 import "./Login.css";
 
 const Login = () => {
+
     const navigate = useNavigate();
 
     const {
@@ -22,15 +31,21 @@ const Login = () => {
         password: "",
     });
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [showPassword, setShowPassword] =
+        useState(false);
 
-    // ==========================================
-    // HANDLE INPUT
-    // ==========================================
+    const [loading, setLoading] =
+        useState(false);
+
+    const [error, setError] =
+        useState("");
 
     const handleChange = (event) => {
-        const { name, value } = event.target;
+
+        const {
+            name,
+            value,
+        } = event.target;
 
         setFormData((previous) => ({
             ...previous,
@@ -38,61 +53,65 @@ const Login = () => {
         }));
     };
 
-    // ==========================================
-    // HANDLE LOGIN
-    // ==========================================
+    const handleRoleChange = (newRole) => {
+
+        setRole(newRole);
+
+        setError("");
+    };
 
     const handleSubmit = async (event) => {
+
         event.preventDefault();
 
         setError("");
 
-        if (!formData.email || !formData.password) {
+        if (
+            !formData.email.trim() ||
+            !formData.password
+        ) {
             setError(
-                "Please enter email and password."
+                "Please enter your email and password."
             );
+
             return;
         }
 
         try {
+
             setLoading(true);
 
             let response;
 
-            // ======================================
-            // ADMIN LOGIN
-            // ======================================
-
             if (role === "admin") {
-                response = await adminLogin(
-                    formData.email,
-                    formData.password
-                );
+
+                response =
+                    await adminLogin(
+                        formData.email,
+                        formData.password
+                    );
+
+            } else {
+
+                response =
+                    await teacherLogin(
+                        formData.email,
+                        formData.password
+                    );
             }
-
-            // ======================================
-            // TEACHER LOGIN
-            // ======================================
-
-            else {
-                response = await teacherLogin(
-                    formData.email,
-                    formData.password
-                );
-            }
-
-            // ======================================
-            // REDIRECT BASED ON ACTUAL ROLE
-            // ======================================
 
             const loggedInRole =
                 response?.user?.role;
 
-            if (loggedInRole === "admin") {
+            if (
+                loggedInRole === "admin"
+            ) {
 
                 navigate(
                     "/dashboard",
-                    { replace: true }
+                    {
+                        replace: true,
+                    }
                 );
 
             } else if (
@@ -101,7 +120,9 @@ const Login = () => {
 
                 navigate(
                     "/teacher-dashboard",
-                    { replace: true }
+                    {
+                        replace: true,
+                    }
                 );
 
             } else {
@@ -109,7 +130,6 @@ const Login = () => {
                 setError(
                     "Invalid user role."
                 );
-
             }
 
         } catch (err) {
@@ -125,170 +145,260 @@ const Login = () => {
             );
 
         } finally {
+
             setLoading(false);
         }
     };
 
     return (
-        <div className="login-page">
 
-            <div className="login-card">
+        <main className="login-page">
 
-                {/* ======================================
-                    HEADER
-                ====================================== */}
+            <div className="login-background-shape shape-one" />
+            <div className="login-background-shape shape-two" />
 
-                <div className="login-header">
+            <section className="login-wrapper">
 
-                    <h1>
-                        Online Attendance System
-                    </h1>
+                {/* BRAND */}
+                <div className="login-brand">
 
-                    <p>
-                        Sign in to continue
-                    </p>
+                    <div className="login-brand-icon">
+                        <FaGraduationCap />
+                    </div>
+
+                    <div>
+                        <strong>
+                            Attendance
+                        </strong>
+
+                        <span>
+                            Online Attendance System
+                        </span>
+                    </div>
 
                 </div>
 
 
-                {/* ======================================
-                    ROLE SELECTOR
-                ====================================== */}
+                {/* CARD */}
+                <div className="login-card">
 
-                <div className="role-selector">
+                    <div className="login-header">
 
-                    <button
-                        type="button"
-                        className={
-                            role === "admin"
-                                ? "role-button active"
-                                : "role-button"
-                        }
-                        onClick={() => {
-                            setRole("admin");
-                            setError("");
-                        }}
-                    >
+                        <div className="login-eyebrow">
+                            SECURE ACCESS
+                        </div>
 
-                        <FaUserShield />
+                        <h1>
+                            Welcome back
+                        </h1>
 
-                        <span>
-                            Admin
-                        </span>
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        className={
-                            role === "teacher"
-                                ? "role-button active"
-                                : "role-button"
-                        }
-                        onClick={() => {
-                            setRole("teacher");
-                            setError("");
-                        }}
-                    >
-
-                        <FaChalkboardTeacher />
-
-                        <span>
-                            Teacher
-                        </span>
-
-                    </button>
-
-                </div>
-
-
-                {/* ======================================
-                    ERROR
-                ====================================== */}
-
-                {error && (
-                    <div className="login-error">
-                        {error}
-                    </div>
-                )}
-
-
-                {/* ======================================
-                    LOGIN FORM
-                ====================================== */}
-
-                <form
-                    className="login-form"
-                    onSubmit={handleSubmit}
-                >
-
-                    {/* EMAIL */}
-
-                    <div className="form-group">
-
-                        <label htmlFor="email">
-                            Email
-                        </label>
-
-                        <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            placeholder="Enter your email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            autoComplete="email"
-                        />
+                        <p>
+                            Sign in to manage attendance
+                            and continue to your dashboard.
+                        </p>
 
                     </div>
 
 
-                    {/* PASSWORD */}
+                    {/* ROLE */}
+                    <div className="role-selector">
 
-                    <div className="form-group">
-
-                        <label htmlFor="password">
-                            Password
-                        </label>
-
-                        <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            placeholder="Enter your password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            autoComplete="current-password"
-                        />
-
-                    </div>
-
-
-                    {/* SUBMIT */}
-
-                    <button
-                        type="submit"
-                        className="login-button"
-                        disabled={loading}
-                    >
-
-                        {loading
-                            ? "Signing in..."
-                            : `Sign in as ${
+                        <button
+                            type="button"
+                            className={
                                 role === "admin"
-                                    ? "Admin"
-                                    : "Teacher"
-                            }`
-                        }
+                                    ? "role-button active"
+                                    : "role-button"
+                            }
+                            onClick={() =>
+                                handleRoleChange("admin")
+                            }
+                        >
 
-                    </button>
+                            <span className="role-icon">
+                                <FaUserShield />
+                            </span>
 
-                </form>
+                            <span className="role-content">
+                                <strong>
+                                    Admin
+                                </strong>
 
-            </div>
+                                <small>
+                                    Manage system
+                                </small>
+                            </span>
 
-        </div>
+                        </button>
+
+
+                        <button
+                            type="button"
+                            className={
+                                role === "teacher"
+                                    ? "role-button active"
+                                    : "role-button"
+                            }
+                            onClick={() =>
+                                handleRoleChange("teacher")
+                            }
+                        >
+
+                            <span className="role-icon">
+                                <FaChalkboardTeacher />
+                            </span>
+
+                            <span className="role-content">
+                                <strong>
+                                    Teacher
+                                </strong>
+
+                                <small>
+                                    Manage attendance
+                                </small>
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+                    {/* ERROR */}
+                    {error && (
+
+                        <div className="login-error">
+                            {error}
+                        </div>
+
+                    )}
+
+
+                    {/* FORM */}
+                    <form
+                        className="login-form"
+                        onSubmit={handleSubmit}
+                    >
+
+                        <div className="form-group">
+
+                            <label htmlFor="email">
+                                Email address
+                            </label>
+
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                placeholder="you@college.com"
+                                value={formData.email}
+                                onChange={handleChange}
+                                autoComplete="email"
+                            />
+
+                        </div>
+
+
+                        <div className="form-group">
+
+                            <div className="form-label-row">
+
+                                <label htmlFor="password">
+                                    Password
+                                </label>
+
+                            </div>
+
+                            <div className="password-field">
+
+                                <FaLock className="password-lock-icon" />
+
+                                <input
+                                    id="password"
+                                    name="password"
+                                    type={
+                                        showPassword
+                                            ? "text"
+                                            : "password"
+                                    }
+                                    placeholder="Enter your password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    autoComplete="current-password"
+                                />
+
+                                <button
+                                    type="button"
+                                    className="password-toggle"
+                                    onClick={() =>
+                                        setShowPassword(
+                                            (previous) =>
+                                                !previous
+                                        )
+                                    }
+                                    aria-label={
+                                        showPassword
+                                            ? "Hide password"
+                                            : "Show password"
+                                    }
+                                >
+                                    {showPassword
+                                        ? <FaEyeSlash />
+                                        : <FaEye />
+                                    }
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            className="login-button"
+                            disabled={loading}
+                        >
+
+                            <span>
+                                {loading
+                                    ? "Signing in..."
+                                    : `Sign in as ${
+                                        role === "admin"
+                                            ? "Admin"
+                                            : "Teacher"
+                                    }`
+                                }
+                            </span>
+
+                            {!loading && (
+                                <FaArrowRight />
+                            )}
+
+                        </button>
+
+                    </form>
+
+
+                    <div className="login-footer">
+
+                        <span>
+                            Secure attendance management
+                        </span>
+
+                        <span className="footer-dot">
+                            •
+                        </span>
+
+                        <span>
+                            College Portal
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
     );
 };
 

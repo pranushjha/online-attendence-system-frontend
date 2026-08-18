@@ -13,6 +13,8 @@ import {
     FaSyncAlt,
     FaFilter,
     FaCalendarAlt,
+    FaChalkboardTeacher,
+    FaTimes,
 } from "react-icons/fa";
 
 import api from "../../services/api";
@@ -167,10 +169,6 @@ const AdminReports = () => {
 
     // ==========================================
     // FORMAT DATE
-    //
-    // IMPORTANT:
-    // Do NOT use toISOString() here because
-    // it can shift the date because of UTC.
     // ==========================================
 
     const getDate = (record) => {
@@ -242,10 +240,8 @@ const AdminReports = () => {
     ) => {
 
         if (!student) {
-
             return `unknown-${fallback}`;
         }
-
 
         if (
             student.studentId &&
@@ -259,30 +255,23 @@ const AdminReports = () => {
             );
         }
 
-
         if (student.studentId) {
-
             return String(
                 student.studentId
             );
         }
 
-
         if (student._id) {
-
             return String(
                 student._id
             );
         }
 
-
         if (student.id) {
-
             return String(
                 student.id
             );
         }
-
 
         return `unknown-${fallback}`;
     };
@@ -313,7 +302,7 @@ const AdminReports = () => {
 
 
     // ==========================================
-    // GET ROLL NUMBER
+    // GET STUDENT ROLL
     // ==========================================
 
     const getStudentRollNo = (student) => {
@@ -373,10 +362,6 @@ const AdminReports = () => {
         ]);
 
 
-        // ======================================
-        // CLASSES
-        // ======================================
-
         const classesPayload =
             classesResponse.data;
 
@@ -416,10 +401,6 @@ const AdminReports = () => {
             classList
         );
 
-
-        // ======================================
-        // TEACHERS
-        // ======================================
 
         const teachersPayload =
             teachersResponse.data;
@@ -464,28 +445,12 @@ const AdminReports = () => {
 
     // ==========================================
     // LOAD ATTENDANCE
-    //
-    // If date selected:
-    //
-    // GET
-    // /attendance/report/date/:date
-    //
-    // Optional:
-    // ?classId=...
-    //
-    // If no date:
-    //
-    // GET /attendance
     // ==========================================
 
     const loadAttendance = async () => {
 
         let response;
 
-
-        // ======================================
-        // DATE SELECTED
-        // ======================================
 
         if (selectedDate) {
 
@@ -512,20 +477,6 @@ const AdminReports = () => {
             const payload =
                 response.data;
 
-
-            /*
-             * Date report returns:
-             *
-             * {
-             *   success: true,
-             *   date: "...",
-             *   classes: [...]
-             * }
-             *
-             * Convert each class report into
-             * attendance-like data so the
-             * existing UI can use it.
-             */
 
             const dateClasses =
                 Array.isArray(
@@ -602,10 +553,6 @@ const AdminReports = () => {
             return;
         }
 
-
-        // ======================================
-        // NO DATE FILTER
-        // ======================================
 
         let url =
             "/attendance";
@@ -692,25 +639,16 @@ const AdminReports = () => {
 
         try {
 
-            if (
-                showLoading
-            ) {
-
-                setLoading(
-                    true
-                );
+            if (showLoading) {
+                setLoading(true);
             }
-
 
             setError("");
 
 
             await Promise.all([
-
                 loadFilterData(),
-
                 loadAttendance(),
-
             ]);
 
         } catch (err) {
@@ -728,13 +666,8 @@ const AdminReports = () => {
 
         } finally {
 
-            setLoading(
-                false
-            );
-
-            setRefreshing(
-                false
-            );
+            setLoading(false);
+            setRefreshing(false);
         }
     };
 
@@ -751,17 +684,12 @@ const AdminReports = () => {
 
 
     // ==========================================
-    // RELOAD WHEN CLASS OR DATE CHANGES
+    // RELOAD FILTERED ATTENDANCE
     // ==========================================
 
     useEffect(() => {
 
-        // Don't run on the first render.
-        // Initial load is handled above.
-
-        if (
-            !loading
-        ) {
+        if (!loading) {
 
             loadAttendance()
                 .catch(
@@ -794,10 +722,7 @@ const AdminReports = () => {
 
         try {
 
-            setRefreshing(
-                true
-            );
-
+            setRefreshing(true);
             setError("");
 
 
@@ -820,21 +745,13 @@ const AdminReports = () => {
 
         } finally {
 
-            setRefreshing(
-                false
-            );
+            setRefreshing(false);
         }
     };
 
 
     // ==========================================
     // TEACHER FILTER
-    //
-    // Teacher filtering is performed locally
-    // because the main requirement is:
-    //
-    // Class + Date
-    //
     // ==========================================
 
     const filteredAttendance =
@@ -861,7 +778,6 @@ const AdminReports = () => {
                         }
                     }
 
-
                     return true;
                 }
             );
@@ -880,9 +796,7 @@ const AdminReports = () => {
         useMemo(() => {
 
             let present = 0;
-
             let absent = 0;
-
 
             const studentIds =
                 new Set();
@@ -927,7 +841,6 @@ const AdminReports = () => {
                                 status ===
                                 "present"
                             ) {
-
                                 present++;
                             }
 
@@ -936,7 +849,6 @@ const AdminReports = () => {
                                 status ===
                                 "absent"
                             ) {
-
                                 absent++;
                             }
                         }
@@ -1002,14 +914,10 @@ const AdminReports = () => {
 
 
                     if (
-                        !grouped[
-                            classId
-                        ]
+                        !grouped[classId]
                     ) {
 
-                        grouped[
-                            classId
-                        ] = {
+                        grouped[classId] = {
 
                             classId,
 
@@ -1101,9 +1009,7 @@ const AdminReports = () => {
 
 
                     return {
-
                         ...item,
-
                         percentage,
                     };
                 }
@@ -1132,7 +1038,6 @@ const AdminReports = () => {
 
 
                         let present = 0;
-
                         let absent = 0;
 
 
@@ -1149,7 +1054,6 @@ const AdminReports = () => {
                                     status ===
                                     "present"
                                 ) {
-
                                     present++;
                                 }
 
@@ -1158,7 +1062,6 @@ const AdminReports = () => {
                                     status ===
                                     "absent"
                                 ) {
-
                                     absent++;
                                 }
                             }
@@ -1195,7 +1098,6 @@ const AdminReports = () => {
         if (
             percentage >= 75
         ) {
-
             return "percentage-good";
         }
 
@@ -1203,7 +1105,6 @@ const AdminReports = () => {
         if (
             percentage >= 50
         ) {
-
             return "percentage-warning";
         }
 
@@ -1216,20 +1117,62 @@ const AdminReports = () => {
     // CLEAR FILTERS
     // ==========================================
 
-    const clearFilters = async () => {
+    const clearFilters = () => {
 
-        setSelectedClass(
-            "all"
-        );
+        setSelectedClass("all");
 
-        setSelectedTeacher(
-            "all"
-        );
+        setSelectedTeacher("all");
 
-        setSelectedDate(
-            ""
-        );
+        setSelectedDate("");
     };
+
+
+    // ==========================================
+    // FILTER ACTIVE CHECK
+    // ==========================================
+
+    const hasActiveFilters =
+        selectedClass !== "all" ||
+        selectedTeacher !== "all" ||
+        selectedDate !== "";
+
+
+    // ==========================================
+    // SELECTED CLASS NAME
+    // ==========================================
+
+    const selectedClassName =
+        selectedClass === "all"
+            ? "All Classes"
+            : classes.find(
+                  (item) =>
+                      String(
+                          item._id
+                      ) ===
+                      String(
+                          selectedClass
+                      )
+              )?.className ||
+              "Selected Class";
+
+
+    // ==========================================
+    // SELECTED TEACHER NAME
+    // ==========================================
+
+    const selectedTeacherName =
+        selectedTeacher === "all"
+            ? "All Teachers"
+            : teachers.find(
+                  (teacher) =>
+                      String(
+                          teacher._id
+                      ) ===
+                      String(
+                          selectedTeacher
+                      )
+              )?.name ||
+              "Selected Teacher";
 
 
     // ==========================================
@@ -1284,10 +1227,8 @@ const AdminReports = () => {
 
 
                     <p className="reports-description">
-
-                        View attendance performance
-                        by class and date.
-
+                        View attendance performance by
+                        class and date.
                     </p>
 
                 </div>
@@ -1295,12 +1236,8 @@ const AdminReports = () => {
 
                 <button
                     className="refresh-button"
-                    onClick={
-                        handleRefresh
-                    }
-                    disabled={
-                        refreshing
-                    }
+                    onClick={handleRefresh}
+                    disabled={refreshing}
                 >
 
                     <FaSyncAlt
@@ -1344,262 +1281,293 @@ const AdminReports = () => {
 
 
             {/* ======================================
-                FILTERS
+                FILTER CARD
             ====================================== */}
 
-            <div className="report-filters">
+            <div className="admin-filter-card">
 
-                <div className="filter-title">
+                <div className="admin-filter-header">
 
-                    <FaFilter />
+                    <div className="admin-filter-heading">
 
-                    <strong>
-                        Report Filters
-                    </strong>
+                        <div className="admin-filter-icon">
+                            <FaFilter />
+                        </div>
+
+
+                        <div>
+
+                            <h2>
+                                Report Filters
+                            </h2>
+
+                            <p>
+                                Narrow down attendance
+                                records by class, date,
+                                or teacher.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    {hasActiveFilters && (
+
+                        <button
+                            type="button"
+                            className="clear-filter-button"
+                            onClick={clearFilters}
+                        >
+
+                            <FaTimes />
+
+                            Clear Filters
+
+                        </button>
+
+                    )}
+
+                </div>
+
+
+                <div className="admin-filter-divider" />
+
+
+                <div className="admin-filter-grid">
+
+
+                    {/* ==================================
+                        CLASS
+                    ================================== */}
+
+                    <div className="admin-filter-field">
+
+                        <label htmlFor="report-class">
+
+                            <span className="filter-label-icon">
+                                <FaUsers />
+                            </span>
+
+                            Class
+
+                        </label>
+
+
+                        <div className="filter-input-wrapper">
+
+                            <select
+                                id="report-class"
+                                value={
+                                    selectedClass
+                                }
+                                onChange={(
+                                    event
+                                ) =>
+                                    setSelectedClass(
+                                        event.target.value
+                                    )
+                                }
+                            >
+
+                                <option value="all">
+                                    All Classes
+                                </option>
+
+
+                                {classes.map(
+                                    (classItem) => (
+
+                                        <option
+                                            key={
+                                                classItem._id
+                                            }
+                                            value={
+                                                classItem._id
+                                            }
+                                        >
+
+                                            {
+                                                classItem.className ||
+                                                classItem.name
+                                            }
+
+                                        </option>
+
+                                    )
+                                )}
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* ==================================
+                        DATE
+                    ================================== */}
+
+                    <div className="admin-filter-field">
+
+                        <label htmlFor="report-date">
+
+                            <span className="filter-label-icon">
+                                <FaCalendarAlt />
+                            </span>
+
+                            Date
+
+                        </label>
+
+
+                        <div className="filter-input-wrapper">
+
+                            <input
+                                id="report-date"
+                                type="date"
+                                value={
+                                    selectedDate
+                                }
+                                onChange={(
+                                    event
+                                ) =>
+                                    setSelectedDate(
+                                        event.target.value
+                                    )
+                                }
+                            />
+
+                        </div>
+
+                    </div>
+
+
+                    {/* ==================================
+                        TEACHER
+                    ================================== */}
+
+                    <div className="admin-filter-field">
+
+                        <label htmlFor="report-teacher">
+
+                            <span className="filter-label-icon">
+                                <FaChalkboardTeacher />
+                            </span>
+
+                            Teacher
+
+                        </label>
+
+
+                        <div className="filter-input-wrapper">
+
+                            <select
+                                id="report-teacher"
+                                value={
+                                    selectedTeacher
+                                }
+                                onChange={(
+                                    event
+                                ) =>
+                                    setSelectedTeacher(
+                                        event.target.value
+                                    )
+                                }
+                            >
+
+                                <option value="all">
+                                    All Teachers
+                                </option>
+
+
+                                {teachers.map(
+                                    (teacher) => (
+
+                                        <option
+                                            key={
+                                                teacher._id
+                                            }
+                                            value={
+                                                teacher._id
+                                            }
+                                        >
+
+                                            {
+                                                teacher.name ||
+                                                teacher.email
+                                            }
+
+                                        </option>
+
+                                    )
+                                )}
+
+                            </select>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
 
                 {/* ==================================
-                    CLASS
+                    ACTIVE FILTERS
                 ================================== */}
 
-                <div className="filter-group">
+                {hasActiveFilters && (
 
-                    <label>
-                        Class
-                    </label>
+                    <div className="active-filter-row">
 
-
-                    <select
-                        value={
-                            selectedClass
-                        }
-                        onChange={(
-                            event
-                        ) =>
-                            setSelectedClass(
-                                event.target.value
-                            )
-                        }
-                    >
-
-                        <option value="all">
-                            All Classes
-                        </option>
+                        <span className="active-filter-label">
+                            Active filters
+                        </span>
 
 
-                        {classes.map(
-                            (classItem) => (
+                        {selectedClass !== "all" && (
 
-                                <option
-                                    key={
-                                        classItem._id
-                                    }
-                                    value={
-                                        classItem._id
-                                    }
-                                >
+                            <span className="filter-chip">
 
-                                    {
-                                        classItem.className ||
-                                        classItem.name
-                                    }
+                                <FaUsers />
 
-                                </option>
-                            )
+                                {selectedClassName}
+
+                            </span>
+
                         )}
 
-                    </select>
 
-                </div>
+                        {selectedDate && (
 
+                            <span className="filter-chip">
 
-                {/* ==================================
-                    DATE
-                ================================== */}
+                                <FaCalendarAlt />
 
-                <div className="filter-group">
+                                {selectedDate}
 
-                    <label>
+                            </span>
 
-                        <FaCalendarAlt
-                            style={{
-                                marginRight:
-                                    "6px",
-                            }}
-                        />
-
-                        Date
-
-                    </label>
-
-
-                    <input
-                        type="date"
-                        value={
-                            selectedDate
-                        }
-                        onChange={(
-                            event
-                        ) =>
-                            setSelectedDate(
-                                event.target.value
-                            )
-                        }
-                    />
-
-                </div>
-
-
-                {/* ==================================
-                    TEACHER
-                ================================== */}
-
-                <div className="filter-group">
-
-                    <label>
-                        Teacher
-                    </label>
-
-
-                    <select
-                        value={
-                            selectedTeacher
-                        }
-                        onChange={(
-                            event
-                        ) =>
-                            setSelectedTeacher(
-                                event.target.value
-                            )
-                        }
-                    >
-
-                        <option value="all">
-                            All Teachers
-                        </option>
-
-
-                        {teachers.map(
-                            (teacher) => (
-
-                                <option
-                                    key={
-                                        teacher._id
-                                    }
-                                    value={
-                                        teacher._id
-                                    }
-                                >
-
-                                    {
-                                        teacher.name ||
-                                        teacher.email
-                                    }
-
-                                </option>
-                            )
                         )}
 
-                    </select>
 
-                </div>
+                        {selectedTeacher !== "all" && (
 
+                            <span className="filter-chip">
 
-                {/* ==================================
-                    CLEAR
-                ================================== */}
+                                <FaChalkboardTeacher />
 
-                <button
-                    className="clear-filter-button"
-                    onClick={
-                        clearFilters
-                    }
-                >
-                    Clear Filters
-                </button>
+                                {selectedTeacherName}
+
+                            </span>
+
+                        )}
+
+                    </div>
+
+                )}
 
             </div>
-
-
-            {/* ======================================
-                CURRENT FILTER INFORMATION
-            ====================================== */}
-
-            {(selectedDate !== "" ||
-                selectedClass !== "all" ||
-                selectedTeacher !== "all") && (
-
-                <div
-                    style={{
-                        marginBottom:
-                            "20px",
-
-                        padding:
-                            "14px 18px",
-
-                        background:
-                            "#f5f7ff",
-
-                        border:
-                            "1px solid #e0e5ff",
-
-                        borderRadius:
-                            "10px",
-
-                        color:
-                            "#475569",
-                    }}
-                >
-
-                    <strong>
-                        Showing:
-                    </strong>{" "}
-
-
-                    {selectedClass ===
-                    "all"
-                        ? "All Classes"
-                        : classes.find(
-                              (item) =>
-                                  String(
-                                      item._id
-                                  ) ===
-                                  String(
-                                      selectedClass
-                                  )
-                          )?.className ||
-                          "Selected Class"}
-
-
-                    {" • "}
-
-
-                    {selectedDate
-                        ? `Date: ${selectedDate}`
-                        : "All Dates"}
-
-
-                    {" • "}
-
-
-                    {selectedTeacher ===
-                    "all"
-                        ? "All Teachers"
-                        : teachers.find(
-                              (teacher) =>
-                                  String(
-                                      teacher._id
-                                  ) ===
-                                  String(
-                                      selectedTeacher
-                                  )
-                          )?.name ||
-                          "Selected Teacher"}
-
-                </div>
-            )}
 
 
             {/* ======================================
@@ -1609,14 +1577,10 @@ const AdminReports = () => {
             <div className="summary-grid">
 
 
-                {/* STUDENTS */}
-
                 <div className="summary-card">
 
                     <div className="summary-icon">
-
                         <FaUsers />
-
                     </div>
 
 
@@ -1638,14 +1602,10 @@ const AdminReports = () => {
                 </div>
 
 
-                {/* DAYS */}
-
                 <div className="summary-card">
 
                     <div className="summary-icon">
-
                         <FaChartBar />
-
                     </div>
 
 
@@ -1667,14 +1627,10 @@ const AdminReports = () => {
                 </div>
 
 
-                {/* PRESENT */}
-
                 <div className="summary-card">
 
                     <div className="summary-icon">
-
                         <FaCheckCircle />
-
                     </div>
 
 
@@ -1696,14 +1652,10 @@ const AdminReports = () => {
                 </div>
 
 
-                {/* ABSENT */}
-
                 <div className="summary-card">
 
                     <div className="summary-icon">
-
                         <FaTimesCircle />
-
                     </div>
 
 
@@ -1725,14 +1677,10 @@ const AdminReports = () => {
                 </div>
 
 
-                {/* OVERALL */}
-
                 <div className="summary-card">
 
                     <div className="summary-icon">
-
                         <FaPercentage />
-
                     </div>
 
 
@@ -1796,16 +1744,13 @@ const AdminReports = () => {
 
                         <FaChartBar />
 
-
                         <h3>
                             No attendance records
                         </h3>
 
-
                         <p>
-                            No attendance records
-                            match the selected
-                            filters.
+                            No attendance records match
+                            the selected filters.
                         </p>
 
                     </div>
@@ -1824,26 +1769,21 @@ const AdminReports = () => {
                                         Class
                                     </th>
 
-
                                     <th>
                                         Teacher
                                     </th>
-
 
                                     <th>
                                         Attendance Days
                                     </th>
 
-
                                     <th>
                                         Present
                                     </th>
 
-
                                     <th>
                                         Absent
                                     </th>
-
 
                                     <th>
                                         Attendance
@@ -1972,15 +1912,12 @@ const AdminReports = () => {
 
                         <FaChartBar />
 
-
                         <h3>
                             No records found
                         </h3>
 
-
                         <p>
-                            Try changing the
-                            filters.
+                            Try changing the filters.
                         </p>
 
                     </div>
@@ -1999,31 +1936,25 @@ const AdminReports = () => {
                                         Date
                                     </th>
 
-
                                     <th>
                                         Class
                                     </th>
-
 
                                     <th>
                                         Teacher
                                     </th>
 
-
                                     <th>
                                         Students
                                     </th>
-
 
                                     <th>
                                         Present
                                     </th>
 
-
                                     <th>
                                         Absent
                                     </th>
-
 
                                     <th>
                                         Attendance
@@ -2068,62 +1999,50 @@ const AdminReports = () => {
                                             >
 
                                                 <td>
-
                                                     {
                                                         getDate(
                                                             record
                                                         )
                                                     }
-
                                                 </td>
 
 
                                                 <td>
-
                                                     {
                                                         getClassName(
                                                             record
                                                         )
                                                     }
-
                                                 </td>
 
 
                                                 <td>
-
                                                     {
                                                         getTeacherName(
                                                             record
                                                         )
                                                     }
-
                                                 </td>
 
 
                                                 <td>
-
                                                     {
                                                         record.totalStudents
                                                     }
-
                                                 </td>
 
 
                                                 <td className="present-cell">
-
                                                     {
                                                         record.present
                                                     }
-
                                                 </td>
 
 
                                                 <td className="absent-cell">
-
                                                     {
                                                         record.absent
                                                     }
-
                                                 </td>
 
 
