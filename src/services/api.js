@@ -1,75 +1,319 @@
-import axios from "axios";
+import {
+    createContext,
+    useContext,
+    useEffect,
+    useState,
+} from "react";
 
-// ==========================================
-// API BASE URL
-// ==========================================
+import api from "../services/api";
 
-const configuredApiUrl = import.meta.env.VITE_API_URL;
 
-const apiBaseUrl = configuredApiUrl
-    ? configuredApiUrl.replace(/\/+$/, "").endsWith("/api")
-        ? configuredApiUrl.replace(/\/+$/, "")
-        : `${configuredApiUrl.replace(/\/+$/, "")}/api`
-    : "http://localhost:5001/api";
+const AuthContext = createContext(null);
 
 
 // ==========================================
-// AXIOS INSTANCE
+// AUTH PROVIDER
 // ==========================================
 
-const api = axios.create({
-    baseURL: apiBaseUrl,
+export const AuthProvider = ({ children }) => {
 
-    headers: {
-        "Content-Type": "application/json",
-    },
-});
+    // ==========================================
+    // INITIAL TOKEN
+    // ==========================================
+
+    const [token, setToken] = useState(
+        sessionStorage.getItem("token")
+    );
 
 
-// ==========================================
-// REQUEST INTERCEPTOR
-// ==========================================
+    // ==========================================
+    // INITIAL USER
+    // ==========================================
 
-api.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem("token");
+    const [user, setUser] = useState(() => {
 
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+        const savedUser =
+            sessionStorage.getItem("user");
+
+
+        try {
+
+            return savedUser
+                ? JSON.parse(savedUser)
+                : null;
+
+        } catch {
+
+            return null;
+
         }
 
-        return config;
-    },
-
-    (error) => {
-        return Promise.reject(error);
-    }
-);
+    });
 
 
-// ==========================================
-// RESPONSE INTERCEPTOR
-// ==========================================
+    const [loading, setLoading] =
+        useState(true);
 
-api.interceptors.response.use(
-    (response) => {
-        return response;
-    },
 
-    (error) => {
+    // ==========================================
+    // RESTORE LOGIN STATE
+    // ==========================================
 
-        if (error.response?.status === 401) {
+    useEffect(() => {
 
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
+        const savedToken =
+            sessionStorage.getItem("token");
 
-            // Redirect to login
-            window.location.href = "/login";
+        const savedUser =
+            sessionStorage.getItem("user");
+
+
+        if (savedToken && savedUser) {
+
+            try {
+
+                const parsedUser =
+                    JSON.parse(savedUser);
+
+
+                setToken(savedToken);
+
+                setUser(parsedUser);
+
+            } catch {
+
+                sessionStorage.removeItem(
+                    "token"
+                );
+
+                sessionStorage.removeItem(
+                    "user"
+                );
+
+
+                setToken(null);
+
+                setUser(null);
+
+            }
+
+        } else {
+
+            // ==================================
+            // CLEAN UP INCOMPLETE AUTH STATE
+            // ==================================
+
+            if (!savedToken) {
+
+                sessionStorage.removeItem(
+                    "user"
+                );
+
+            }
+
+            if (!savedUser) {
+
+                sessionStorage.removeItem(
+                    "token"
+                );
+
+            }
+
         }
 
-        return Promise.reject(error);
+
+        setLoading(false);
+
+    }, []);
+
+
+    // ==========================================
+    // ADMIN LOGIN
+    // ==========================================
+
+    const adminLogin = async (
+        email,
+        password
+    ) => {
+
+        const response =
+            await api.post(
+                "/auth/admin/login",
+                {
+                    email,
+                    password,
+                }
+            );
+
+
+        const {
+            token,
+            user,
+        } = response.data;
+
+
+        // ==========================================
+        // SAVE LOGIN FOR THIS TAB ONLY
+        // ==========================================
+
+        sessionStorage.setItem(
+            "token",
+            token
+        );
+
+        sessionStorage.setItem(
+            "user",
+            JSON.stringify(user)
+        );
+
+
+        // ==========================================
+        // UPDATE REACT STATE
+        // ==========================================
+
+        setToken(token);
+
+        setUser(user);
+
+
+        return response.data;
+
+    };
+
+
+    // ==========================================
+    // TEACHER LOGIN
+    // ==========================================
+
+    const teacherLogin = async (
+        email,
+        password
+    ) => {
+
+        const response =
+            await api.post(
+                "/auth/teacher/login",
+                {
+                    email,
+                    password,
+                }
+            );
+
+
+        const {
+            token,
+            user,
+        } = response.data;
+
+
+        // ==========================================
+        // SAVE LOGIN FOR THIS TAB ONLY
+        // ==========================================
+
+        sessionStorage.setItem(
+            "token",
+            token
+        );
+
+        sessionStorage.setItem(
+            "user",
+            JSON.stringify(user)
+        );
+
+
+        // ==========================================
+        // UPDATE REACT STATE
+        // ==========================================
+
+        setToken(token);
+
+        setUser(user);
+
+
+        return response.data;
+
+    };
+
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
+
+    const logout = () => {
+
+        sessionStorage.removeItem(
+            "token"
+        );
+
+        sessionStorage.removeItem(
+            "user"
+        );
+
+
+        setToken(null);
+
+        setUser(null);
+
+    };
+
+
+    // ==========================================
+    // AUTH STATE
+    // ==========================================
+
+    const isAuthenticated =
+        Boolean(
+            token &&
+            user
+        );
+
+
+    // ==========================================
+    // PROVIDER
+    // ==========================================
+
+    return (
+
+        <AuthContext.Provider
+            value={{
+                token,
+                user,
+                loading,
+                isAuthenticated,
+                adminLogin,
+                teacherLogin,
+                logout,
+            }}
+        >
+
+            {children}
+
+        </AuthContext.Provider>
+
+    );
+
+};
+
+
+// ==========================================
+// USE AUTH HOOK
+// ==========================================
+
+export const useAuth = () => {
+
+    const context =
+        useContext(AuthContext);
+
+
+    if (!context) {
+
+        throw new Error(
+            "useAuth must be used inside AuthProvider"
+        );
+
     }
-);
 
 
-export default api;
+    return context;
+
+};
