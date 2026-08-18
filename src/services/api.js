@@ -1,319 +1,143 @@
-import {
-    createContext,
-    useContext,
-    useEffect,
-    useState,
-} from "react";
-
-import api from "../services/api";
-
-
-const AuthContext = createContext(null);
+import axios from "axios";
 
 
 // ==========================================
-// AUTH PROVIDER
+// API BASE URL
 // ==========================================
 
-export const AuthProvider = ({ children }) => {
-
-    // ==========================================
-    // INITIAL TOKEN
-    // ==========================================
-
-    const [token, setToken] = useState(
-        sessionStorage.getItem("token")
-    );
+const configuredApiUrl =
+    import.meta.env.VITE_API_URL;
 
 
-    // ==========================================
-    // INITIAL USER
-    // ==========================================
-
-    const [user, setUser] = useState(() => {
-
-        const savedUser =
-            sessionStorage.getItem("user");
-
-
-        try {
-
-            return savedUser
-                ? JSON.parse(savedUser)
-                : null;
-
-        } catch {
-
-            return null;
-
-        }
-
-    });
+const apiBaseUrl = configuredApiUrl
+    ? configuredApiUrl
+        .replace(/\/+$/, "")
+        .endsWith("/api")
+        ? configuredApiUrl.replace(
+            /\/+$/,
+            ""
+        )
+        : `${configuredApiUrl.replace(
+            /\/+$/,
+            ""
+        )}/api`
+    : "http://localhost:5001/api";
 
 
-    const [loading, setLoading] =
-        useState(true);
+// ==========================================
+// AXIOS INSTANCE
+// ==========================================
+
+const api = axios.create({
+
+    baseURL:
+        apiBaseUrl,
+
+    headers: {
+        "Content-Type":
+            "application/json",
+    },
+
+});
 
 
-    // ==========================================
-    // RESTORE LOGIN STATE
-    // ==========================================
+// ==========================================
+// REQUEST INTERCEPTOR
+// ==========================================
 
-    useEffect(() => {
+api.interceptors.request.use(
 
-        const savedToken =
-            sessionStorage.getItem("token");
+    (config) => {
 
-        const savedUser =
-            sessionStorage.getItem("user");
+        // ==========================================
+        // GET TOKEN FROM CURRENT TAB ONLY
+        // ==========================================
 
-
-        if (savedToken && savedUser) {
-
-            try {
-
-                const parsedUser =
-                    JSON.parse(savedUser);
+        const token =
+            sessionStorage.getItem(
+                "token"
+            );
 
 
-                setToken(savedToken);
+        if (token) {
 
-                setUser(parsedUser);
-
-            } catch {
-
-                sessionStorage.removeItem(
-                    "token"
-                );
-
-                sessionStorage.removeItem(
-                    "user"
-                );
+            config.headers =
+                config.headers || {};
 
 
-                setToken(null);
-
-                setUser(null);
-
-            }
-
-        } else {
-
-            // ==================================
-            // CLEAN UP INCOMPLETE AUTH STATE
-            // ==================================
-
-            if (!savedToken) {
-
-                sessionStorage.removeItem(
-                    "user"
-                );
-
-            }
-
-            if (!savedUser) {
-
-                sessionStorage.removeItem(
-                    "token"
-                );
-
-            }
+            config.headers.Authorization =
+                `Bearer ${token}`;
 
         }
 
 
-        setLoading(false);
+        return config;
 
-    }, []);
+    },
 
+    (error) => {
 
-    // ==========================================
-    // ADMIN LOGIN
-    // ==========================================
-
-    const adminLogin = async (
-        email,
-        password
-    ) => {
-
-        const response =
-            await api.post(
-                "/auth/admin/login",
-                {
-                    email,
-                    password,
-                }
-            );
-
-
-        const {
-            token,
-            user,
-        } = response.data;
-
-
-        // ==========================================
-        // SAVE LOGIN FOR THIS TAB ONLY
-        // ==========================================
-
-        sessionStorage.setItem(
-            "token",
-            token
-        );
-
-        sessionStorage.setItem(
-            "user",
-            JSON.stringify(user)
-        );
-
-
-        // ==========================================
-        // UPDATE REACT STATE
-        // ==========================================
-
-        setToken(token);
-
-        setUser(user);
-
-
-        return response.data;
-
-    };
-
-
-    // ==========================================
-    // TEACHER LOGIN
-    // ==========================================
-
-    const teacherLogin = async (
-        email,
-        password
-    ) => {
-
-        const response =
-            await api.post(
-                "/auth/teacher/login",
-                {
-                    email,
-                    password,
-                }
-            );
-
-
-        const {
-            token,
-            user,
-        } = response.data;
-
-
-        // ==========================================
-        // SAVE LOGIN FOR THIS TAB ONLY
-        // ==========================================
-
-        sessionStorage.setItem(
-            "token",
-            token
-        );
-
-        sessionStorage.setItem(
-            "user",
-            JSON.stringify(user)
-        );
-
-
-        // ==========================================
-        // UPDATE REACT STATE
-        // ==========================================
-
-        setToken(token);
-
-        setUser(user);
-
-
-        return response.data;
-
-    };
-
-
-    // ==========================================
-    // LOGOUT
-    // ==========================================
-
-    const logout = () => {
-
-        sessionStorage.removeItem(
-            "token"
-        );
-
-        sessionStorage.removeItem(
-            "user"
-        );
-
-
-        setToken(null);
-
-        setUser(null);
-
-    };
-
-
-    // ==========================================
-    // AUTH STATE
-    // ==========================================
-
-    const isAuthenticated =
-        Boolean(
-            token &&
-            user
-        );
-
-
-    // ==========================================
-    // PROVIDER
-    // ==========================================
-
-    return (
-
-        <AuthContext.Provider
-            value={{
-                token,
-                user,
-                loading,
-                isAuthenticated,
-                adminLogin,
-                teacherLogin,
-                logout,
-            }}
-        >
-
-            {children}
-
-        </AuthContext.Provider>
-
-    );
-
-};
-
-
-// ==========================================
-// USE AUTH HOOK
-// ==========================================
-
-export const useAuth = () => {
-
-    const context =
-        useContext(AuthContext);
-
-
-    if (!context) {
-
-        throw new Error(
-            "useAuth must be used inside AuthProvider"
+        return Promise.reject(
+            error
         );
 
     }
 
+);
 
-    return context;
 
-};
+// ==========================================
+// RESPONSE INTERCEPTOR
+// ==========================================
+
+api.interceptors.response.use(
+
+    (response) => {
+
+        return response;
+
+    },
+
+    (error) => {
+
+        // ==========================================
+        // AUTHENTICATION EXPIRED / INVALID
+        // ==========================================
+
+        if (
+            error.response?.status === 401
+        ) {
+
+            // ==========================================
+            // CLEAR ONLY CURRENT TAB'S LOGIN
+            // ==========================================
+
+            sessionStorage.removeItem(
+                "token"
+            );
+
+            sessionStorage.removeItem(
+                "user"
+            );
+
+
+            // ==========================================
+            // REDIRECT TO LOGIN
+            // ==========================================
+
+            window.location.href =
+                "/login";
+
+        }
+
+
+        return Promise.reject(
+            error
+        );
+
+    }
+
+);
+
+
+export default api;
