@@ -1,4 +1,4 @@
-import {
+﻿import {
     useEffect,
     useState,
 } from "react";
@@ -16,6 +16,13 @@ import {
 import api from "../../services/api";
 
 import { useAuth } from "../../context/AuthContext";
+
+import NepaliCalendar from "../../components/NepaliCalendar";
+
+import {
+    formatNepaliDate,
+    toEnglishDate,
+} from "../../utils/nepaliDate";
 
 import "./Reports.css";
 
@@ -48,38 +55,15 @@ const Reports = () => {
 
 
     // ==========================================
-    // GET TODAY
+    // GET TODAY (BS)
     // ==========================================
 
     const getToday = () => {
 
-        const today =
-            new Date();
+        return formatNepaliDate(
+            new Date()
+        );
 
-
-        const year =
-            today.getFullYear();
-
-
-        const month =
-            String(
-                today.getMonth() + 1
-            ).padStart(
-                2,
-                "0"
-            );
-
-
-        const day =
-            String(
-                today.getDate()
-            ).padStart(
-                2,
-                "0"
-            );
-
-
-        return `${year}-${month}-${day}`;
     };
 
 
@@ -149,9 +133,22 @@ const Reports = () => {
         }
 
 
+        const englishDate =
+            toEnglishDate(date);
+
+        if (!englishDate) {
+
+            throw new Error(
+                "Invalid Nepali date. Please select a valid BS date."
+            );
+
+        }
+
         const response =
             await api.get(
-                `/attendance/report/date/${date}?classId=${classId}`
+                `/attendance/report/date/${encodeURIComponent(
+                    englishDate
+                )}?classId=${classId}`
             );
 
 
@@ -230,26 +227,31 @@ const Reports = () => {
     // ==========================================
 
     const handleDateChange = async (
-        event
+        date
     ) => {
 
-        const date =
-            event.target.value;
+        const selectedBSDate =
+            String(date || "").trim();
+
+
+        if (!selectedBSDate) {
+
+            setSelectedDate("");
+
+            setReportData(null);
+
+            return;
+        }
 
 
         setSelectedDate(
-            date
+            selectedBSDate
         );
 
 
-        if (
-            !date ||
-            !classData?._id
-        ) {
+        if (!classData?._id) {
 
-            setReportData(
-                null
-            );
+            setReportData(null);
 
             return;
         }
@@ -259,13 +261,11 @@ const Reports = () => {
 
             setError("");
 
-            setLoading(
-                true
-            );
+            setLoading(true);
 
 
             await loadDateReport(
-                date,
+                selectedBSDate,
                 classData._id
             );
 
@@ -277,22 +277,21 @@ const Reports = () => {
             );
 
 
-            setReportData(
-                null
-            );
+            setReportData(null);
 
 
             setError(
                 err.response?.data?.message ||
+                err.message ||
                 "Unable to load attendance for selected date."
             );
 
         } finally {
 
-            setLoading(
-                false
-            );
+            setLoading(false);
+
         }
+
     };
 
 
@@ -365,24 +364,60 @@ const Reports = () => {
     // DISPLAY DATE
     // ==========================================
 
-    const displayDate =
-        selectedDate
-            ? new Date(
-                  `${selectedDate}T00:00:00`
-              ).toLocaleDateString(
-                  "en-IN",
-                  {
-                      day:
-                          "2-digit",
+    // ==========================================
+    // DISPLAY DATE (BS)
+    // ==========================================
 
-                      month:
-                          "long",
+    const bsMonthNames = [
+        "Baisakh",
+        "Jestha",
+        "Ashadh",
+        "Shrawan",
+        "Bhadra",
+        "Ashwin",
+        "Kartik",
+        "Mangsir",
+        "Poush",
+        "Magh",
+        "Falgun",
+        "Chaitra",
+    ];
 
-                      year:
-                          "numeric",
-                  }
-              )
-            : "-";
+    const displayDate = (() => {
+
+        if (!selectedDate) {
+            return "-";
+        }
+
+        const parts =
+            String(selectedDate)
+                .split("-");
+
+        if (parts.length !== 3) {
+            return selectedDate;
+        }
+
+        const year = parts[0];
+
+        const monthIndex =
+            Number(parts[1]) - 1;
+
+        const day =
+            Number(parts[2]);
+
+        if (
+            monthIndex < 0 ||
+            monthIndex > 11 ||
+            !day
+        ) {
+            return selectedDate;
+        }
+
+        return `${day} ${
+            bsMonthNames[monthIndex]
+        } ${year}`;
+
+    })();
 
 
     // ==========================================
@@ -709,37 +744,15 @@ const Reports = () => {
                             </label>
 
 
-                            <input
-                                type="date"
+                            <NepaliCalendar
                                 value={
                                     selectedDate
                                 }
                                 onChange={
                                     handleDateChange
                                 }
-                                style={{
-                                    width:
-                                        "100%",
-
-                                    padding:
-                                        "12px",
-
-                                    border:
-                                        "1px solid #dbe3ef",
-
-                                    borderRadius:
-                                        "8px",
-
-                                    fontSize:
-                                        "15px",
-
-                                    background:
-                                        "white",
-
-                                    boxSizing:
-                                        "border-box",
-                                }}
-                            />
+                                placeholder="Select report date"
+/>
 
                         </div>
 

@@ -1119,3 +1119,21 @@
     }
 
 }
+/* ==========================================
+   REPORTS BS CALENDAR
+   ========================================== */
+
+.admin-filter-field,
+.filter-input-wrapper {
+    overflow: visible !important;
+}
+
+.bs-calendar-wrapper {
+    position: relative;
+    width: 100%;
+    z-index: 100;
+}
+
+.bs-calendar-popup {
+    z-index: 99999 !important;
+}

@@ -14,11 +14,6 @@ import {
 } from "react-icons/fa";
 
 import api from "../../services/api";
-import NepaliCalendar from "../../components/NepaliCalendar";
-import {
-    formatNepaliDate,
-    toEnglishDate,
-} from "../../utils/nepaliDate";
 import { useAuth } from "../../context/AuthContext";
 
 import "./Attendance.css";
@@ -78,7 +73,23 @@ const Attendance = () => {
     // ==========================================
 
     const getToday = () => {
-        return formatNepaliDate(new Date());
+
+        const today = new Date();
+
+        const year =
+            today.getFullYear();
+
+        const month =
+            String(
+                today.getMonth() + 1
+            ).padStart(2, "0");
+
+        const day =
+            String(
+                today.getDate()
+            ).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
     };
 
 
@@ -258,7 +269,7 @@ const Attendance = () => {
     // ==========================================
 
     const loadStudentsForClass =
-        async (classId, dateOverride = selectedDate) => {
+        async (classId) => {
 
             if (!classId) {
 
@@ -355,21 +366,9 @@ const Attendance = () => {
                 setError("");
                 setMessage("");
 
-                const englishDate =
-                    toEnglishDate(date);
-
-                if (!englishDate) {
-                    setError(
-                        "Invalid BS date."
-                    );
-                    return;
-                }
-
                 const response =
                     await api.get(
-                        `/attendance?classId=${classId}&date=${encodeURIComponent(
-                            englishDate
-                        )}`
+                        `/attendance?classId=${classId}&date=${date}`
                     );
 
                 const records =
@@ -540,24 +539,13 @@ const Attendance = () => {
     // ==========================================
 
     const handleDateChange =
-        async (date) => {
+        async (event) => {
 
-            const selectedBSDate =
-                String(date || "").trim();
-
-            if (!selectedBSDate) {
-
-                setError(
-                    "Please select a valid BS date."
-                );
-
-                setMessage("");
-
-                return;
-            }
+            const date =
+                event.target.value;
 
             setSelectedDate(
-                selectedBSDate
+                date
             );
 
             setError("");
@@ -570,7 +558,7 @@ const Attendance = () => {
 
                 await loadExistingAttendance(
                     selectedClass,
-                    selectedBSDate,
+                    date,
                     students
                 );
             }
@@ -727,25 +715,13 @@ const Attendance = () => {
                     );
 
 
-                const englishDate =
-                    toEnglishDate(selectedDate);
-
-                if (!englishDate) {
-
-                    setError(
-                        "Invalid BS date. Please select a valid date."
-                    );
-
-                    return;
-                }
-
                 const payload = {
 
                     classId:
                         selectedClass,
 
                     date:
-                        englishDate,
+                        selectedDate,
 
                     students:
                         studentRecords,
@@ -1202,11 +1178,16 @@ const Attendance = () => {
 
                             <FaCalendarAlt className="input-icon" />
 
-                            <NepaliCalendar
-                                        value={selectedDate}
-                                        onChange={handleDateChange}
-                                        placeholder="Select attendance date"
-/>
+                            <input
+                                id="attendance-date"
+                                type="date"
+                                value={
+                                    selectedDate
+                                }
+                                onChange={
+                                    handleDateChange
+                                }
+                            />
 
                         </div>
 
@@ -1686,10 +1667,3 @@ const Attendance = () => {
 
 
 export default Attendance;
-
-
-
-
-
-
-

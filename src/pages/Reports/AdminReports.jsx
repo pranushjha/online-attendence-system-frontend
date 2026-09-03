@@ -1,4 +1,4 @@
-import {
+﻿import {
     useEffect,
     useMemo,
     useState,
@@ -18,7 +18,9 @@ import {
 } from "react-icons/fa";
 
 import api from "../../services/api";
+import NepaliCalendar from "../../components/NepaliCalendar";
 
+import { toEnglishDate, formatNepaliDate } from "../../utils/nepaliDate";
 import "./Reports.css";
 
 
@@ -177,37 +179,18 @@ const AdminReports = () => {
             return "";
         }
 
-        const date =
-            new Date(record.date);
+        try {
+            return formatNepaliDate(
+                record.date
+            );
+        } catch (error) {
+            console.error(
+                "Nepali report date formatting error:",
+                error
+            );
 
-        if (
-            Number.isNaN(
-                date.getTime()
-            )
-        ) {
             return "";
         }
-
-        const year =
-            date.getFullYear();
-
-        const month =
-            String(
-                date.getMonth() + 1
-            ).padStart(
-                2,
-                "0"
-            );
-
-        const day =
-            String(
-                date.getDate()
-            ).padStart(
-                2,
-                "0"
-            );
-
-        return `${year}-${month}-${day}`;
     };
 
 
@@ -455,7 +438,7 @@ const AdminReports = () => {
         if (selectedDate) {
 
             let url =
-                `/attendance/report/date/${selectedDate}`;
+                `/attendance/report/date/${encodeURIComponent(toEnglishDate(selectedDate))}`;
 
 
             if (
@@ -1423,20 +1406,11 @@ const AdminReports = () => {
 
                         <div className="filter-input-wrapper">
 
-                            <input
-                                id="report-date"
-                                type="date"
-                                value={
-                                    selectedDate
-                                }
-                                onChange={(
-                                    event
-                                ) =>
-                                    setSelectedDate(
-                                        event.target.value
-                                    )
-                                }
-                            />
+                            <NepaliCalendar
+                                value={selectedDate}
+                                onChange={setSelectedDate}
+                                placeholder="Select report date"
+/>
 
                         </div>
 
@@ -1544,7 +1518,16 @@ const AdminReports = () => {
 
                                 <FaCalendarAlt />
 
-                                {selectedDate}
+                                {(() => {
+                                    const parts = String(selectedDate || "").split("-");
+                                    if (parts.length !== 3) return selectedDate;
+                                    const months = [
+                                        "Baisakh", "Jestha", "Ashadh", "Shrawan",
+                                        "Bhadra", "Ashwin", "Kartik", "Mangsir",
+                                        "Poush", "Magh", "Falgun", "Chaitra"
+                                    ];
+                                    return `${Number(parts[2])} ${months[Number(parts[1]) - 1]} ${parts[0]}`;
+                                })()}
 
                             </span>
 

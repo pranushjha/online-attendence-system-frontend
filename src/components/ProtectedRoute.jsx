@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+﻿import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const ProtectedRoute = ({
@@ -10,6 +10,39 @@ const ProtectedRoute = ({
         user,
         loading,
     } = useAuth();
+
+    // ==========================================
+    // RECOVER AUTH FROM SESSION STORAGE
+    // ==========================================
+
+    let storedUser = null;
+    let storedToken = null;
+
+    try {
+        storedToken =
+            sessionStorage.getItem("token");
+
+        const savedUser =
+            sessionStorage.getItem("user");
+
+        if (savedUser) {
+            storedUser = JSON.parse(savedUser);
+        }
+    } catch (error) {
+        console.error(
+            "Unable to restore session:",
+            error
+        );
+    }
+
+    // Use React auth state when available,
+    // otherwise fall back to the saved session.
+    const effectiveUser =
+        user || storedUser;
+
+    const effectiveAuthenticated =
+        isAuthenticated ||
+        Boolean(storedToken && storedUser);
 
     // ==========================================
     // WAIT FOR AUTH STATE
@@ -34,7 +67,7 @@ const ProtectedRoute = ({
     // NOT AUTHENTICATED
     // ==========================================
 
-    if (!isAuthenticated) {
+    if (!effectiveAuthenticated) {
         return (
             <Navigate
                 to="/login"
@@ -49,13 +82,17 @@ const ProtectedRoute = ({
 
     if (
         allowedRoles &&
-        !allowedRoles.includes(user?.role)
+        !allowedRoles.includes(
+            effectiveUser?.role
+        )
     ) {
-        // Send user to their correct dashboard
-        if (user?.role === "teacher") {
+        // Send teacher to attendance
+        if (
+            effectiveUser?.role === "teacher"
+        ) {
             return (
                 <Navigate
-                    to="/teacher-dashboard"
+                    to="/attendance"
                     replace
                 />
             );

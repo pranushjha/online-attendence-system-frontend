@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -100,12 +100,9 @@ const Login = () => {
                     );
             }
 
-            const loggedInRole =
-                response?.user?.role;
-
-            if (
-                loggedInRole === "admin"
-            ) {
+            // Redirect according to the role selected
+            // on the login screen.
+            if (role === "admin") {
 
                 navigate(
                     "/dashboard",
@@ -114,12 +111,10 @@ const Login = () => {
                     }
                 );
 
-            } else if (
-                loggedInRole === "teacher"
-            ) {
+            } else if (role === "teacher") {
 
                 navigate(
-                    "/teacher-dashboard",
+                    "/attendance",
                     {
                         replace: true,
                     }
@@ -385,7 +380,7 @@ const Login = () => {
                         </span>
 
                         <span className="footer-dot">
-                            •
+                            â€¢
                         </span>
 
                         <span>
@@ -403,3 +398,5 @@ const Login = () => {
 };
 
 export default Login;
+
+

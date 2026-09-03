@@ -1,4 +1,4 @@
-/* =========================================================
+﻿/* =========================================================
    ATTENDANCE PAGE
 ========================================================= */
 
@@ -1554,4 +1554,135 @@
         max-width: 150px;
     }
 
+}
+/* ==========================================
+   NEPALI BS DATE PICKER
+   ========================================== */
+
+.nepali-calendar-wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.nepali-calendar-wrapper input {
+    width: 100%;
+    height: 50px;
+    box-sizing: border-box;
+    border: 1px solid #d9def0;
+    border-radius: 12px;
+    padding: 0 16px;
+    font-size: 15px;
+    color: #172033;
+    background: #ffffff;
+    outline: none;
+}
+
+.nepali-calendar-wrapper input:focus {
+    border-color: #6557f5;
+    box-shadow: 0 0 0 4px rgba(101, 87, 245, 0.12);
+}
+
+.nepali-calendar-wrapper input::placeholder {
+    color: #9aa3b8;
+}
+
+/* Keep the BS calendar above surrounding cards */
+.nepali-calendar-wrapper .ndp__calendar {
+    z-index: 9999;
+}
+
+/* ==========================================
+   NEPALI BS DATE PICKER
+   ========================================== */
+
+
+
+/* ==========================================
+   CUSTOM BS CALENDAR - OVERFLOW FIX
+   ========================================== */
+
+/* Allow the calendar popup to extend outside
+   the Attendance Setup card */
+.attendance-setup-card {
+    overflow: visible !important;
+}
+
+.attendance-setup-header {
+    overflow: visible !important;
+}
+
+.attendance-filters {
+    overflow: visible !important;
+}
+
+.filter-group {
+    overflow: visible !important;
+}
+
+.input-wrapper {
+    overflow: visible !important;
+}
+
+/* Make sure the date picker stays above
+   surrounding content */
+.bs-calendar-wrapper {
+    position: relative;
+    z-index: 100;
+}
+
+.bs-calendar-popup {
+    position: absolute;
+    z-index: 99999 !important;
+}
+
+/* Keep the date field above other elements
+   while the calendar is open */
+.bs-date-input {
+    position: relative;
+    z-index: 1;
+}
+
+/* ==========================================
+   CUSTOM BS CALENDAR - OVERFLOW FIX
+   ========================================== */
+
+/* Allow the calendar popup to extend outside
+   the Attendance Setup card */
+.attendance-setup-card {
+    overflow: visible !important;
+}
+
+.attendance-setup-header {
+    overflow: visible !important;
+}
+
+.attendance-filters {
+    overflow: visible !important;
+}
+
+.filter-group {
+    overflow: visible !important;
+}
+
+.input-wrapper {
+    overflow: visible !important;
+}
+
+/* Make sure the date picker stays above
+   surrounding content */
+.bs-calendar-wrapper {
+    position: relative;
+    z-index: 100;
+}
+
+.bs-calendar-popup {
+    position: absolute;
+    z-index: 99999 !important;
+}
+
+/* Keep the date field above other elements
+   while the calendar is open */
+.bs-date-input {
+    position: relative;
+    z-index: 1;
 }

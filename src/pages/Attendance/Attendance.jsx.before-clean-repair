@@ -1,29 +1,13 @@
 ﻿import { useEffect, useState } from "react";
-
-import {
-    FaCheck,
-    FaSave,
-    FaTimes,
-    FaCalendarAlt,
-    FaUsers,
-    FaUserCheck,
-    FaUserTimes,
-    FaChartPie,
-    FaClipboardCheck,
-    FaInfoCircle,
-} from "react-icons/fa";
-
+import { NepaliDatePicker } from "nepali-datepicker-reactjs";
+import "nepali-datepicker-reactjs/dist/index.css";
 import api from "../../services/api";
-import NepaliCalendar from "../../components/NepaliCalendar";
+import { useAuth } from "../../context/AuthContext";
 import {
     formatNepaliDate,
     toEnglishDate,
 } from "../../utils/nepaliDate";
-import { useAuth } from "../../context/AuthContext";
-
 import "./Attendance.css";
-
-
 const Attendance = () => {
 
     const { user } = useAuth();
@@ -74,56 +58,11 @@ const Attendance = () => {
 
 
     // ==========================================
-    // TODAY
+    // TODAY (BS)
     // ==========================================
 
     const getToday = () => {
         return formatNepaliDate(new Date());
-    };
-
-
-    // ==========================================
-    // NORMALIZE DATE
-    // ==========================================
-
-    const normalizeDate = (date) => {
-
-        if (!date) {
-            return "";
-        }
-
-        if (
-            typeof date === "string" &&
-            /^\d{4}-\d{2}-\d{2}$/.test(date)
-        ) {
-            return date;
-        }
-
-        const parsed =
-            new Date(date);
-
-        if (
-            Number.isNaN(
-                parsed.getTime()
-            )
-        ) {
-            return "";
-        }
-
-        const year =
-            parsed.getFullYear();
-
-        const month =
-            String(
-                parsed.getMonth() + 1
-            ).padStart(2, "0");
-
-        const day =
-            String(
-                parsed.getDate()
-            ).padStart(2, "0");
-
-        return `${year}-${month}-${day}`;
     };
 
 
@@ -307,7 +246,7 @@ const Attendance = () => {
 
                 await loadExistingAttendance(
                     classId,
-                    selectedDate,
+                    dateOverride,
                     classStudents
                 );
 
@@ -355,8 +294,7 @@ const Attendance = () => {
                 setError("");
                 setMessage("");
 
-                const englishDate =
-                    toEnglishDate(date);
+                const englishDate = toEnglishDate(date);
 
                 if (!englishDate) {
                     setError(
@@ -540,25 +478,20 @@ const Attendance = () => {
     // ==========================================
 
     const handleDateChange =
-        async (date) => {
+        async ({ bsDate }) => {
 
-            const selectedBSDate =
-                String(date || "").trim();
+            const date =
+                String(bsDate || "").trim();
 
-            if (!selectedBSDate) {
-
+            if (!date) {
                 setError(
                     "Please select a valid BS date."
                 );
-
                 setMessage("");
-
                 return;
             }
 
-            setSelectedDate(
-                selectedBSDate
-            );
+            setSelectedDate(date);
 
             setError("");
             setMessage("");
@@ -567,10 +500,9 @@ const Attendance = () => {
                 selectedClass &&
                 students.length > 0
             ) {
-
                 await loadExistingAttendance(
                     selectedClass,
-                    selectedBSDate,
+                    date,
                     students
                 );
             }
@@ -731,11 +663,9 @@ const Attendance = () => {
                     toEnglishDate(selectedDate);
 
                 if (!englishDate) {
-
                     setError(
-                        "Invalid BS date. Please select a valid date."
+                        "Invalid Nepali date. Please enter a valid BS date."
                     );
-
                     return;
                 }
 
@@ -744,6 +674,7 @@ const Attendance = () => {
                     classId:
                         selectedClass,
 
+                    // Backend/database continues to use AD.
                     date:
                         englishDate,
 
@@ -753,7 +684,7 @@ const Attendance = () => {
 
 
                 // ==================================
-                // EXISTING ΓåÆ UPDATE
+                // EXISTING â†’ UPDATE
                 // ==================================
 
                 if (existingRecord) {
@@ -779,7 +710,7 @@ const Attendance = () => {
                 }
 
                 // ==================================
-                // NEW ΓåÆ CREATE
+                // NEW â†’ CREATE
                 // ==================================
 
                 else {
@@ -894,7 +825,9 @@ const Attendance = () => {
 
 
     // ==========================================
-    // FORMAT SELECTED DATE
+    // FORMAT SELECTED BS DATE
+    // English digits only
+    // Example: 2083-05-17
     // ==========================================
 
     const formatDisplayDate =
@@ -904,23 +837,7 @@ const Attendance = () => {
                 return "Select date";
             }
 
-            const parts =
-                date.split("-");
-
-            if (parts.length !== 3) {
-                return date;
-            }
-
-            return `${parts[2]} ${new Date(
-                Number(parts[0]),
-                Number(parts[1]) - 1,
-                1
-            ).toLocaleString(
-                "en-US",
-                {
-                    month: "short",
-                }
-            )} ${parts[0]}`;
+            return date;
         };
 
 
@@ -1202,16 +1119,27 @@ const Attendance = () => {
 
                             <FaCalendarAlt className="input-icon" />
 
-                            <NepaliCalendar
-                                        value={selectedDate}
-                                        onChange={handleDateChange}
-                                        placeholder="Select attendance date"
-/>
+                            <div className="nepali-calendar-wrapper">
+
+                                <NepaliDatePicker
+                                    inputClassName="attendance-nepali-date-input"
+                                    className="attendance-nepali-date-picker"
+                                    value={selectedDate}
+                                    onChange={
+                                        handleDateChange
+                                    }
+                                    options={{
+                                        calenderLocale: "ne",
+                                        valueLocale: "en",
+                                    }}
+                                />
+
+                            </div>
 
                         </div>
 
                         <span className="filter-helper">
-                            {formatDisplayDate(selectedDate)}
+                            BS Date â€¢ English digits â€¢ Example: 2083-05-17
                         </span>
 
                     </div>
@@ -1686,10 +1614,6 @@ const Attendance = () => {
 
 
 export default Attendance;
-
-
-
-
 
 
 
