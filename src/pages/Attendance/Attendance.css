@@ -1,4 +1,4 @@
-﻿/* =========================================================
+/* =========================================================
    ATTENDANCE PAGE
 ========================================================= */
 
@@ -10,17 +10,17 @@
     background:
         radial-gradient(
             circle at 88% 0%,
-            rgba(99, 102, 241, 0.075),
+            rgba(64, 78, 59, 0.075),
             transparent 28%
         ),
         radial-gradient(
             circle at 0% 55%,
-            rgba(79, 70, 229, 0.035),
+            rgba(64, 78, 59, 0.035),
             transparent 30%
         ),
-        #f7f9fc;
+        #E6E6E6;
 
-    color: #0f172a;
+    color: #27342F;
 }
 
 
@@ -62,22 +62,22 @@
     background:
         linear-gradient(
             135deg,
-            #eef2ff,
-            #e0e7ff
+            #E8EFE5,
+            #E8EFE5
         );
 
-    color: #4f46e5;
+    color: #404E3B;
 
     font-size: 20px;
 
     box-shadow:
-        0 5px 15px rgba(79, 70, 229, 0.08);
+        0 5px 15px rgba(64, 78, 59, 0.08);
 }
 
 .attendance-page-label {
     margin: 0 0 5px;
 
-    color: #635bff;
+    color: #404E3B;
 
     font-size: 12px;
     font-weight: 800;
@@ -88,7 +88,7 @@
 .attendance-header h1 {
     margin: 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 38px;
     font-weight: 750;
@@ -101,7 +101,7 @@
 .attendance-page-description {
     margin: 13px 0 0 62px;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 15px;
 
@@ -160,27 +160,27 @@
 }
 
 .attendance-alert-error {
-    border: 1px solid #fecaca;
+    border: 1px solid #E7B8B8;
 
-    background: #fff7f7;
+    background: #FBEAEA;
 
-    color: #b91c1c;
+    color: #C94A4A;
 }
 
 .attendance-alert-error .attendance-alert-icon {
-    background: #fee2e2;
+    background: #FBEAEA;
 }
 
 .attendance-alert-success {
-    border: 1px solid #bbf7d0;
+    border: 1px solid #B9CDB9;
 
     background: #f3fff7;
 
-    color: #047857;
+    color: #3F7D4A;
 }
 
 .attendance-alert-success .attendance-alert-icon {
-    background: #dcfce7;
+    background: #E8F1E8;
 }
 
 
@@ -195,11 +195,11 @@
 
     overflow: hidden;
 
-    border: 1px solid #e5e7eb;
+    border: 1px solid #D6D9D5;
 
     border-radius: 18px;
 
-    background: #ffffff;
+    background: #FFFFFF;
 
     box-shadow:
         0 8px 30px rgba(15, 23, 42, 0.045);
@@ -219,12 +219,12 @@
 
     padding: 21px 24px;
 
-    border-bottom: 1px solid #edf0f4;
+    border-bottom: 1px solid #E4E6E3;
 
     background:
         linear-gradient(
             180deg,
-            #ffffff,
+            #FFFFFF,
             #fcfcff
         );
 }
@@ -246,9 +246,9 @@
 
     border-radius: 10px;
 
-    background: #eef2ff;
+    background: #E8EFE5;
 
-    color: #4f46e5;
+    color: #404E3B;
 
     font-size: 16px;
 }
@@ -256,7 +256,7 @@
 .setup-heading h2 {
     margin: 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 16px;
     font-weight: 750;
@@ -265,7 +265,7 @@
 .setup-heading p {
     margin: 3px 0 0;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 12px;
 }
@@ -278,13 +278,13 @@
 
     padding: 7px 11px;
 
-    border: 1px solid #bbf7d0;
+    border: 1px solid #B9CDB9;
 
     border-radius: 999px;
 
-    background: #f0fdf4;
+    background: #E8F1E8;
 
-    color: #047857;
+    color: #3F7D4A;
 
     font-size: 11px;
     font-weight: 750;
@@ -318,7 +318,7 @@
 
     margin-bottom: 8px;
 
-    color: #334155;
+    color: #4F625D;
 
     font-size: 13px;
     font-weight: 750;
@@ -338,7 +338,7 @@
 
     z-index: 2;
 
-    color: #94a3b8;
+    color: #8A9894;
 
     font-size: 14px;
 
@@ -356,15 +356,15 @@
     padding:
         0 42px 0 40px;
 
-    border: 1px solid #d7dce5;
+    border: 1px solid #D6D9D5;
 
     border-radius: 11px;
 
     outline: none;
 
-    background: #ffffff;
+    background: #FFFFFF;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-family: inherit;
 
@@ -393,20 +393,20 @@
 
 .filter-group select:focus,
 .filter-group input:focus {
-    border-color: #6366f1;
+    border-color: #7B9669;
 
     background: #fff;
 
     box-shadow:
-        0 0 0 4px rgba(99, 102, 241, 0.09);
+        0 0 0 4px rgba(64, 78, 59, 0.09);
 }
 
 .filter-group select:disabled {
     cursor: not-allowed;
 
-    background: #f8fafc;
+    background: #E6E6E6;
 
-    color: #475569;
+    color: #6C8480;
 
     opacity: 1;
 }
@@ -416,7 +416,7 @@
 
     margin-top: 7px;
 
-    color: #94a3b8;
+    color: #8A9894;
 
     font-size: 11px;
 }
@@ -438,18 +438,18 @@
     padding: 16px 18px;
 
     border:
-        1px solid #fde68a;
+        1px solid #E8D0A3;
 
     border-radius: 13px;
 
     background:
         linear-gradient(
             135deg,
-            #fffbeb,
+            #FFF4DD,
             #fffdf5
         );
 
-    color: #92400e;
+    color: #8F641F;
 
     box-shadow:
         0 4px 14px rgba(146, 64, 14, 0.035);
@@ -467,9 +467,9 @@
 
     border-radius: 9px;
 
-    background: #fef3c7;
+    background: #FFF4DD;
 
-    color: #d97706;
+    color: #B7791F;
 
     font-size: 15px;
 }
@@ -483,7 +483,7 @@
 
     margin-bottom: 3px;
 
-    color: #92400e;
+    color: #8F641F;
 
     font-size: 14px;
 }
@@ -491,7 +491,7 @@
 .existing-attendance-content > span {
     display: block;
 
-    color: #a16207;
+    color: #B7791F;
 
     font-size: 12px;
 }
@@ -499,13 +499,13 @@
 .existing-attendance-content p {
     margin: 6px 0 0;
 
-    color: #a16207;
+    color: #B7791F;
 
     font-size: 12px;
 }
 
 .existing-attendance-content p strong {
-    color: #92400e;
+    color: #8F641F;
 }
 
 
@@ -521,11 +521,11 @@
     overflow: hidden;
 
     border:
-        1px solid #e5e7eb;
+        1px solid #D6D9D5;
 
     border-radius: 18px;
 
-    background: #ffffff;
+    background: #FFFFFF;
 
     box-shadow:
         0 8px 30px rgba(15, 23, 42, 0.045);
@@ -546,7 +546,7 @@
     padding: 22px 24px;
 
     border-bottom:
-        1px solid #edf0f4;
+        1px solid #E4E6E3;
 }
 
 .students-heading {
@@ -566,9 +566,9 @@
 
     border-radius: 11px;
 
-    background: #eef2ff;
+    background: #E8EFE5;
 
-    color: #4f46e5;
+    color: #404E3B;
 
     font-size: 16px;
 }
@@ -576,7 +576,7 @@
 .students-heading h2 {
     margin: 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 19px;
     font-weight: 750;
@@ -585,7 +585,7 @@
 .students-heading p {
     margin: 3px 0 0;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 12px;
 }
@@ -634,23 +634,23 @@
 }
 
 .bulk-present {
-    border: 1px solid #bbf7d0;
+    border: 1px solid #B9CDB9;
 
-    color: #047857;
+    color: #3F7D4A;
 }
 
 .bulk-present:hover {
-    background: #f0fdf4;
+    background: #E8F1E8;
 }
 
 .bulk-absent {
-    border: 1px solid #fecaca;
+    border: 1px solid #E7B8B8;
 
-    color: #b91c1c;
+    color: #C94A4A;
 }
 
 .bulk-absent:hover {
-    background: #fef2f2;
+    background: #FBEAEA;
 }
 
 
@@ -671,15 +671,15 @@
     padding: 15px 18px;
 
     border:
-        1px solid #edf0f4;
+        1px solid #E4E6E3;
 
     border-radius: 13px;
 
     background:
         linear-gradient(
             135deg,
-            #fafbff,
-            #ffffff
+            #F3F3F1,
+            #FFFFFF
         );
 }
 
@@ -710,23 +710,23 @@
 }
 
 .summary-total-icon {
-    background: #eef2ff;
-    color: #4f46e5;
+    background: #E8EFE5;
+    color: #404E3B;
 }
 
 .summary-present-icon {
-    background: #ecfdf5;
-    color: #059669;
+    background: #E8F1E8;
+    color: #3F7D4A;
 }
 
 .summary-absent-icon {
-    background: #fef2f2;
-    color: #dc2626;
+    background: #FBEAEA;
+    color: #C94A4A;
 }
 
 .summary-percent-icon {
-    background: #fff7ed;
-    color: #ea580c;
+    background: #FFF4DD;
+    color: #C94A4A;
 }
 
 .summary-item span {
@@ -734,7 +734,7 @@
 
     margin-bottom: 2px;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 11px;
 }
@@ -742,7 +742,7 @@
 .summary-item strong {
     display: block;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 17px;
     font-weight: 750;
@@ -752,7 +752,7 @@
     width: 1px;
     height: 34px;
 
-    background: #e5e7eb;
+    background: #D6D9D5;
 }
 
 
@@ -768,7 +768,7 @@
     padding:
         19px 28px 11px;
 
-    color: #94a3b8;
+    color: #8A9894;
 
     font-size: 10px;
     font-weight: 800;
@@ -797,7 +797,7 @@
     padding: 12px 4px;
 
     border-bottom:
-        1px solid #f0f2f6;
+        1px solid #E4E6E3;
 
     transition:
         background 0.2s ease,
@@ -808,7 +808,7 @@
     padding-left: 9px;
     padding-right: 9px;
 
-    background: #fafbff;
+    background: #F3F3F1;
 }
 
 .attendance-row:last-child {
@@ -841,9 +841,9 @@
 
     border-radius: 9px;
 
-    background: #f1f5f9;
+    background: #F3F3F1;
 
-    color: #475569;
+    color: #6C8480;
 
     font-size: 12px;
     font-weight: 800;
@@ -864,11 +864,11 @@
     background:
         linear-gradient(
             135deg,
-            #eef2ff,
-            #e0e7ff
+            #E8EFE5,
+            #E8EFE5
         );
 
-    color: #4f46e5;
+    color: #404E3B;
 
     font-size: 12px;
     font-weight: 800;
@@ -886,7 +886,7 @@
 .student-details strong {
     overflow: hidden;
 
-    color: #1e293b;
+    color: #344130;
 
     font-size: 14px;
     font-weight: 700;
@@ -896,7 +896,7 @@
 }
 
 .student-details span {
-    color: #94a3b8;
+    color: #8A9894;
 
     font-size: 11px;
 }
@@ -918,11 +918,11 @@
     gap: 3px;
 
     border:
-        1px solid #e2e8f0;
+        1px solid #D6D9D5;
 
     border-radius: 10px;
 
-    background: #f8fafc;
+    background: #E6E6E6;
 }
 
 .status-button {
@@ -953,38 +953,38 @@
 }
 
 .status-button.present {
-    color: #059669;
+    color: #3F7D4A;
 }
 
 .status-button.absent {
-    color: #dc2626;
+    color: #C94A4A;
 }
 
 .status-button.present:hover {
-    background: #ecfdf5;
+    background: #E8F1E8;
 }
 
 .status-button.absent:hover {
-    background: #fef2f2;
+    background: #FBEAEA;
 }
 
 .status-button.present.selected {
-    border-color: #10b981;
+    border-color: #3F7D4A;
 
-    background: #ecfdf5;
+    background: #E8F1E8;
 
-    color: #047857;
+    color: #3F7D4A;
 
     box-shadow:
         0 2px 5px rgba(16, 185, 129, 0.08);
 }
 
 .status-button.absent.selected {
-    border-color: #ef4444;
+    border-color: #C94A4A;
 
-    background: #fef2f2;
+    background: #FBEAEA;
 
-    color: #b91c1c;
+    color: #C94A4A;
 
     box-shadow:
         0 2px 5px rgba(239, 68, 68, 0.08);
@@ -1008,13 +1008,13 @@
         15px 24px;
 
     border-top:
-        1px solid #e8ebf0;
+        1px solid #D6D9D5;
 
     background:
         linear-gradient(
             180deg,
-            #ffffff,
-            #fafbff
+            #FFFFFF,
+            #F3F3F1
         );
 }
 
@@ -1023,7 +1023,7 @@
 }
 
 .submit-info span {
-    color: #94a3b8;
+    color: #8A9894;
 
     font-size: 11px;
 }
@@ -1046,8 +1046,8 @@
     background:
         linear-gradient(
             135deg,
-            #5b4cf0,
-            #4f46e5
+            #404E3B,
+            #404E3B
         );
 
     color: white;
@@ -1060,7 +1060,7 @@
     cursor: pointer;
 
     box-shadow:
-        0 8px 18px rgba(79, 70, 229, 0.20);
+        0 8px 18px rgba(64, 78, 59, 0.20);
 
     transition:
         transform 0.2s ease,
@@ -1072,14 +1072,14 @@
     background:
         linear-gradient(
             135deg,
-            #5144e8,
-            #4338ca
+            #7B9669,
+            #344130
         );
 
     transform: translateY(-1px);
 
     box-shadow:
-        0 11px 22px rgba(79, 70, 229, 0.25);
+        0 11px 22px rgba(64, 78, 59, 0.25);
 }
 
 .save-attendance-button:active:not(:disabled) {
@@ -1123,9 +1123,9 @@
 
     border-radius: 15px;
 
-    background: #eef2ff;
+    background: #E8EFE5;
 
-    color: #4f46e5;
+    color: #404E3B;
 
     font-size: 22px;
 }
@@ -1133,7 +1133,7 @@
 .attendance-loading-card h3 {
     margin: 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 17px;
 }
@@ -1141,7 +1141,7 @@
 .attendance-loading-card p {
     margin: 6px 0 0;
 
-    color: #94a3b8;
+    color: #8A9894;
 
     font-size: 13px;
 }
@@ -1158,9 +1158,9 @@
     margin: 0 auto 13px;
 
     border:
-        2px solid #e0e7ff;
+        2px solid #E8EFE5;
 
-    border-top-color: #4f46e5;
+    border-top-color: #404E3B;
 
     border-radius: 50%;
 
@@ -1200,7 +1200,7 @@
 
     text-align: center;
 
-    color: #64748b;
+    color: #6C8480;
 }
 
 .students-loading .attendance-spinner {
@@ -1208,7 +1208,7 @@
 }
 
 .students-loading strong {
-    color: #334155;
+    color: #4F625D;
 
     font-size: 14px;
 }
@@ -1216,7 +1216,7 @@
 .students-loading span {
     margin-top: 5px;
 
-    color: #94a3b8;
+    color: #8A9894;
 
     font-size: 12px;
 }
@@ -1252,9 +1252,9 @@
 
     border-radius: 14px;
 
-    background: #f1f5f9;
+    background: #F3F3F1;
 
-    color: #94a3b8;
+    color: #8A9894;
 
     font-size: 20px;
 }
@@ -1262,7 +1262,7 @@
 .empty-students h3 {
     margin: 0;
 
-    color: #334155;
+    color: #4F625D;
 
     font-size: 16px;
 }
@@ -1272,7 +1272,7 @@
 
     margin: 6px 0 0;
 
-    color: #94a3b8;
+    color: #8A9894;
 
     font-size: 12px;
 
@@ -1568,22 +1568,22 @@
     width: 100%;
     height: 50px;
     box-sizing: border-box;
-    border: 1px solid #d9def0;
+    border: 1px solid #D6D9D5;
     border-radius: 12px;
     padding: 0 16px;
     font-size: 15px;
-    color: #172033;
-    background: #ffffff;
+    color: #27342F;
+    background: #FFFFFF;
     outline: none;
 }
 
 .nepali-calendar-wrapper input:focus {
-    border-color: #6557f5;
+    border-color: #404E3B;
     box-shadow: 0 0 0 4px rgba(101, 87, 245, 0.12);
 }
 
 .nepali-calendar-wrapper input::placeholder {
-    color: #9aa3b8;
+    color: #8A9894;
 }
 
 /* Keep the BS calendar above surrounding cards */
@@ -1685,4 +1685,269 @@
 .bs-date-input {
     position: relative;
     z-index: 1;
+}
+
+
+/* =========================================================
+   EXCEL EXPORT
+========================================================= */
+
+.attendance-export-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 25px rgba(64, 78, 59, 0.08);
+}
+
+.attendance-export-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.attendance-export-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(64, 78, 59, 0.10);
+    color: #4f623f;
+}
+
+.attendance-export-icon svg {
+    width: 21px;
+    height: 21px;
+}
+
+.attendance-export-header h3 {
+    margin: 0;
+    color: #27342f;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.attendance-export-header p {
+    margin: 4px 0 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.attendance-export-fields {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.attendance-export-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 190px;
+}
+
+.attendance-export-field label {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.attendance-export-field input {
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid #d9dee8;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #334155;
+    font-size: 14px;
+    outline: none;
+}
+
+.attendance-export-field input:focus {
+    border-color: #647653;
+    box-shadow: 0 0 0 3px rgba(100, 118, 83, 0.10);
+}
+
+.attendance-export-button {
+    height: 44px;
+    padding: 0 20px;
+    border: none;
+    border-radius: 10px;
+    background: #4f623f;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.attendance-export-button:hover:not(:disabled) {
+    background: #3f5032;
+    transform: translateY(-1px);
+}
+
+.attendance-export-button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.attendance-export-button svg {
+    width: 18px;
+    height: 18px;
+}
+
+@media (max-width: 700px) {
+
+    .attendance-export-fields {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .attendance-export-field {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .attendance-export-button {
+        width: 100%;
+    }
+
+}
+/* =========================================================
+   MOBILE RESPONSIVE FIX - ATTENDANCE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .attendance-page {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    .attendance-page *,
+    .attendance-page *::before,
+    .attendance-page *::after {
+        box-sizing: border-box;
+    }
+
+    .attendance-header,
+    .attendance-setup,
+    .attendance-record,
+    .attendance-section,
+    .students-section,
+    .attendance-export-card {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .attendance-filters {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .attendance-list {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .student-row {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .student-info {
+        min-width: 0;
+    }
+
+    .student-name {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .status-buttons {
+        flex-shrink: 0;
+    }
+
+    .attendance-summary {
+        width: calc(100% - 24px);
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .attendance-export-fields {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .attendance-export-field {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .attendance-export-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .attendance-page {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .attendance-header h1 {
+        font-size: 25px;
+    }
+
+    .attendance-summary {
+        width: calc(100% - 16px);
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
+    .students-header {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .attendance-list {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .student-row {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .status-buttons {
+        width: auto;
+        max-width: 100%;
+    }
+
+    .status-button {
+        padding-left: 8px;
+        padding-right: 8px;
+        font-size: 12px;
+    }
+
+    .attendance-export-card {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
 }

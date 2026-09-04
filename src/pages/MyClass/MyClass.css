@@ -1,7 +1,7 @@
 .my-class-page {
     padding: 40px;
     min-height: 100vh;
-    background: #f8fafc;
+    background: #E6E6E6;
 }
 
 .my-class-header {
@@ -13,7 +13,7 @@
 }
 
 .my-class-label {
-    color: #4f46e5;
+    color: #404E3B;
     font-weight: 600;
     margin-bottom: 8px;
 }
@@ -24,7 +24,7 @@
 }
 
 .my-class-header p {
-    color: #64748b;
+    color: #6C8480;
     font-size: 16px;
 }
 
@@ -42,14 +42,14 @@
     padding: 11px 16px;
     border: none;
     border-radius: 8px;
-    background: #4f46e5;
+    background: #404E3B;
     color: white;
     font-weight: 600;
     cursor: pointer;
 }
 
 .my-class-button:hover {
-    background: #4338ca;
+    background: #344130;
 }
 
 .my-class-button:disabled {
@@ -60,19 +60,19 @@
 .my-class-error {
     margin-bottom: 20px;
     padding: 15px 18px;
-    background: #fff1f2;
-    border: 1px solid #fecdd3;
+    background: #FBEAEA;
+    border: 1px solid #E7B8B8;
     border-radius: 10px;
-    color: #b91c1c;
+    color: #C94A4A;
 }
 
 .upload-success {
     margin-bottom: 20px;
     padding: 18px;
-    background: #ecfdf5;
-    border: 1px solid #a7f3d0;
+    background: #E8F1E8;
+    border: 1px solid #B9CDB9;
     border-radius: 10px;
-    color: #065f46;
+    color: #3F7D4A;
 }
 
 .upload-summary {
@@ -85,7 +85,7 @@
 .class-information,
 .my-class-students {
     background: white;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #D6D9D5;
     border-radius: 14px;
     padding: 25px;
     margin-bottom: 30px;
@@ -97,7 +97,7 @@
 }
 
 .class-information p {
-    color: #475569;
+    color: #6C8480;
 }
 
 .students-section-header {
@@ -109,7 +109,7 @@
 }
 
 .students-section-header span {
-    color: #64748b;
+    color: #6C8480;
     font-size: 14px;
 }
 
@@ -127,11 +127,11 @@
 .my-class-table td {
     padding: 15px;
     text-align: left;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #D6D9D5;
 }
 
 .my-class-table th {
-    color: #475569;
+    color: #6C8480;
     font-size: 13px;
     text-transform: uppercase;
 }
@@ -145,19 +145,19 @@
 }
 
 .student-status.active {
-    background: #dcfce7;
-    color: #166534;
+    background: #E8F1E8;
+    color: #3F7D4A;
 }
 
 .student-status.inactive {
-    background: #fee2e2;
-    color: #991b1b;
+    background: #FBEAEA;
+    color: #A43D3D;
 }
 
 .empty-class {
     padding: 30px 10px;
     text-align: center;
-    color: #64748b;
+    color: #6C8480;
 }
 
 .my-class-loading {
@@ -188,7 +188,7 @@
     justify-content: space-between;
     gap: 20px;
     padding: 22px 24px;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #D6D9D5;
 }
 
 .my-class-modal-header h2 {
@@ -197,7 +197,7 @@
 
 .my-class-modal-header p {
     margin-bottom: 0;
-    color: #64748b;
+    color: #6C8480;
 }
 
 .my-class-close {
@@ -205,7 +205,7 @@
     height: 36px;
     border: none;
     background: transparent;
-    color: #64748b;
+    color: #6C8480;
     cursor: pointer;
 }
 
@@ -220,19 +220,19 @@
     display: flex;
     flex-direction: column;
     gap: 7px;
-    color: #334155;
+    color: #4F625D;
     font-weight: 600;
 }
 
 .my-class-form input {
     padding: 11px 12px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #C8CEC8;
     border-radius: 8px;
     outline: none;
 }
 
 .my-class-form input:focus {
-    border-color: #4f46e5;
+    border-color: #404E3B;
 }
 
 .assigned-class-field {
@@ -240,12 +240,12 @@
     flex-direction: column;
     gap: 6px;
     padding: 12px;
-    background: #f8fafc;
+    background: #E6E6E6;
     border-radius: 8px;
 }
 
 .assigned-class-field span {
-    color: #64748b;
+    color: #6C8480;
     font-size: 13px;
 }
 
@@ -265,14 +265,14 @@
 }
 
 .my-class-cancel {
-    border: 1px solid #cbd5e1;
+    border: 1px solid #C8CEC8;
     background: white;
-    color: #475569;
+    color: #6C8480;
 }
 
 .my-class-save {
     border: none;
-    background: #4f46e5;
+    background: #404E3B;
     color: white;
 }
 
@@ -283,33 +283,139 @@
 }
 
 @media (max-width: 700px) {
+
     .my-class-page {
-        padding: 20px 15px;
+        padding: 20px 12px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
     }
 
     .my-class-header {
         flex-direction: column;
-    }
-
-    .my-class-actions {
+        gap: 15px;
+        margin-bottom: 20px;
         width: 100%;
-    }
-
-    .my-class-button {
-        flex: 1;
     }
 
     .my-class-header h1 {
         font-size: 28px;
+        line-height: 1.2;
+    }
+
+    .my-class-header p {
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 0;
+    }
+
+    .my-class-actions {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .my-class-button {
+        width: 100%;
+        flex: none;
+        box-sizing: border-box;
     }
 
     .class-information,
     .my-class-students {
-        padding: 18px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 18px 14px;
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    .class-information h2,
+    .my-class-students h2 {
+        font-size: 20px;
+    }
+
+    .students-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .my-class-table-wrapper {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .my-class-table {
+        width: max-content;
+        min-width: 600px;
     }
 
     .my-class-table th,
     .my-class-table td {
-        padding: 12px 8px;
+        padding: 11px 10px;
+        white-space: nowrap;
+        font-size: 13px;
+    }
+
+    .my-class-modal-overlay {
+        padding: 12px;
+    }
+
+    .my-class-modal {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .my-class-modal-header {
+        padding: 18px;
+    }
+
+    .my-class-form {
+        padding: 18px;
+    }
+
+    .my-class-modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    .my-class-cancel,
+    .my-class-save {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .my-class-page {
+        padding: 16px 10px;
+    }
+
+    .class-information,
+    .my-class-students {
+        padding: 15px 12px;
+        border-radius: 10px;
+    }
+
+    .my-class-header h1 {
+        font-size: 25px;
+    }
+
+    .my-class-table {
+        min-width: 560px;
+    }
+
+    .my-class-table th,
+    .my-class-table td {
+        padding: 10px 8px;
+        font-size: 12px;
     }
 }

@@ -12,10 +12,10 @@
     background:
         radial-gradient(
             circle at 80% 0%,
-            rgba(99, 102, 241, 0.07),
+            rgba(64, 78, 59, 0.07),
             transparent 30%
         ),
-        #f7f9fc;
+        #E6E6E6;
 }
 
 
@@ -38,7 +38,7 @@
 .reports-label {
     margin: 0 0 7px;
 
-    color: #635bff;
+    color: #404E3B;
 
     font-size: 12px;
     font-weight: 800;
@@ -51,7 +51,7 @@
 .reports-header h1 {
     margin: 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 38px;
     line-height: 1.12;
@@ -62,7 +62,7 @@
 .reports-description {
     margin: 9px 0 0;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 15px;
     line-height: 1.5;
@@ -91,7 +91,7 @@
 
     background: white;
 
-    color: #334155;
+    color: #4F625D;
 
     font-size: 13px;
     font-weight: 700;
@@ -109,11 +109,11 @@
 }
 
 .refresh-button:hover {
-    border-color: #c7cdfc;
+    border-color: #B9C8B0;
 
-    background: #fafaff;
+    background: #F3F3F1;
 
-    color: #4f46e5;
+    color: #404E3B;
 
     transform: translateY(-1px);
 }
@@ -161,13 +161,13 @@
     gap: 4px;
 
     border:
-        1px solid #fecaca;
+        1px solid #E7B8B8;
 
     border-radius: 11px;
 
-    background: #fff1f2;
+    background: #FBEAEA;
 
-    color: #b91c1c;
+    color: #C94A4A;
 }
 
 .reports-error strong {
@@ -194,15 +194,15 @@
     padding: 22px 24px;
 
     border:
-        1px solid #e4e8f0;
+        1px solid #D6D9D5;
 
     border-radius: 17px;
 
     background:
         linear-gradient(
             180deg,
-            #ffffff 0%,
-            #fbfcff 100%
+            #FFFFFF 0%,
+            #F3F3F1 100%
         );
 
     box-shadow:
@@ -241,9 +241,9 @@
 
     border-radius: 11px;
 
-    background: #eef2ff;
+    background: #E8EFE5;
 
-    color: #5b4cf0;
+    color: #404E3B;
 
     font-size: 16px;
 }
@@ -251,7 +251,7 @@
 .admin-filter-heading h2 {
     margin: 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 17px;
     font-weight: 800;
@@ -262,7 +262,7 @@
 .admin-filter-heading p {
     margin: 4px 0 0;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 12px;
 
@@ -313,7 +313,7 @@
 
     margin-bottom: 7px;
 
-    color: #334155;
+    color: #4F625D;
 
     font-size: 12px;
     font-weight: 750;
@@ -322,7 +322,7 @@
 .filter-label-icon {
     display: inline-flex;
 
-    color: #6366f1;
+    color: #7B9669;
 
     font-size: 11px;
 }
@@ -352,7 +352,7 @@
     padding: 0 13px;
 
     border:
-        1px solid #d9dee8;
+        1px solid #D6D9D5;
 
     border-radius: 10px;
 
@@ -360,7 +360,7 @@
 
     background: white;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-family: inherit;
 
@@ -389,7 +389,7 @@
 
 .admin-filter-field select:hover,
 .admin-filter-field input[type="date"]:hover {
-    border-color: #c5cbd8;
+    border-color: #C8CEC8;
 }
 
 
@@ -399,12 +399,12 @@
 
 .admin-filter-field select:focus,
 .admin-filter-field input[type="date"]:focus {
-    border-color: #6366f1;
+    border-color: #7B9669;
 
     background: white;
 
     box-shadow:
-        0 0 0 3px rgba(99, 102, 241, 0.10);
+        0 0 0 3px rgba(64, 78, 59, 0.10);
 }
 
 
@@ -424,13 +424,13 @@
     padding: 0 13px;
 
     border:
-        1px solid #dfe3eb;
+        1px solid #D6D9D5;
 
     border-radius: 9px;
 
     background: white;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-family: inherit;
 
@@ -448,11 +448,11 @@
 }
 
 .clear-filter-button:hover {
-    border-color: #c7cdfc;
+    border-color: #B9C8B0;
 
-    background: #fafaff;
+    background: #F3F3F1;
 
-    color: #4f46e5;
+    color: #404E3B;
 }
 
 
@@ -474,7 +474,7 @@
 .active-filter-label {
     margin-right: 3px;
 
-    color: #94a3b8;
+    color: #8A9894;
 
     font-size: 11px;
     font-weight: 700;
@@ -491,13 +491,13 @@
     padding: 0 9px;
 
     border:
-        1px solid #dfe4ff;
+        1px solid #D6D9D5;
 
     border-radius: 999px;
 
-    background: #f5f7ff;
+    background: #F3F3F1;
 
-    color: #4f46e5;
+    color: #404E3B;
 
     font-size: 11px;
     font-weight: 700;
@@ -539,7 +539,7 @@
     box-sizing: border-box;
 
     border:
-        1px solid #e7eaf0;
+        1px solid #D6D9D5;
 
     border-radius: 15px;
 
@@ -561,9 +561,9 @@
 
     border-radius: 12px;
 
-    background: #eef2ff;
+    background: #E8EFE5;
 
-    color: #5b4cf0;
+    color: #404E3B;
 
     font-size: 17px;
 }
@@ -573,28 +573,28 @@
 
     margin-bottom: 5px;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 11px;
 }
 
 .summary-card strong {
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 25px;
     font-weight: 800;
 }
 
 .summary-card strong.percentage-good {
-    color: #059669;
+    color: #3F7D4A;
 }
 
 .summary-card strong.percentage-warning {
-    color: #d97706;
+    color: #B7791F;
 }
 
 .summary-card strong.percentage-danger {
-    color: #dc2626;
+    color: #C94A4A;
 }
 
 
@@ -613,7 +613,7 @@
     margin-right: auto;
 
     border:
-        1px solid #e7eaf0;
+        1px solid #D6D9D5;
 
     border-radius: 18px;
 
@@ -643,7 +643,7 @@
 .card-label {
     margin: 0 0 7px;
 
-    color: #635bff;
+    color: #404E3B;
 
     font-size: 10px;
     font-weight: 800;
@@ -654,7 +654,7 @@
 .class-report-card h2 {
     margin: 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 25px;
     font-weight: 800;
@@ -678,13 +678,13 @@
 }
 
 .class-details span {
-    color: #94a3b8;
+    color: #8A9894;
 
     font-size: 11px;
 }
 
 .class-details strong {
-    color: #334155;
+    color: #4F625D;
 
     font-size: 13px;
 }
@@ -713,7 +713,7 @@
 .section-heading h2 {
     margin: 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 20px;
     font-weight: 800;
@@ -741,16 +741,16 @@
 }
 
 .table-wrapper thead {
-    background: #f8fafc;
+    background: #E6E6E6;
 }
 
 .table-wrapper th {
     padding: 14px 15px;
 
     border-bottom:
-        1px solid #e8ebf0;
+        1px solid #D6D9D5;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 10px;
     font-weight: 800;
@@ -766,9 +766,9 @@
     padding: 16px 15px;
 
     border-bottom:
-        1px solid #f0f2f6;
+        1px solid #E4E6E3;
 
-    color: #475569;
+    color: #6C8480;
 
     font-size: 13px;
 }
@@ -779,7 +779,7 @@
 }
 
 .table-wrapper tbody tr:hover {
-    background: #fafbff;
+    background: #F3F3F1;
 }
 
 .table-wrapper tbody tr:last-child td {
@@ -787,7 +787,7 @@
 }
 
 .table-wrapper td strong {
-    color: #0f172a;
+    color: #27342F;
 }
 
 
@@ -796,13 +796,13 @@
 ========================================================= */
 
 .present-cell {
-    color: #047857 !important;
+    color: #3F7D4A !important;
 
     font-weight: 700;
 }
 
 .absent-cell {
-    color: #b91c1c !important;
+    color: #C94A4A !important;
 
     font-weight: 700;
 }
@@ -824,15 +824,15 @@
 }
 
 .status-present {
-    background: #ecfdf5;
+    background: #E8F1E8;
 
-    color: #047857;
+    color: #3F7D4A;
 }
 
 .status-absent {
-    background: #fef2f2;
+    background: #FBEAEA;
 
-    color: #b91c1c;
+    color: #C94A4A;
 }
 
 
@@ -856,21 +856,21 @@
 }
 
 .percentage-good {
-    color: #047857;
+    color: #3F7D4A;
 
-    background: #ecfdf5;
+    background: #E8F1E8;
 }
 
 .percentage-warning {
-    color: #b45309;
+    color: #B7791F;
 
-    background: #fffbeb;
+    background: #FFF4DD;
 }
 
 .percentage-danger {
-    color: #b91c1c;
+    color: #C94A4A;
 
-    background: #fef2f2;
+    background: #FBEAEA;
 }
 
 
@@ -893,7 +893,7 @@
     justify-content: center;
 
     border:
-        1px solid #e7eaf0;
+        1px solid #D6D9D5;
 
     border-radius: 18px;
 
@@ -901,7 +901,7 @@
 
     text-align: center;
 
-    color: #64748b;
+    color: #6C8480;
 
     box-shadow:
         0 8px 28px rgba(15, 23, 42, 0.045);
@@ -911,7 +911,7 @@
 .reports-empty svg {
     margin-bottom: 13px;
 
-    color: #818cf8;
+    color: #7B9669;
 
     font-size: 34px;
 }
@@ -920,7 +920,7 @@
 .reports-empty h2 {
     margin: 0 0 6px;
 
-    color: #334155;
+    color: #4F625D;
 
     font-size: 17px;
 }
@@ -944,7 +944,7 @@
     align-items: center;
     justify-content: center;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 14px;
 }
@@ -960,27 +960,27 @@
     box-sizing: border-box;
 
     border:
-        1px solid #d9dee8 !important;
+        1px solid #D6D9D5 !important;
 
     border-radius: 10px !important;
 
     outline: none;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-family: inherit;
 }
 
 .student-report-card input[type="date"]:focus {
-    border-color: #6366f1 !important;
+    border-color: #7B9669 !important;
 
     box-shadow:
-        0 0 0 4px rgba(99, 102, 241, 0.09);
+        0 0 0 4px rgba(64, 78, 59, 0.09);
 }
 
 
 /* =========================================================
-   RESPONSIVE — 1100
+   RESPONSIVE â€” 1100
 ========================================================= */
 
 @media (max-width: 1100px) {
@@ -994,7 +994,7 @@
 
 
 /* =========================================================
-   RESPONSIVE — 900
+   RESPONSIVE â€” 900
 ========================================================= */
 
 @media (max-width: 900px) {
@@ -1027,7 +1027,7 @@
 
 
 /* =========================================================
-   RESPONSIVE — 700
+   RESPONSIVE â€” 700
 ========================================================= */
 
 @media (max-width: 700px) {
@@ -1084,7 +1084,7 @@
 
 
 /* =========================================================
-   RESPONSIVE — 480
+   RESPONSIVE â€” 480
 ========================================================= */
 
 @media (max-width: 480px) {
@@ -1136,4 +1136,85 @@
 
 .bs-calendar-popup {
     z-index: 99999 !important;
+}
+
+
+/* =========================================================
+   MOBILE RESPONSIVE FIX - REPORTS
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .reports-page {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    .reports-page *,
+    .reports-page *::before,
+    .reports-page *::after {
+        box-sizing: border-box;
+    }
+
+    .reports-header {
+        width: 100%;
+    }
+
+    .admin-filter-card,
+    .class-report-card,
+    .student-report-card {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    .admin-filter-grid {
+        width: 100%;
+    }
+
+    .admin-filter-field {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .summary-grid {
+        width: 100%;
+        grid-template-columns: 1fr;
+    }
+
+    .class-details {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .class-report-card,
+    .student-report-card {
+        overflow-x: hidden;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .reports-page {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .reports-header h1 {
+        font-size: 26px;
+        line-height: 1.2;
+    }
+
+    .admin-filter-card,
+    .class-report-card,
+    .student-report-card {
+        padding: 15px;
+        border-radius: 12px;
+    }
+
+    .admin-filter-heading p {
+        max-width: 100%;
+    }
 }
