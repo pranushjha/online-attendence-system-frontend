@@ -4,14 +4,14 @@
 } from "react";
 
 import {
-    FaCalendarAlt,
-    FaChartBar,
-    FaCheckCircle,
-    FaTimesCircle,
-    FaUsers,
-    FaPercentage,
-    FaSyncAlt,
-} from "react-icons/fa";
+    CalendarDays,
+    BarChart3,
+    CircleCheck,
+    CircleX,
+    Users,
+    Percent,
+    RefreshCw,
+} from "lucide-react";
 
 import api from "../../services/api";
 
@@ -561,7 +561,7 @@ const Reports = () => {
                     }
                 >
 
-                    <FaSyncAlt
+                    <RefreshCw
                         className={
                             refreshing
                                 ? "refresh-spinning"
@@ -732,7 +732,7 @@ const Reports = () => {
                                 }}
                             >
 
-                                <FaCalendarAlt
+                                <CalendarDays
                                     style={{
                                         marginRight:
                                             "7px",
@@ -771,7 +771,7 @@ const Reports = () => {
 
                     <div className="report-empty">
 
-                        <FaCalendarAlt />
+                        <CalendarDays />
 
 
                         <h3>
@@ -819,7 +819,7 @@ const Reports = () => {
 
                             <div className="summary-icon">
 
-                                <FaUsers />
+                                <Users />
 
                             </div>
 
@@ -848,7 +848,7 @@ const Reports = () => {
 
                             <div className="summary-icon">
 
-                                <FaCheckCircle />
+                                <CircleCheck />
 
                             </div>
 
@@ -877,7 +877,7 @@ const Reports = () => {
 
                             <div className="summary-icon">
 
-                                <FaTimesCircle />
+                                <CircleX />
 
                             </div>
 
@@ -906,7 +906,7 @@ const Reports = () => {
 
                             <div className="summary-icon">
 
-                                <FaPercentage />
+                                <Percent />
 
                             </div>
 
@@ -986,7 +986,7 @@ const Reports = () => {
 
                                     <div className="report-empty">
 
-                                        <FaChartBar />
+                                        <BarChart3 />
 
 
                                         <h3>
@@ -1111,3 +1111,5 @@ const Reports = () => {
 
 
 export default Reports;
+
+

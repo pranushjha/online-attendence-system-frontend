@@ -1,17 +1,19 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import * as XLSX from "xlsx";
 
 import {
-    FaCheck,
-    FaSave,
-    FaTimes,
-    FaCalendarAlt,
-    FaUsers,
-    FaUserCheck,
-    FaUserTimes,
-    FaChartPie,
-    FaClipboardCheck,
-    FaInfoCircle,
-} from "react-icons/fa";
+    Check,
+    Save,
+    X,
+    CalendarDays,
+    Users,
+    UserCheck,
+    UserX,
+    PieChart,
+    ClipboardCheck,
+    Info,
+    Download,
+} from "lucide-react";
 
 import api from "../../services/api";
 import NepaliCalendar from "../../components/NepaliCalendar";
@@ -72,6 +74,19 @@ const Attendance = () => {
     const [message, setMessage] =
         useState("");
 
+
+    // ==========================================
+    // EXCEL EXPORT
+    // ==========================================
+
+    const [exportFromDate, setExportFromDate] =
+        useState("");
+
+    const [exportToDate, setExportToDate] =
+        useState("");
+
+    const [exporting, setExporting] =
+        useState(false);
 
     // ==========================================
     // TODAY
@@ -660,6 +675,401 @@ const Attendance = () => {
 
 
     // ==========================================
+    // EXCEL EXPORT
+    // ==========================================
+
+    const exportAttendanceToExcel = async () => {
+
+        try {
+
+            setError("");
+            setMessage("");
+
+            if (!exportFromDate) {
+                setError("Please select a starting date.");
+                return;
+            }
+
+            if (!exportToDate) {
+                setError("Please select an ending date.");
+                return;
+            }
+
+            if (exportFromDate > exportToDate) {
+                setError("Starting date cannot be after ending date.");
+                return;
+            }
+
+            if (!selectedClass) {
+                setError("Please select a class first.");
+                return;
+            }
+
+            setExporting(true);
+
+
+            // ==========================================
+            // CREATE DATE RANGE
+            // ==========================================
+
+            const dates = [];
+
+            const currentDate =
+                new Date(`${exportFromDate}T00:00:00`);
+
+            const lastDate =
+                new Date(`${exportToDate}T00:00:00`);
+
+            while (currentDate <= lastDate) {
+
+                const year =
+                    currentDate.getFullYear();
+
+                const month =
+                    String(
+                        currentDate.getMonth() + 1
+                    ).padStart(2, "0");
+
+                const day =
+                    String(
+                        currentDate.getDate()
+                    ).padStart(2, "0");
+
+                dates.push(
+                    `${year}-${month}-${day}`
+                );
+
+                currentDate.setDate(
+                    currentDate.getDate() + 1
+                );
+            }
+
+
+            // ==========================================
+            // FETCH ATTENDANCE FOR EACH DATE
+            // ==========================================
+
+            const exportRows = [];
+
+            for (const date of dates) {
+
+                try {
+
+                    const response =
+                        await api.get(
+                            `/attendance?classId=${selectedClass}&date=${encodeURIComponent(date)}`
+                        );
+
+                    const records =
+                        response.data?.attendance || [];
+
+
+                    // --------------------------------------
+                    // No attendance record for this date
+                    // --------------------------------------
+
+                    if (!records.length) {
+
+                        students.forEach(
+                            (student) => {
+
+                                exportRows.push({
+                                    Date: date,
+                                    RollNo:
+                                        student.rollNo || "",
+                                    Student:
+                                        student.name || "",
+                                    Class:
+                                        classes.find(
+                                            (classItem) =>
+                                                classItem._id?.toString() ===
+                                                selectedClass?.toString()
+                                        )?.name || "",
+                                    Status: "Not Marked",
+                                });
+
+                            }
+                        );
+
+                        continue;
+                    }
+
+
+                    // --------------------------------------
+                    // Attendance exists
+                    // --------------------------------------
+
+                    records.forEach(
+                        (record) => {
+
+                            const student =
+                                students.find(
+                                    (item) =>
+                                        item._id?.toString() ===
+                                        (
+                                            record.studentId?._id ||
+                                            record.studentId
+                                        )?.toString()
+                                );
+
+
+                            exportRows.push({
+                                Date: date,
+
+                                RollNo:
+                                    student?.rollNo ||
+                                    record.rollNo ||
+                                    "",
+
+                                Student:
+                                    student?.name ||
+                                    record.studentName ||
+                                    "",
+
+                                Class:
+                                    classes.find(
+                                        (classItem) =>
+                                            classItem._id?.toString() ===
+                                            selectedClass?.toString()
+                                    )?.name || "",
+
+                                Status:
+                                    record.status ||
+                                    "Unknown",
+                            });
+
+                        }
+                    );
+
+                } catch (dateError) {
+
+                    console.error(
+                        `Attendance export error for ${date}:`,
+                        dateError
+                    );
+
+                }
+
+            }
+
+
+            // ==========================================
+            // CHECK RESULT
+            // ==========================================
+
+            if (!exportRows.length) {
+
+                setError(
+                    "No attendance data was found for the selected dates."
+                );
+
+                return;
+            }
+
+
+            // ==========================================
+            // CREATE EXCEL WORKSHEET
+            // ==========================================
+
+            const worksheet =
+                XLSX.utils.json_to_sheet(
+                    exportRows
+                );
+
+
+            // ==========================================
+            // COLUMN WIDTHS
+            // ==========================================
+
+            worksheet["!cols"] = [
+                { wch: 14 },
+                { wch: 12 },
+                { wch: 28 },
+                { wch: 20 },
+                { wch: 16 },
+            ];
+            // ==========================================
+            // CREATE WORKBOOK
+            // ==========================================
+
+            const workbook =
+                XLSX.utils.book_new();
+
+
+            // ==========================================
+            // SUMMARY SHEET
+            // ==========================================
+
+            const summaryWorksheet =
+                XLSX.utils.json_to_sheet(
+                    summaryRows
+                );
+
+            summaryWorksheet["!cols"] = [
+                { wch: 14 },
+                { wch: 22 },
+                { wch: 12 },
+                { wch: 12 },
+                { wch: 14 },
+                { wch: 12 },
+                { wch: 18 },
+            ];
+
+            XLSX.utils.book_append_sheet(
+                workbook,
+                summaryWorksheet,
+                "Summary"
+            );
+
+
+            // ==========================================
+            // SEPARATE SHEET FOR EACH CLASS
+            // ==========================================
+
+            const classGroups = {};
+
+            attendanceRows.forEach((row) => {
+
+                const className =
+                    row.Class ||
+                    "Unknown Class";
+
+                if (!classGroups[className]) {
+                    classGroups[className] = [];
+                }
+
+                classGroups[className].push(row);
+
+            });
+
+
+            Object.keys(classGroups)
+                .sort((a, b) =>
+                    a.localeCompare(
+                        b,
+                        undefined,
+                        {
+                            numeric: true,
+                            sensitivity: "base",
+                        }
+                    )
+                )
+                .forEach((className) => {
+
+                    const classRows =
+                        classGroups[className];
+
+                    classRows.sort((a, b) => {
+
+                        const dateCompare =
+                            String(a.Date)
+                                .localeCompare(
+                                    String(b.Date)
+                                );
+
+                        if (dateCompare !== 0) {
+                            return dateCompare;
+                        }
+
+                        return Number(a.RollNo || 0) -
+                            Number(b.RollNo || 0);
+
+                    });
+
+
+                    // Class name is already the Excel sheet name,
+                    // so do not repeat it as a column.
+
+                    const classSheetRows =
+                        classRows.map((row) => ({
+                            "Student Name":
+                                row["Student Name"] || "",
+                            "Roll No":
+                                row.RollNo || "",
+                            Date:
+                                row.Date || "",
+                            Status:
+                                row.Status || "",
+                        }));
+
+
+                    const worksheet =
+                        XLSX.utils.json_to_sheet(
+                            classSheetRows
+                        );
+
+
+                    worksheet["!cols"] = [
+                        { wch: 28 },
+                        { wch: 12 },
+                        { wch: 14 },
+                        { wch: 16 },
+                    ];
+
+
+                    let sheetName =
+                        String(className)
+                            .replace(
+                                /[\\\/\?\*\[\]\:]/g,
+                                ""
+                            )
+                            .trim();
+
+                    if (!sheetName) {
+                        sheetName = "Class";
+                    }
+
+                    sheetName =
+                        sheetName.substring(
+                            0,
+                            31
+                        );
+
+
+                    XLSX.utils.book_append_sheet(
+                        workbook,
+                        worksheet,
+                        sheetName
+                    );
+
+                });
+
+
+
+            // ==========================================
+            // DOWNLOAD
+            // ==========================================
+
+            XLSX.writeFile(
+                workbook,
+                fileName
+            );
+
+
+            setMessage(
+                "Attendance Excel file downloaded successfully."
+            );
+
+        } catch (err) {
+
+            console.error(
+                "Attendance Excel Export Error:",
+                err
+            );
+
+            setError(
+                "Unable to export attendance to Excel."
+            );
+
+        } finally {
+
+            setExporting(false);
+
+        }
+
+    };
+
+    // ==========================================
     // SAVE ATTENDANCE
     // ==========================================
 
@@ -833,6 +1243,440 @@ const Attendance = () => {
 
 
     // ==========================================
+    // EXCEL EXPORT
+    // ==========================================
+
+    const handleExcelExport = async () => {
+
+        // Class selection is not required for Excel export.
+        //
+        // Admin:
+        // Export all classes when no classId is supplied.
+        //
+        // Teacher:
+        // Backend automatically limits the export
+        // to the teacher's assigned class/classes.
+
+        if (!exportFromDate || !exportToDate) {
+            setError("Please select both From Date and To Date.");
+            return;
+        }
+
+        if (exportFromDate > exportToDate) {
+            setError("From Date cannot be later than To Date.");
+            return;
+        }
+
+        try {
+
+            setExporting(true);
+            setError("");
+            setMessage("");
+
+            // ==========================================
+            // BS → AD FOR BACKEND EXPORT
+            // ==========================================
+
+            const exportFromDateAD =
+                toEnglishDate(exportFromDate);
+
+            const exportToDateAD =
+                toEnglishDate(exportToDate);
+
+            if (!exportFromDateAD || !exportToDateAD) {
+
+                setError(
+                    "Invalid export date."
+                );
+
+                return;
+            }
+
+            // ==========================================
+            // GET ATTENDANCE FROM BACKEND
+            // ==========================================
+
+            const response = await api.get(
+                `/attendance/export?fromDate=${encodeURIComponent(
+                    exportFromDateAD
+                )}&toDate=${encodeURIComponent(
+                    exportToDateAD
+                )}`
+            );
+
+            console.log("Attendance Export API Response:", response.data);
+
+            const records =
+                response.data?.records ||
+                response.data?.data ||
+                response.data?.attendance ||
+                response.data?.exportData ||
+                [];
+
+            console.log(
+                "Attendance Export Records:",
+                records
+            );
+
+            const attendanceRows = [];
+            const summaryRows = [];
+
+            // ==========================================
+            // BUILD EXCEL ROWS
+            // ==========================================
+
+            records.forEach((record) => {
+
+                attendanceRows.push({
+                    Date:
+                        record.Date ||
+                        record.date ||
+                        "",
+
+                    Class:
+                        record.Class ||
+                        record.className ||
+                        "Unknown Class",
+
+                    RollNo:
+                        record.RollNo ||
+                        record.rollNo ||
+                        "",
+
+                    "Student Name":
+                        record["Student Name"] ||
+                        record.studentName ||
+                        record.name ||
+                        "",
+
+                    Status:
+                        record.Status ||
+                        record.status ||
+                        "Not Marked",
+                });
+
+            });
+
+            // ==========================================
+            // BUILD SUMMARY
+            // ==========================================
+
+            const summaryMap = {};
+
+            attendanceRows.forEach((row) => {
+
+                const key =
+                    `${row.Date}__${row.Class}`;
+
+                if (!summaryMap[key]) {
+
+                    summaryMap[key] = {
+                        Date: row.Date,
+                        Class: row.Class,
+                        Present: 0,
+                        Absent: 0,
+                        "Not Marked": 0,
+                        Total: 0,
+                    };
+
+                }
+
+                summaryMap[key].Total++;
+
+                if (row.Status === "Present") {
+                    summaryMap[key].Present++;
+                }
+                else if (row.Status === "Absent") {
+                    summaryMap[key].Absent++;
+                }
+                else {
+                    summaryMap[key]["Not Marked"]++;
+                }
+
+            });
+
+            Object.values(summaryMap).forEach((summary) => {
+
+                summary["Attendance %"] =
+                    summary.Total > 0
+                        ? `${Math.round(
+                            (summary.Present /
+                                summary.Total) *
+                            100
+                        )}%`
+                        : "0%";
+
+                summaryRows.push(summary);
+
+            });
+            // ==========================================
+            // NO RECORDS
+            // ==========================================
+
+            if (!records.length) {
+
+                setError(
+                    "No attendance records found for the selected date range."
+                );
+
+                return;
+            }
+
+            // ==========================================
+            // CREATE WORKBOOK
+            // ==========================================
+
+            const workbook =
+                XLSX.utils.book_new();
+
+
+            // ==========================================
+            // SUMMARY SHEET
+            // ==========================================
+
+            const summaryWorksheet =
+                XLSX.utils.json_to_sheet(
+                    summaryRows
+                );
+
+            summaryWorksheet["!cols"] = [
+                { wch: 14 },
+                { wch: 22 },
+                { wch: 12 },
+                { wch: 12 },
+                { wch: 14 },
+                { wch: 12 },
+                { wch: 18 },
+            ];
+
+            XLSX.utils.book_append_sheet(
+                workbook,
+                summaryWorksheet,
+                "Summary"
+            );
+
+
+            // ==========================================
+            // GROUP ATTENDANCE BY CLASS
+            // ==========================================
+
+            const classGroups = {};
+
+            attendanceRows.forEach((row) => {
+
+                const className =
+                    row.Class ||
+                    "Unknown Class";
+
+                if (!classGroups[className]) {
+                    classGroups[className] = [];
+                }
+
+                classGroups[className].push(row);
+
+            });
+
+
+            // ==========================================
+            // CREATE ONE SHEET PER CLASS
+            // ==========================================
+
+            Object.keys(classGroups)
+                .sort((a, b) =>
+                    a.localeCompare(
+                        b,
+                        undefined,
+                        {
+                            numeric: true,
+                            sensitivity: "base",
+                        }
+                    )
+                )
+                .forEach((className) => {
+
+                    const classRows =
+                        classGroups[className];
+
+
+                    // Remove Class column because
+                    // the worksheet name identifies the class.
+
+                    const classSheetRows =
+                        classRows
+                            .sort((a, b) => {
+
+                                const dateCompare =
+                                    String(a.Date)
+                                        .localeCompare(
+                                            String(b.Date)
+                                        );
+
+                                if (dateCompare !== 0) {
+                                    return dateCompare;
+                                }
+
+                                return (
+                                    Number(a.RollNo || 0) -
+                                    Number(b.RollNo || 0)
+                                );
+
+                            })
+                            .map((row) => ({
+
+                                "Student Name":
+                                    row["Student Name"] ||
+                                    "",
+
+                                "Roll No":
+                                    row.RollNo ||
+                                    "",
+
+                                Date:
+                                    row.Date ||
+                                    "",
+
+                                Status:
+                                    row.Status ||
+                                    "Not Marked",
+
+                            }));
+
+
+                    const worksheet =
+                        XLSX.utils.json_to_sheet(
+                            classSheetRows
+                        );
+
+
+                    worksheet["!cols"] = [
+                        { wch: 28 },
+                        { wch: 12 },
+                        { wch: 14 },
+                        { wch: 16 },
+                    ];
+
+
+                    // Excel sheet names cannot contain
+                    // these characters and cannot exceed 31 chars.
+
+                    let sheetName =
+                        String(className)
+                            .replace(
+                                /[\\\/\?\*\[\]\:]/g,
+                                ""
+                            )
+                            .trim();
+
+                    if (!sheetName) {
+                        sheetName = "Class";
+                    }
+
+                    sheetName =
+                        sheetName.substring(
+                            0,
+                            31
+                        );
+
+
+                    // Avoid duplicate sheet names.
+
+                    let finalSheetName =
+                        sheetName;
+
+                    let sheetCounter = 2;
+
+                    while (
+                        workbook.SheetNames.includes(
+                            finalSheetName
+                        )
+                    ) {
+
+                        const suffix =
+                            `_${sheetCounter}`;
+
+                        finalSheetName =
+                            sheetName.substring(
+                                0,
+                                31 - suffix.length
+                            ) + suffix;
+
+                        sheetCounter++;
+
+                    }
+
+
+                    XLSX.utils.book_append_sheet(
+                        workbook,
+                        worksheet,
+                        finalSheetName
+                    );
+
+                });
+
+// FILE NAME
+            // ==========================================
+
+            const className =
+                classes.find(
+                    (classItem) =>
+                        String(classItem._id) ===
+                        String(selectedClass)
+                )?.name ||
+                classes.find(
+                    (classItem) =>
+                        String(classItem._id) ===
+                        String(selectedClass)
+                )?.className ||
+                "All_Classes";
+
+            const safeClassName =
+                className
+                    .replace(
+                        /[^a-z0-9]+/gi,
+                        "_"
+                    )
+                    .replace(
+                        /^_+|_+$/g,
+                        ""
+                    );
+
+            const fileName =
+                exportFromDate === exportToDate
+                    ? `Attendance_${safeClassName}_${exportFromDate}.xlsx`
+                    : `Attendance_${safeClassName}_${exportFromDate}_to_${exportToDate}.xlsx`;
+
+
+            // ==========================================
+            // DOWNLOAD
+            // ==========================================
+
+            XLSX.writeFile(
+                workbook,
+                fileName
+            );
+
+            setMessage(
+                "Attendance Excel file downloaded successfully."
+            );
+
+        } catch (err) {
+
+            console.error(
+                "Excel Export Error:",
+                err
+            );
+
+            setError(
+                err.response?.data?.message ||
+                "Unable to export attendance."
+            );
+
+        } finally {
+
+            setExporting(false);
+        }
+    };
+    // ==========================================
     // CALCULATE SUMMARY
     // ==========================================
 
@@ -936,7 +1780,7 @@ const Attendance = () => {
                 <div className="attendance-loading-card">
 
                     <div className="attendance-loading-icon">
-                        <FaClipboardCheck />
+                        <ClipboardCheck />
                     </div>
 
                     <div className="attendance-spinner" />
@@ -977,7 +1821,7 @@ const Attendance = () => {
                         <div className="attendance-title-row">
 
                             <div className="attendance-title-icon">
-                                <FaClipboardCheck />
+                                <ClipboardCheck />
                             </div>
 
                             <div>
@@ -1019,7 +1863,7 @@ const Attendance = () => {
                 <div className="attendance-alert attendance-alert-error">
 
                     <div className="attendance-alert-icon">
-                        <FaTimes />
+                        <X />
                     </div>
 
                     <div>
@@ -1045,7 +1889,7 @@ const Attendance = () => {
                 <div className="attendance-alert attendance-alert-success">
 
                     <div className="attendance-alert-icon">
-                        <FaCheck />
+                        <Check />
                     </div>
 
                     <div>
@@ -1066,6 +1910,88 @@ const Attendance = () => {
                 SETUP CARD
             ====================================== */}
 
+            {/* ======================================
+                EXCEL EXPORT
+            ====================================== */}
+
+            <div className="attendance-export-card">
+
+                <div className="attendance-export-header">
+
+                    <div className="attendance-export-icon">
+                        <Download />
+                    </div>
+
+                    <div>
+                        <h3>
+                            Export Attendance
+                        </h3>
+
+                        <p>
+                            Download attendance for one day or a date range.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div className="attendance-export-fields">
+
+                    <div className="attendance-export-field">
+
+                        <label htmlFor="export-from-date">
+                            From Date
+                        </label>
+
+                        <NepaliCalendar
+    value={exportFromDate}
+    onChange={setExportFromDate}
+    placeholder="Select From Date"
+/>
+
+                    </div>
+
+
+                    <div className="attendance-export-field">
+
+                        <label htmlFor="export-to-date">
+                            To Date
+                        </label>
+
+                        <NepaliCalendar
+    value={exportToDate}
+    onChange={setExportToDate}
+    placeholder="Select To Date"
+/>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        className="attendance-export-button"
+                        onClick={handleExcelExport}
+                        disabled={
+                              exporting ||
+                              !exportFromDate ||
+                              !exportToDate
+                          }
+                    >
+
+                        <Download />
+
+                        <span>
+                            {exporting
+                                ? "Preparing Excel..."
+                                : "Download Excel"}
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
             <div className="attendance-setup-card">
 
                 <div className="attendance-setup-header">
@@ -1073,7 +1999,7 @@ const Attendance = () => {
                     <div className="setup-heading">
 
                         <div className="setup-heading-icon">
-                            <FaCalendarAlt />
+                            <CalendarDays />
                         </div>
 
                         <div>
@@ -1092,7 +2018,7 @@ const Attendance = () => {
 
                     {existingRecord && (
                         <div className="record-badge">
-                            <FaCheck />
+                            <Check />
                             Already marked
                         </div>
                     )}
@@ -1113,7 +2039,7 @@ const Attendance = () => {
 
                         <div className="input-wrapper">
 
-                            <FaUsers className="input-icon" />
+                            <Users className="input-icon" />
 
                             {isTeacher ? (
 
@@ -1200,7 +2126,7 @@ const Attendance = () => {
 
                         <div className="input-wrapper">
 
-                            <FaCalendarAlt className="input-icon" />
+                            <CalendarDays className="input-icon" />
 
                             <NepaliCalendar
                                         value={selectedDate}
@@ -1230,7 +2156,7 @@ const Attendance = () => {
                 <div className="existing-attendance">
 
                     <div className="existing-attendance-icon">
-                        <FaInfoCircle />
+                        <Info />
                     </div>
 
                     <div className="existing-attendance-content">
@@ -1283,7 +2209,7 @@ const Attendance = () => {
                             <div className="students-heading">
 
                                 <div className="students-heading-icon">
-                                    <FaUsers />
+                                    <Users />
                                 </div>
 
                                 <div>
@@ -1316,7 +2242,7 @@ const Attendance = () => {
                                             markAllPresent
                                         }
                                     >
-                                        <FaUserCheck />
+                                        <UserCheck />
                                         All Present
                                     </button>
 
@@ -1327,7 +2253,7 @@ const Attendance = () => {
                                             markAllAbsent
                                         }
                                     >
-                                        <FaUserTimes />
+                                        <UserX />
                                         All Absent
                                     </button>
 
@@ -1349,7 +2275,7 @@ const Attendance = () => {
                                 <div className="summary-item">
 
                                     <div className="summary-icon summary-total-icon">
-                                        <FaUsers />
+                                        <Users />
                                     </div>
 
                                     <div>
@@ -1371,7 +2297,7 @@ const Attendance = () => {
                                 <div className="summary-item">
 
                                     <div className="summary-icon summary-present-icon">
-                                        <FaUserCheck />
+                                        <UserCheck />
                                     </div>
 
                                     <div>
@@ -1393,7 +2319,7 @@ const Attendance = () => {
                                 <div className="summary-item">
 
                                     <div className="summary-icon summary-absent-icon">
-                                        <FaUserTimes />
+                                        <UserX />
                                     </div>
 
                                     <div>
@@ -1415,7 +2341,7 @@ const Attendance = () => {
                                 <div className="summary-item">
 
                                     <div className="summary-icon summary-percent-icon">
-                                        <FaChartPie />
+                                        <PieChart />
                                     </div>
 
                                     <div>
@@ -1460,7 +2386,7 @@ const Attendance = () => {
                             <div className="empty-students">
 
                                 <div className="empty-students-icon">
-                                    <FaUsers />
+                                    <Users />
                                 </div>
 
                                 <h3>
@@ -1586,7 +2512,7 @@ const Attendance = () => {
                                                                 }
                                                             >
 
-                                                                <FaCheck />
+                                                                <Check />
 
                                                                 <span>
                                                                     Present
@@ -1611,7 +2537,7 @@ const Attendance = () => {
                                                                 }
                                                             >
 
-                                                                <FaTimes />
+                                                                <X />
 
                                                                 <span>
                                                                     Absent
@@ -1658,7 +2584,7 @@ const Attendance = () => {
                                         }
                                     >
 
-                                        <FaSave />
+                                        <Save />
 
                                         <span>
                                             {saving
@@ -1686,6 +2612,8 @@ const Attendance = () => {
 
 
 export default Attendance;
+
+
 
 
 

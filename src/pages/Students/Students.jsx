@@ -5,18 +5,19 @@ import {
 } from "react";
 
 import { Navigate } from "react-router-dom";
+import * as XLSX from "xlsx";
 
 import {
-    FaEdit,
-    FaPlus,
-    FaTrash,
-    FaTimes,
-    FaFileExcel,
-    FaUserGraduate,
-    FaUsers,
-    FaChevronDown,
-    FaFilter,
-} from "react-icons/fa";
+    Pencil,
+    Plus,
+    Trash2,
+    X,
+    FileSpreadsheet,
+    GraduationCap,
+    Users,
+    ChevronDown,
+    Filter,
+} from "lucide-react";
 
 import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
@@ -401,6 +402,52 @@ const Students = () => {
 
 
     // =========================================================
+    // EXCEL TEMPLATE
+    // =========================================================
+
+    const downloadExcelTemplate = () => {
+
+        const templateData = [
+            {
+                RollNo: "1",
+                Name: "John Doe",
+                Class: "Class 10",
+                Active: "Yes",
+            },
+            {
+                RollNo: "2",
+                Name: "Jane Smith",
+                Class: "Class 10",
+                Active: "Yes",
+            },
+        ];
+
+        const worksheet =
+            XLSX.utils.json_to_sheet(templateData);
+
+        worksheet["!cols"] = [
+            { wch: 12 },
+            { wch: 25 },
+            { wch: 20 },
+            { wch: 12 },
+        ];
+
+        const workbook =
+            XLSX.utils.book_new();
+
+        XLSX.utils.book_append_sheet(
+            workbook,
+            worksheet,
+            "Students"
+        );
+
+        XLSX.writeFile(
+            workbook,
+            "Student_Import_Template.xlsx"
+        );
+    };
+
+    // =========================================================
     // FILE PICKER
     // =========================================================
 
@@ -496,9 +543,14 @@ const Students = () => {
 
             const response =
                 await api.post(
-                    "/students/bulk",
-                    formData
-                );
+    "/students/bulk",
+    formData,
+    {
+        headers: {
+            "Content-Type": undefined,
+        },
+    }
+);
 
 
             setUploadResult(
@@ -843,12 +895,28 @@ const Students = () => {
 
                     <button
                         type="button"
+                        className="download-template-button"
+                        onClick={downloadExcelTemplate}
+                        disabled={uploading}
+                    >
+
+                        <FileSpreadsheet />
+
+                        <span>
+                            Download Template
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
                         className="import-excel-button"
                         onClick={openFilePicker}
                         disabled={uploading}
                     >
 
-                        <FaFileExcel />
+                        <FileSpreadsheet />
 
                         <span>
                             {uploading
@@ -866,7 +934,7 @@ const Students = () => {
                         disabled={uploading}
                     >
 
-                        <FaPlus />
+                        <Plus />
 
                         <span>
                             Add Student
@@ -897,7 +965,7 @@ const Students = () => {
                 <div className="students-filter-heading">
 
                     <div className="students-filter-icon">
-                        <FaFilter />
+                        <Filter />
                     </div>
 
                     <div>
@@ -961,7 +1029,7 @@ const Students = () => {
 
                         </select>
 
-                        <FaChevronDown
+                        <ChevronDown
                             className="students-filter-chevron"
                         />
 
@@ -998,7 +1066,7 @@ const Students = () => {
                 <div className="student-overview-item">
 
                     <div className="overview-icon total">
-                        <FaUsers />
+                        <Users />
                     </div>
 
                     <div>
@@ -1061,7 +1129,7 @@ const Students = () => {
                 <div className="student-overview-item">
 
                     <div className="overview-icon classes">
-                        <FaUsers />
+                        <Users />
                     </div>
 
                     <div>
@@ -1131,7 +1199,7 @@ const Students = () => {
 
                     <div className="students-upload-title">
 
-                        <FaFileExcel />
+                        <FileSpreadsheet />
 
                         <strong>
                             Excel upload completed successfully.
@@ -1238,7 +1306,7 @@ const Students = () => {
                     <div className="students-empty">
 
                         <div className="students-empty-icon">
-                            <FaUserGraduate />
+                            <GraduationCap />
                         </div>
 
                         <h3>
@@ -1254,7 +1322,7 @@ const Students = () => {
                             onClick={openAddModal}
                         >
 
-                            <FaPlus />
+                            <Plus />
 
                             Add Student
 
@@ -1271,7 +1339,7 @@ const Students = () => {
                     <div className="students-empty">
 
                         <div className="students-empty-icon">
-                            <FaUsers />
+                            <Users />
                         </div>
 
                         <h3>
@@ -1294,7 +1362,7 @@ const Students = () => {
                             }
                         >
 
-                            <FaUsers />
+                            <Users />
 
                             Show All Classes
 
@@ -1336,7 +1404,7 @@ const Students = () => {
                                         <div className="student-class-title">
 
                                             <div className="student-class-icon">
-                                                <FaUsers />
+                                                <Users />
                                             </div>
 
                                             <div>
@@ -1520,7 +1588,7 @@ const Students = () => {
                                                                             }
                                                                         >
 
-                                                                            <FaEdit />
+                                                                            <Pencil />
 
                                                                         </button>
 
@@ -1537,7 +1605,7 @@ const Students = () => {
                                                                             }
                                                                         >
 
-                                                                            <FaTrash />
+                                                                            <Trash2 />
 
                                                                         </button>
 
@@ -1617,7 +1685,7 @@ const Students = () => {
                                 aria-label="Close modal"
                             >
 
-                                <FaTimes />
+                                <X />
 
                             </button>
 
@@ -1783,3 +1851,4 @@ const Students = () => {
 
 
 export default Students;
+

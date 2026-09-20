@@ -1,15 +1,15 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
-    FaUserShield,
-    FaChalkboardTeacher,
-    FaEye,
-    FaEyeSlash,
-    FaArrowRight,
-    FaGraduationCap,
-    FaLock,
-} from "react-icons/fa";
+    ShieldUser,
+    Presentation,
+    Eye,
+    EyeOff,
+    ArrowRight,
+    GraduationCap,
+    Lock,
+} from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
 
@@ -158,7 +158,7 @@ const Login = () => {
                 <div className="login-brand">
 
                     <div className="login-brand-icon">
-                        <FaGraduationCap />
+                        <GraduationCap />
                     </div>
 
                     <div>
@@ -211,7 +211,7 @@ const Login = () => {
                         >
 
                             <span className="role-icon">
-                                <FaUserShield />
+                                <ShieldUser />
                             </span>
 
                             <span className="role-content">
@@ -240,7 +240,7 @@ const Login = () => {
                         >
 
                             <span className="role-icon">
-                                <FaChalkboardTeacher />
+                                <Presentation />
                             </span>
 
                             <span className="role-content">
@@ -305,7 +305,7 @@ const Login = () => {
 
                             <div className="password-field">
 
-                                <FaLock className="password-lock-icon" />
+                                <Lock className="password-lock-icon" />
 
                                 <input
                                     id="password"
@@ -337,8 +337,8 @@ const Login = () => {
                                     }
                                 >
                                     {showPassword
-                                        ? <FaEyeSlash />
-                                        : <FaEye />
+                                        ? <EyeOff />
+                                        : <Eye />
                                     }
                                 </button>
 
@@ -365,7 +365,7 @@ const Login = () => {
                             </span>
 
                             {!loading && (
-                                <FaArrowRight />
+                                <ArrowRight />
                             )}
 
                         </button>
@@ -380,7 +380,7 @@ const Login = () => {
                         </span>
 
                         <span className="footer-dot">
-                            â€¢
+                            •
                         </span>
 
                         <span>
@@ -398,5 +398,7 @@ const Login = () => {
 };
 
 export default Login;
+
+
 
 

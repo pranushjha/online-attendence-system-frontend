@@ -1,4 +1,4 @@
-import {
+﻿import {
     createContext,
     useContext,
     useEffect,
@@ -288,3 +288,4 @@ export const useAuth = () => {
 
     return context;
 };
+

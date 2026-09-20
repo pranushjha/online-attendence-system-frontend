@@ -980,3 +980,404 @@
         border-radius: 10px;
     }
 }
+/* =========================================================
+   FINAL MOBILE RESPONSIVE FIX
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    html,
+    body,
+    #root {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden !important;
+    }
+
+    .classes-page,
+    .classes-container,
+    .classes-content {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    .classes-page > *,
+    .classes-container > *,
+    .classes-content > * {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .table-wrapper,
+    .table-container,
+    .classes-table-wrapper,
+    .class-table-wrapper,
+    .responsive-table,
+    .table-responsive {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        box-sizing: border-box;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    table th,
+    table td {
+        padding: 10px 7px;
+        font-size: 12px;
+        white-space: normal;
+        word-break: break-word;
+        box-sizing: border-box;
+    }
+
+    td button {
+        max-width: 42px;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 400px) {
+
+    table th,
+    table td {
+        padding: 9px 5px;
+        font-size: 11px;
+    }
+}
+
+
+/* =========================================================
+   FINAL MOBILE RESPONSIVE FIX
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .classes-page {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .classes-header {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .classes-header h1 {
+        font-size: 28px;
+        line-height: 1.2;
+    }
+
+    .page-description {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .add-class-button {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .classes-card {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .table-wrapper {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: auto !important;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        box-sizing: border-box;
+    }
+
+    .classes-table {
+        width: max-content;
+        min-width: 650px;
+    }
+
+    .classes-table th,
+    .classes-table td {
+        white-space: nowrap;
+    }
+
+    .modal-overlay {
+        padding: 12px;
+        box-sizing: border-box;
+    }
+
+    .class-modal {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .class-form {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .class-form input,
+    .class-form select {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    .cancel-button,
+    .save-button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .classes-page {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .classes-header h1 {
+        font-size: 25px;
+    }
+
+    .classes-card {
+        border-radius: 10px;
+    }
+
+    .classes-table {
+        min-width: 600px;
+    }
+}
+
+/* ==========================================================
+   MOBILE RESPONSIVE FINAL FIX
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    .classes-page,
+    .classes-container,
+    .classes-content,
+    .classes-main {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .classes-page {
+        padding: 20px 12px !important;
+        margin: 0 !important;
+        overflow-x: hidden !important;
+    }
+
+    .classes-header {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .classes-card,
+    .classes-panel,
+    .classes-section {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .classes-table-wrapper,
+    .table-wrapper,
+    .classes-table-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .classes-table {
+        min-width: 600px;
+    }
+
+    .classes-actions {
+        width: 100% !important;
+        flex-wrap: wrap !important;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .classes-page {
+        padding: 16px 10px !important;
+    }
+
+    .classes-table {
+        min-width: 560px;
+    }
+}
+
+/* =========================================================
+   FINAL MOBILE FIX - NO HORIZONTAL TABLE SCROLL
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .classes-page {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
+
+    .classes-page *,
+    .classes-page *::before,
+    .classes-page *::after {
+        box-sizing: border-box !important;
+    }
+
+    .classes-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .classes-page .table-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .classes-table {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        table-layout: auto !important;
+    }
+
+    .classes-table thead {
+        display: none !important;
+    }
+
+    .classes-table tbody {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .classes-table tr {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: 14px !important;
+        border-bottom: 1px solid #E5E7EB !important;
+    }
+
+    .classes-table td {
+        display: grid !important;
+        grid-template-columns: 105px minmax(0, 1fr) !important;
+        align-items: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: 7px 0 !important;
+        border: none !important;
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+        text-align: left !important;
+    }
+
+    .classes-table td::before {
+        font-size: 10px !important;
+        font-weight: 800 !important;
+        letter-spacing: .06em !important;
+        text-transform: uppercase !important;
+        color: #718783 !important;
+    }
+
+    .classes-table td:nth-child(1)::before {
+        content: "Class Name";
+    }
+
+    .classes-table td:nth-child(2)::before {
+        content: "Class Teacher";
+    }
+
+    .classes-table td:nth-child(3)::before {
+        content: "Teacher Email";
+    }
+
+    .classes-table td:nth-child(4)::before {
+        content: "Actions";
+    }
+
+    .classes-table td > * {
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .class-action-buttons,
+    .classes-action-buttons,
+    .action-buttons {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        min-width: 0 !important;
+    }
+}
+
+
+@media (max-width: 400px) {
+
+    .classes-page {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    .classes-table tr {
+        padding: 12px 10px !important;
+    }
+
+    .classes-table td {
+        grid-template-columns: 92px minmax(0, 1fr) !important;
+        gap: 7px !important;
+        font-size: 13px !important;
+    }
+
+    .classes-table td::before {
+        font-size: 9px !important;
+    }
+}

@@ -1,0 +1,120 @@
+﻿/* =========================================================
+   ATTENDANCE SYSTEM — GLOBAL DESIGN SYSTEM
+========================================================= */
+
+:root {
+    /* Brand */
+    --primary: #404E3B;
+    --primary-dark: #344130;
+    --primary-light: #7B9669;
+    --accent: #7B9669;
+
+    /* Backgrounds */
+    --background: #E6E6E6;
+    --surface: #FFFFFF;
+    --surface-soft: #F3F3F1;
+
+    /* Text */
+    --text: #27342F;
+    --text-primary: #27342F;
+    --text-secondary: #6C8480;
+    --text-muted: #8A9894;
+
+    /* Functional */
+    --success: #3F7D4A;
+    --success-bg: #E8F1E8;
+
+    --warning: #B7791F;
+    --warning-bg: #FFF4DD;
+
+    --danger: #C94A4A;
+    --danger-bg: #FBEAEA;
+
+    /* Borders */
+    --border: #D6D9D5;
+    --border-light: #E4E6E3;
+
+    /* Effects */
+    --shadow-sm: 0 2px 8px rgba(64, 78, 59, 0.06);
+    --shadow: 0 8px 24px rgba(64, 78, 59, 0.08);
+    --shadow-lg: 0 14px 35px rgba(64, 78, 59, 0.12);
+
+    /* Compatibility aliases */
+    --text-h: #27342F;
+    --social-bg: #F3F3F1;
+    --accent-bg: #E8EFE5;
+    --accent-border: #B9C8B0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    min-height: 100%;
+}
+
+html {
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+body {
+    min-width: 320px;
+
+    background: var(--background);
+    color: var(--text);
+
+    line-height: 1.5;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Selection */
+::selection {
+    background: var(--primary-light);
+    color: #FFFFFF;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #B8C0BA;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-light);
+}

@@ -419,3 +419,115 @@
         font-size: 12px;
     }
 }
+/* ==========================================================
+   MOBILE RESPONSIVE GLOBAL OVERRIDE
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    .my-class-page {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
+
+    .class-information,
+    .my-class-students {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .my-class-table-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+}
+
+/* =========================================================
+   FINAL MOBILE FIX - NO HORIZONTAL TABLE SCROLL
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .my-class-page {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    .my-class-table-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .my-class-table {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .my-class-table thead {
+        display: none !important;
+    }
+
+    .my-class-table tbody {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .my-class-table tr {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: 14px !important;
+        border-bottom: 1px solid #E5E7EB !important;
+    }
+
+    .my-class-table td {
+        display: grid !important;
+        grid-template-columns: 100px minmax(0, 1fr) !important;
+        gap: 10px !important;
+        align-items: center !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: 7px 0 !important;
+        border: none !important;
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+    }
+
+    .my-class-table td::before {
+        font-size: 10px !important;
+        font-weight: 800 !important;
+        text-transform: uppercase !important;
+        color: #718783 !important;
+    }
+
+    .my-class-table td:nth-child(1)::before {
+        content: "Roll No";
+    }
+
+    .my-class-table td:nth-child(2)::before {
+        content: "Student";
+    }
+
+    .my-class-table td:nth-child(3)::before {
+        content: "Status";
+    }
+
+    .my-class-table td:nth-child(4)::before {
+        content: "Actions";
+    }
+}

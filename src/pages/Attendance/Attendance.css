@@ -1951,3 +1951,490 @@
         padding-right: 14px;
     }
 }
+/* =========================================================
+   FINAL MOBILE RESPONSIVE FIX
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    html,
+    body,
+    #root {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden !important;
+    }
+
+    .attendance-page,
+    .attendance-container,
+    .attendance-content {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    /* Prevent cards from becoming wider than viewport */
+    .attendance-page > *,
+    .attendance-container > *,
+    .attendance-content > * {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* All table wrappers */
+    .table-wrapper,
+    .table-container,
+    .attendance-table-wrapper,
+    .attendance-records-table-wrapper,
+    .records-table-wrapper,
+    .report-table-wrapper,
+    .responsive-table,
+    .table-responsive {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        box-sizing: border-box;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Tables must not force the entire page wider */
+    table {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Compact table cells */
+    table th,
+    table td {
+        padding: 10px 8px;
+        font-size: 13px;
+        box-sizing: border-box;
+    }
+
+    /* Cards */
+    .card,
+    .section-card,
+    .report-card,
+    .attendance-card {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 400px) {
+
+    table th,
+    table td {
+        padding: 9px 6px;
+        font-size: 12px;
+    }
+}
+
+
+/* =========================================================
+   FINAL MOBILE RESPONSIVE FIX
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .attendance-page {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .attendance-header {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .attendance-header-content {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .attendance-title-row {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .attendance-title-row h1 {
+        font-size: 28px;
+        line-height: 1.2;
+    }
+
+    .attendance-page-description {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .attendance-export-card,
+    .attendance-setup-card,
+    .attendance-workspace {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .attendance-export-fields {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    .attendance-export-field {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .attendance-export-field input {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .attendance-export-button {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .attendance-filters {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    .filter-group {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .input-wrapper {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .input-wrapper input,
+    .input-wrapper select {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .students-header {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        box-sizing: border-box;
+    }
+
+    .students-heading {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .bulk-actions {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        box-sizing: border-box;
+    }
+
+    .bulk-button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .attendance-summary {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        box-sizing: border-box;
+    }
+
+    .summary-item {
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .summary-divider {
+        display: none;
+    }
+
+    .attendance-list-header {
+        display: none;
+    }
+
+    .attendance-list {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .attendance-row {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .student-info {
+        flex: 1 1 180px;
+        min-width: 0;
+    }
+
+    .student-details {
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .status-area {
+        flex: 1 1 100%;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .status-buttons {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        gap: 8px;
+        box-sizing: border-box;
+    }
+
+    .status-buttons button {
+        flex: 1;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .submit-section {
+        width: 100%;
+        max-width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        box-sizing: border-box;
+    }
+
+    .submit-info {
+        min-width: 0;
+    }
+
+    .save-attendance-button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .attendance-page {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .attendance-title-row h1 {
+        font-size: 25px;
+    }
+
+    .attendance-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .attendance-export-card,
+    .attendance-setup-card,
+    .attendance-workspace {
+        border-radius: 10px;
+    }
+
+    .student-info {
+        flex-basis: 100%;
+    }
+}
+
+/* ==========================================================
+   MOBILE RESPONSIVE FINAL FIX
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    .attendance-page,
+    .attendance-container,
+    .attendance-content,
+    .attendance-main {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .attendance-page {
+        padding: 20px 12px !important;
+        margin: 0 !important;
+        overflow-x: hidden !important;
+    }
+
+    .attendance-header {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .attendance-card,
+    .attendance-panel,
+    .attendance-section,
+    .attendance-export-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .attendance-table-wrapper,
+    .table-wrapper,
+    .attendance-table-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    table {
+        max-width: none;
+    }
+
+    .attendance-table {
+        min-width: 650px;
+    }
+
+    .attendance-export-fields {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        flex-direction: column !important;
+    }
+
+    .attendance-export-field {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .attendance-export-button {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .attendance-page {
+        padding: 16px 10px !important;
+    }
+
+    .attendance-table {
+        min-width: 600px;
+    }
+}
+
+/* =========================================================
+   FINAL MOBILE FIX - NO PAGE HORIZONTAL OVERFLOW
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .attendance-page {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    .attendance-page *,
+    .attendance-page *::before,
+    .attendance-page *::after {
+        box-sizing: border-box !important;
+    }
+
+    .attendance-setup-card,
+    .attendance-workspace,
+    .attendance-summary,
+    .students-header,
+    .attendance-list-header,
+    .attendance-list,
+    .attendance-export-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .attendance-list-header,
+    .attendance-row {
+        min-width: 0 !important;
+    }
+
+    .attendance-row {
+        overflow: hidden !important;
+    }
+
+    .student-info,
+    .student-details,
+    .status-area,
+    .status-buttons {
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .student-details strong,
+    .student-details span {
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+    }
+
+    .status-buttons {
+        flex-wrap: wrap !important;
+    }
+
+    .status-button {
+        max-width: 100% !important;
+    }
+}

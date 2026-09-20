@@ -5,17 +5,17 @@
 } from "react";
 
 import {
-    FaChartBar,
-    FaCheckCircle,
-    FaTimesCircle,
-    FaUsers,
-    FaPercentage,
-    FaSyncAlt,
-    FaFilter,
-    FaCalendarAlt,
-    FaChalkboardTeacher,
-    FaTimes,
-} from "react-icons/fa";
+    BarChart3,
+    CircleCheck,
+    CircleX,
+    Users,
+    Percent,
+    RefreshCw,
+    Filter,
+    CalendarDays,
+    Presentation,
+    X,
+} from "lucide-react";
 
 import api from "../../services/api";
 import NepaliCalendar from "../../components/NepaliCalendar";
@@ -1223,7 +1223,7 @@ const AdminReports = () => {
                     disabled={refreshing}
                 >
 
-                    <FaSyncAlt
+                    <RefreshCw
                         className={
                             refreshing
                                 ? "refresh-spinning"
@@ -1274,7 +1274,7 @@ const AdminReports = () => {
                     <div className="admin-filter-heading">
 
                         <div className="admin-filter-icon">
-                            <FaFilter />
+                            <Filter />
                         </div>
 
 
@@ -1303,7 +1303,7 @@ const AdminReports = () => {
                             onClick={clearFilters}
                         >
 
-                            <FaTimes />
+                            <X />
 
                             Clear Filters
 
@@ -1329,7 +1329,7 @@ const AdminReports = () => {
                         <label htmlFor="report-class">
 
                             <span className="filter-label-icon">
-                                <FaUsers />
+                                <Users />
                             </span>
 
                             Class
@@ -1396,7 +1396,7 @@ const AdminReports = () => {
                         <label htmlFor="report-date">
 
                             <span className="filter-label-icon">
-                                <FaCalendarAlt />
+                                <CalendarDays />
                             </span>
 
                             Date
@@ -1426,7 +1426,7 @@ const AdminReports = () => {
                         <label htmlFor="report-teacher">
 
                             <span className="filter-label-icon">
-                                <FaChalkboardTeacher />
+                                <Presentation />
                             </span>
 
                             Teacher
@@ -1503,7 +1503,7 @@ const AdminReports = () => {
 
                             <span className="filter-chip">
 
-                                <FaUsers />
+                                <Users />
 
                                 {selectedClassName}
 
@@ -1516,7 +1516,7 @@ const AdminReports = () => {
 
                             <span className="filter-chip">
 
-                                <FaCalendarAlt />
+                                <CalendarDays />
 
                                 {(() => {
                                     const parts = String(selectedDate || "").split("-");
@@ -1538,7 +1538,7 @@ const AdminReports = () => {
 
                             <span className="filter-chip">
 
-                                <FaChalkboardTeacher />
+                                <Presentation />
 
                                 {selectedTeacherName}
 
@@ -1563,7 +1563,7 @@ const AdminReports = () => {
                 <div className="summary-card">
 
                     <div className="summary-icon">
-                        <FaUsers />
+                        <Users />
                     </div>
 
 
@@ -1588,7 +1588,7 @@ const AdminReports = () => {
                 <div className="summary-card">
 
                     <div className="summary-icon">
-                        <FaChartBar />
+                        <BarChart3 />
                     </div>
 
 
@@ -1613,7 +1613,7 @@ const AdminReports = () => {
                 <div className="summary-card">
 
                     <div className="summary-icon">
-                        <FaCheckCircle />
+                        <CircleCheck />
                     </div>
 
 
@@ -1638,7 +1638,7 @@ const AdminReports = () => {
                 <div className="summary-card">
 
                     <div className="summary-icon">
-                        <FaTimesCircle />
+                        <CircleX />
                     </div>
 
 
@@ -1663,7 +1663,7 @@ const AdminReports = () => {
                 <div className="summary-card">
 
                     <div className="summary-icon">
-                        <FaPercentage />
+                        <Percent />
                     </div>
 
 
@@ -1725,7 +1725,7 @@ const AdminReports = () => {
 
                     <div className="report-empty">
 
-                        <FaChartBar />
+                        <BarChart3 />
 
                         <h3>
                             No attendance records
@@ -1893,7 +1893,7 @@ const AdminReports = () => {
 
                     <div className="report-empty">
 
-                        <FaChartBar />
+                        <BarChart3 />
 
                         <h3>
                             No records found
@@ -2073,3 +2073,5 @@ const AdminReports = () => {
 
 
 export default AdminReports;
+
+

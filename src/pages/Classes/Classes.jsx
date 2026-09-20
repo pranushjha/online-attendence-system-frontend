@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import {
-    FaEdit,
-    FaPlus,
-    FaTrash,
-    FaTimes,
-} from "react-icons/fa";
+    Pencil,
+    Plus,
+    Trash2,
+    X,
+} from "lucide-react";
 
 import api from "../../services/api";
 import "./Classes.css";
@@ -279,7 +279,7 @@ const Classes = () => {
                     className="add-class-button"
                     onClick={openAddModal}
                 >
-                    <FaPlus />
+                    <Plus />
                     Add Class
                 </button>
 
@@ -377,7 +377,7 @@ const Classes = () => {
                                                         )
                                                     }
                                                 >
-                                                    <FaEdit />
+                                                    <Pencil />
                                                 </button>
 
                                                 <button
@@ -389,7 +389,7 @@ const Classes = () => {
                                                         )
                                                     }
                                                 >
-                                                    <FaTrash />
+                                                    <Trash2 />
                                                 </button>
 
                                             </div>
@@ -444,7 +444,7 @@ const Classes = () => {
                                 onClick={closeModal}
                                 disabled={saving}
                             >
-                                <FaTimes />
+                                <X />
                             </button>
 
                         </div>
@@ -539,3 +539,4 @@ const Classes = () => {
 };
 
 export default Classes;
+

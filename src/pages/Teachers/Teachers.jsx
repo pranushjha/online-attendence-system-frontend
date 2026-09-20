@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 import {
-    FaEdit,
-    FaPlus,
-    FaTrash,
-    FaTimes,
-    FaUserTie,
-} from "react-icons/fa";
+    Pencil,
+    Plus,
+    Trash2,
+    X,
+    UserRound,
+} from "lucide-react";
 
 import api from "../../services/api";
 
@@ -455,7 +455,7 @@ const Teachers = () => {
                     onClick={openAddModal}
                 >
 
-                    <FaPlus />
+                    <Plus />
 
                     <span>
                         Add Teacher
@@ -494,7 +494,7 @@ const Teachers = () => {
                     <div className="teachers-empty">
 
                         <div className="teachers-empty-icon">
-                            <FaUserTie />
+                            <UserRound />
                         </div>
 
                         <h3>
@@ -509,7 +509,7 @@ const Teachers = () => {
                             type="button"
                             onClick={openAddModal}
                         >
-                            <FaPlus />
+                            <Plus />
                             Add Teacher
                         </button>
 
@@ -654,7 +654,7 @@ const Teachers = () => {
                                                                 )
                                                             }
                                                         >
-                                                            <FaEdit />
+                                                            <Pencil />
                                                         </button>
 
 
@@ -669,7 +669,7 @@ const Teachers = () => {
                                                                 )
                                                             }
                                                         >
-                                                            <FaTrash />
+                                                            <Trash2 />
                                                         </button>
 
                                                     </div>
@@ -743,7 +743,7 @@ const Teachers = () => {
                                 disabled={saving}
                                 aria-label="Close modal"
                             >
-                                <FaTimes />
+                                <X />
                             </button>
 
                         </div>
@@ -917,3 +917,4 @@ const Teachers = () => {
 
 
 export default Teachers;
+

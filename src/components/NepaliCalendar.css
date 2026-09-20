@@ -1,4 +1,4 @@
-﻿.bs-calendar-wrapper {
+.bs-calendar-wrapper {
     width: 100%;
     position: relative;
 }
@@ -11,10 +11,10 @@
     align-items: center;
     gap: 12px;
     padding: 0 15px;
-    border: 1px solid #d9def0;
+    border: 1px solid #D6D9D5;
     border-radius: 12px;
-    background: #ffffff;
-    color: #172033;
+    background: #FFFFFF;
+    color: #27342F;
     cursor: pointer;
     font-family: inherit;
     font-size: 15px;
@@ -23,11 +23,11 @@
 }
 
 .bs-date-input:hover {
-    border-color: #bfc6df;
+    border-color: #C8CEC8;
 }
 
 .bs-date-input-open {
-    border-color: #6557f5;
+    border-color: #404E3B;
     box-shadow: 0 0 0 4px rgba(101, 87, 245, 0.12);
 }
 
@@ -42,18 +42,18 @@
 
 .bs-date-value {
     flex: 1;
-    color: #172033;
+    color: #27342F;
     font-weight: 500;
 }
 
 .bs-date-placeholder {
     flex: 1;
-    color: #9aa3b8;
+    color: #8A9894;
 }
 
 .bs-calendar-arrow {
     font-size: 10px;
-    color: #7d86a0;
+    color: #7D8C87;
 }
 
 .bs-calendar-popup {
@@ -64,7 +64,7 @@
     max-width: 100%;
     padding: 16px;
     box-sizing: border-box;
-    background: #ffffff;
+    background: #FFFFFF;
     border: 1px solid #e4e7f0;
     border-radius: 16px;
     box-shadow: 0 18px 45px rgba(24, 31, 56, 0.16);
@@ -99,13 +99,13 @@
 .bs-month-name {
     font-size: 17px;
     font-weight: 700;
-    color: #172033;
+    color: #27342F;
 }
 
 .bs-year-name {
     margin-top: 3px;
     font-size: 13px;
-    color: #7d86a0;
+    color: #7D8C87;
     font-weight: 500;
 }
 
@@ -123,8 +123,8 @@
 }
 
 .bs-nav-button:hover {
-    background: #ecebff;
-    color: #6557f5;
+    background: #E8EFE5;
+    color: #404E3B;
 }
 
 .bs-weekdays,
@@ -145,7 +145,7 @@
     justify-content: center;
     font-size: 11px;
     font-weight: 700;
-    color: #929ab0;
+    color: #8A9894;
     text-transform: uppercase;
 }
 
@@ -155,7 +155,7 @@
     border: 0;
     border-radius: 9px;
     background: transparent;
-    color: #30384f;
+    color: #4F625D;
     font-family: inherit;
     font-size: 13px;
     cursor: pointer;
@@ -163,8 +163,8 @@
 }
 
 .bs-day:hover {
-    background: #f0efff;
-    color: #6557f5;
+    background: #F3F3F1;
+    color: #404E3B;
 }
 
 .bs-day.empty {
@@ -176,34 +176,34 @@
 }
 
 .bs-day.today {
-    box-shadow: inset 0 0 0 1px #6557f5;
-    color: #6557f5;
+    box-shadow: inset 0 0 0 1px #404E3B;
+    color: #404E3B;
     font-weight: 700;
 }
 
 .bs-day.selected {
-    background: #6557f5;
-    color: #ffffff;
+    background: #404E3B;
+    color: #FFFFFF;
     font-weight: 700;
     box-shadow: none;
 }
 
 .bs-day.selected:hover {
-    background: #5749e8;
-    color: #ffffff;
+    background: #7B9669;
+    color: #FFFFFF;
 }
 
 .bs-calendar-footer {
     margin-top: 12px;
     padding-top: 12px;
-    border-top: 1px solid #eef0f6;
+    border-top: 1px solid #E4E6E3;
     text-align: center;
 }
 
 .bs-today-button {
     border: 0;
     background: transparent;
-    color: #6557f5;
+    color: #404E3B;
     font-family: inherit;
     font-size: 13px;
     font-weight: 700;
@@ -213,7 +213,7 @@
 }
 
 .bs-today-button:hover {
-    background: #f0efff;
+    background: #F3F3F1;
 }
 
 @media (max-width: 480px) {
@@ -222,3 +222,4 @@
         min-width: 300px;
     }
 }
+

@@ -1,16 +1,16 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
 import {
-    FaChartPie,
-    FaClipboardCheck,
-    FaFileAlt,
-    FaSchool,
-    FaSignOutAlt,
-    FaBars,
-    FaTimes,
-    FaGraduationCap,
-} from "react-icons/fa";
+    PieChart,
+    ClipboardCheck,
+    FileText,
+    School,
+    LogOut,
+    Menu,
+    X,
+    GraduationCap,
+} from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
 
@@ -25,22 +25,22 @@ const TeacherLayout = () => {
         {
             name: "Dashboard",
             path: "/teacher-dashboard",
-            icon: <FaChartPie />,
+            icon: <PieChart />,
         },
         {
             name: "My Class",
             path: "/my-class",
-            icon: <FaSchool />,
+            icon: <School />,
         },
         {
             name: "Attendance",
             path: "/attendance",
-            icon: <FaClipboardCheck />,
+            icon: <ClipboardCheck />,
         },
         {
             name: "Reports",
             path: "/teacher-reports",
-            icon: <FaFileAlt />,
+            icon: <FileText />,
         },
     ];
 
@@ -64,7 +64,7 @@ const TeacherLayout = () => {
                     onClick={() => setSidebarOpen(true)}
                     aria-label="Open navigation menu"
                 >
-                    <FaBars />
+                    <Menu />
                 </button>
 
                 <div className="mobile-header-title">
@@ -94,14 +94,14 @@ const TeacherLayout = () => {
                     onClick={closeSidebar}
                     aria-label="Close navigation menu"
                 >
-                    <FaTimes />
+                    <X />
                 </button>
 
                 {/* BRAND */}
                 <div className="sidebar-brand">
 
                     <div className="brand-icon">
-                        <FaGraduationCap />
+                        <GraduationCap />
                     </div>
 
                     <div>
@@ -170,7 +170,7 @@ const TeacherLayout = () => {
                         className="logout-button"
                         onClick={handleLogout}
                     >
-                        <FaSignOutAlt />
+                        <LogOut />
 
                         <span>
                             Logout
@@ -191,3 +191,4 @@ const TeacherLayout = () => {
 };
 
 export default TeacherLayout;
+

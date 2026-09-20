@@ -1,17 +1,17 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
 import {
-    FaChartPie,
-    FaChalkboardTeacher,
-    FaSchool,
-    FaUsers,
-    FaClipboardCheck,
-    FaFileAlt,
-    FaSignOutAlt,
-    FaBars,
-    FaTimes,
-} from "react-icons/fa";
+    PieChart,
+    Presentation,
+    School,
+    Users,
+    ClipboardCheck,
+    FileText,
+    LogOut,
+    Menu,
+    X,
+} from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
 
@@ -30,32 +30,32 @@ const AdminLayout = () => {
         {
             name: "Dashboard",
             path: "/dashboard",
-            icon: <FaChartPie />,
+            icon: <PieChart />,
         },
         {
             name: "Teachers",
             path: "/teachers",
-            icon: <FaChalkboardTeacher />,
+            icon: <Presentation />,
         },
         {
             name: "Classes",
             path: "/classes",
-            icon: <FaSchool />,
+            icon: <School />,
         },
         {
             name: "Students",
             path: "/students",
-            icon: <FaUsers />,
+            icon: <Users />,
         },
         {
             name: "Attendance",
             path: "/admin/attendance",
-            icon: <FaClipboardCheck />,
+            icon: <ClipboardCheck />,
         },
         {
             name: "Reports",
             path: "/admin/reports",
-            icon: <FaFileAlt />,
+            icon: <FileText />,
         },
     ];
 
@@ -90,7 +90,7 @@ const AdminLayout = () => {
                     onClick={() => setSidebarOpen(true)}
                     aria-label="Open navigation menu"
                 >
-                    <FaBars />
+                    <Menu />
                 </button>
 
                 <div className="mobile-header-title">
@@ -132,7 +132,7 @@ const AdminLayout = () => {
                     onClick={closeSidebar}
                     aria-label="Close navigation menu"
                 >
-                    <FaTimes />
+                    <X />
                 </button>
 
 
@@ -211,7 +211,7 @@ const AdminLayout = () => {
                         onClick={handleLogout}
                     >
 
-                        <FaSignOutAlt />
+                        <LogOut />
 
                         <span>
                             Logout
@@ -239,3 +239,4 @@ const AdminLayout = () => {
 };
 
 export default AdminLayout;
+

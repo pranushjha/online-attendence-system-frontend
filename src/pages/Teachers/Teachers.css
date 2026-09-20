@@ -804,173 +804,331 @@
    RESPONSIVE
 ========================================================= */
 
-@media (max-width: 900px) {
-
-    .teachers-page {
-        padding: 32px 24px;
-    }
-
-    .teachers-header {
-        gap: 18px;
-    }
-
-}
-
-
-@media (max-width: 700px) {
-
-    .teachers-page {
-        padding: 24px 16px;
-    }
-
-    .teachers-header {
-        flex-direction: column;
-    }
-
-    .add-teacher-button {
-        width: 100%;
-    }
-
-    .teachers-card {
-        border-radius: 12px;
-    }
-
-    .teachers-table {
-        min-width: 760px;
-    }
-
-    .teacher-modal-overlay {
-        align-items: flex-start;
-
-        padding: 12px;
-    }
-
-    .teacher-modal {
-        max-height: calc(100vh - 24px);
-
-        border-radius: 13px;
-    }
-
-}
-
-
-@media (max-width: 480px) {
-
-    .teachers-page {
-        padding: 20px 12px;
-    }
-
-    .teachers-header h1 {
-        font-size: 30px;
-    }
-
-    .teachers-description {
-        font-size: 14px;
-    }
-
-    .teacher-modal-header,
-    .teacher-form {
-        padding: 19px;
-    }
-
-    .teacher-modal-actions {
-        flex-direction: column-reverse;
-    }
-
-    .teacher-cancel-button,
-    .teacher-save-button {
-        width: 100%;
-    }
-
-}
 
 /* =========================================================
-   MOBILE RESPONSIVE FIX - TEACHERS
-========================================================= */
+   RESPONSIVE TEACHERS PAGE
+   CLEAN MOBILE IMPLEMENTATION
+   NO HORIZONTAL PAGE SCROLL
+   ========================================================= */
+
+
+/* =========================================================
+   CLEAN RESPONSIVE TEACHERS PAGE
+   ========================================================= */
 
 @media (max-width: 700px) {
 
     .teachers-page {
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-        overflow-x: hidden;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 20px 12px !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
     }
 
     .teachers-page *,
     .teachers-page *::before,
     .teachers-page *::after {
-        box-sizing: border-box;
+        box-sizing: border-box !important;
     }
+
+
+    /* HEADER */
 
     .teachers-header {
-        width: 100%;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 16px !important;
+        margin-bottom: 20px !important;
     }
+
+    .teachers-heading {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .teachers-heading h1 {
+        font-size: 28px !important;
+        line-height: 1.2 !important;
+    }
+
+    .teachers-description {
+        max-width: 100% !important;
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+    }
+
+    .add-teacher-button {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+
+    /* MAIN CARD */
 
     .teachers-card {
-        width: 100%;
-        max-width: 100%;
-        overflow: hidden;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        border-radius: 12px !important;
     }
+
+
+    /* TABLE WRAPPER */
 
     .teachers-table-wrapper {
-        width: 100%;
-        max-width: 100%;
-        overflow-x: auto;
-        overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
     }
+
+
+    /* TABLE */
 
     .teachers-table {
-        min-width: 760px;
-        width: max-content;
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        border-collapse: collapse !important;
     }
 
-    .teachers-table th,
-    .teachers-table td {
-        white-space: nowrap;
+    .teachers-table thead {
+        display: none !important;
     }
+
+    .teachers-table tbody {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+
+    /* EACH ROW */
+
+    .teachers-table tbody tr {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 16px 14px !important;
+        gap: 14px 12px !important;
+        border-bottom: 1px solid #e5e7eb !important;
+    }
+
+    .teachers-table tbody tr:last-child {
+        border-bottom: none !important;
+    }
+
+
+    /* CELLS */
+
+    .teachers-table tbody td {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        overflow: hidden !important;
+    }
+
+
+    /* LABELS */
+
+    .teachers-table tbody td:nth-child(1)::before {
+        content: "Teacher";
+    }
+
+    .teachers-table tbody td:nth-child(2)::before {
+        content: "Email";
+    }
+
+    .teachers-table tbody td:nth-child(3)::before {
+        content: "Assigned Class";
+    }
+
+    .teachers-table tbody td:nth-child(4)::before {
+        content: "Role";
+    }
+
+    .teachers-table tbody td:nth-child(5)::before {
+        content: "Actions";
+    }
+
+    .teachers-table tbody td::before {
+        display: block !important;
+        margin-bottom: 6px !important;
+        color: #64748b !important;
+        font-size: 10px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.06em !important;
+        text-transform: uppercase !important;
+    }
+
+
+    /* TEACHER */
+
+    .teacher-name-cell {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .teacher-list-avatar {
+        flex-shrink: 0 !important;
+    }
+
+    .teacher-name-cell strong {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        font-size: 14px !important;
+    }
+
+
+    /* EMAIL */
+
+    .teacher-email {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+        font-size: 13px !important;
+    }
+
+
+    /* CLASS */
+
+    .teacher-not-assigned,
+    .teacher-assigned-class {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+    }
+
+
+    /* ROLE */
+
+    .teacher-role-badge {
+        max-width: 100% !important;
+    }
+
+
+    /* ACTIONS */
+
+    .teachers-table tbody td:nth-child(5) {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .teacher-action-buttons {
+        display: flex !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .teacher-action-buttons button {
+        flex-shrink: 0 !important;
+    }
+
+
+    /* MODAL */
 
     .teacher-modal-overlay {
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
+        padding: 12px !important;
     }
 
     .teacher-modal {
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-        overflow-y: auto;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .teacher-modal-header {
+        padding: 18px !important;
+    }
+
+    .teacher-form {
+        padding: 18px !important;
+    }
+
+    .teacher-modal-actions {
+        flex-direction: column-reverse !important;
+    }
+
+    .teacher-cancel-button,
+    .teacher-save-button {
+        width: 100% !important;
+        max-width: 100% !important;
     }
 }
 
-@media (max-width: 480px) {
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 400px) {
 
     .teachers-page {
-        padding-left: 10px;
-        padding-right: 10px;
+        padding: 16px 10px !important;
     }
 
-    .teachers-header h1 {
-        font-size: 26px;
-        line-height: 1.2;
+    .teachers-heading h1 {
+        font-size: 25px !important;
     }
 
     .teachers-card {
-        border-radius: 10px;
+        border-radius: 10px !important;
     }
 
-    .teachers-table-wrapper {
-        margin-left: 0;
-        margin-right: 0;
+    .teachers-table tbody tr {
+        grid-template-columns: 1fr !important;
+        padding: 15px 12px !important;
+        gap: 12px !important;
     }
 
-    .teacher-modal-overlay {
-        padding: 8px;
+    .teachers-table tbody td:nth-child(5) {
+        grid-column: auto !important;
     }
 
-    .teacher-modal {
-        border-radius: 10px;
+    .teacher-name-cell strong {
+        font-size: 13px !important;
+    }
+
+    .teacher-email {
+        font-size: 12px !important;
+    }
+
+    .teacher-action-buttons {
+        width: 100% !important;
     }
 }

@@ -12,10 +12,10 @@
     background:
         radial-gradient(
             circle at 85% 0%,
-            rgba(99, 102, 241, 0.07),
+            rgba(64, 78, 59, 0.07),
             transparent 30%
         ),
-        #f8fafc;
+        #E6E6E6;
 }
 
 
@@ -43,7 +43,7 @@
 .students-label {
     margin: 0 0 7px;
 
-    color: #6366f1;
+    color: #7B9669;
 
     font-size: 12px;
     font-weight: 800;
@@ -54,7 +54,7 @@
 .students-header h1 {
     margin: 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 38px;
     line-height: 1.12;
@@ -65,7 +65,7 @@
 .students-description {
     margin: 9px 0 0;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 15px;
     line-height: 1.5;
@@ -118,36 +118,36 @@
     background:
         linear-gradient(
             135deg,
-            #5b4cf0,
-            #4f46e5
+            #404E3B,
+            #404E3B
         );
 
     color: white;
 
     box-shadow:
-        0 9px 20px rgba(79, 70, 229, 0.20);
+        0 9px 20px rgba(64, 78, 59, 0.20);
 }
 
 .add-student-button:hover:not(:disabled) {
-    background: #4338ca;
+    background: #344130;
 
     transform: translateY(-1px);
 }
 
 .import-excel-button {
-    border: 1px solid #d8dee8;
+    border: 1px solid #D6D9D5;
 
     background: white;
 
-    color: #475569;
+    color: #6C8480;
 }
 
 .import-excel-button:hover:not(:disabled) {
-    border-color: #c7cdfc;
+    border-color: #B9C8B0;
 
-    background: #fafaff;
+    background: #F3F3F1;
 
-    color: #4f46e5;
+    color: #404E3B;
 }
 
 .add-student-button:disabled,
@@ -185,15 +185,15 @@
 
     padding: 15px 18px;
 
-    border: 1px solid #e3e7f0;
+    border: 1px solid #D6D9D5;
 
     border-radius: 15px;
 
     background:
         linear-gradient(
             135deg,
-            #ffffff,
-            #fbfcff
+            #FFFFFF,
+            #F3F3F1
         );
 
     box-shadow:
@@ -205,7 +205,7 @@
 }
 
 .students-filter-card:hover {
-    border-color: #d8ddf0;
+    border-color: #D6D9D5;
 
     box-shadow:
         0 8px 26px rgba(15, 23, 42, 0.055);
@@ -242,11 +242,11 @@
     background:
         linear-gradient(
             135deg,
-            #eef2ff,
-            #e8eaff
+            #E8EFE5,
+            #E8EFE5
         );
 
-    color: #4f46e5;
+    color: #404E3B;
 
     font-size: 14px;
 }
@@ -254,7 +254,7 @@
 .students-filter-heading h3 {
     margin: 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 14px;
     font-weight: 750;
@@ -263,7 +263,7 @@
 .students-filter-heading p {
     margin: 4px 0 0;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 11px;
     line-height: 1.4;
@@ -285,7 +285,7 @@
 
     margin-bottom: 5px;
 
-    color: #475569;
+    color: #6C8480;
 
     font-size: 11px;
     font-weight: 750;
@@ -305,7 +305,7 @@
 
     padding: 0 40px 0 13px;
 
-    border: 1px solid #d7dce6;
+    border: 1px solid #D6D9D5;
 
     border-radius: 9px;
 
@@ -313,7 +313,7 @@
 
     background: white;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 13px;
     font-weight: 600;
@@ -327,16 +327,16 @@
 }
 
 .students-filter-select-wrapper select:hover {
-    border-color: #c7cdfc;
+    border-color: #B9C8B0;
 
-    background: #fafaff;
+    background: #F3F3F1;
 }
 
 .students-filter-select-wrapper select:focus {
-    border-color: #6366f1;
+    border-color: #7B9669;
 
     box-shadow:
-        0 0 0 3px rgba(99, 102, 241, 0.10);
+        0 0 0 3px rgba(64, 78, 59, 0.10);
 }
 
 .students-filter-chevron {
@@ -349,7 +349,7 @@
 
     pointer-events: none;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 10px;
 }
@@ -366,13 +366,13 @@
 
     padding: 0 14px;
 
-    border: 1px solid #dfe3ff;
+    border: 1px solid #D6D9D5;
 
     border-radius: 9px;
 
-    background: #fafaff;
+    background: #F3F3F1;
 
-    color: #4f46e5;
+    color: #404E3B;
 
     font-size: 12px;
     font-weight: 700;
@@ -388,9 +388,9 @@
 }
 
 .clear-student-filter:hover {
-    background: #eef2ff;
+    background: #E8EFE5;
 
-    border-color: #c7cdfc;
+    border-color: #B9C8B0;
 
     transform: translateY(-1px);
 }
@@ -422,9 +422,9 @@
 
     border-radius: 10px;
 
-    background: #f8f8ff;
+    background: #F3F3F1;
 
-    color: #475569;
+    color: #6C8480;
 
     font-size: 12px;
 }
@@ -439,7 +439,7 @@
 }
 
 .students-active-filter-left strong {
-    color: #4f46e5;
+    color: #404E3B;
 
     font-weight: 800;
 }
@@ -452,10 +452,10 @@
 
     border-radius: 50%;
 
-    background: #6366f1;
+    background: #7B9669;
 
     box-shadow:
-        0 0 0 3px rgba(99, 102, 241, 0.10);
+        0 0 0 3px rgba(64, 78, 59, 0.10);
 }
 
 .students-active-filter button {
@@ -467,7 +467,7 @@
 
     background: transparent;
 
-    color: #4f46e5;
+    color: #404E3B;
 
     font-size: 11px;
     font-weight: 750;
@@ -510,7 +510,7 @@
 
     box-sizing: border-box;
 
-    border: 1px solid #e5e7eb;
+    border: 1px solid #D6D9D5;
 
     border-radius: 13px;
 
@@ -537,18 +537,18 @@
 
 .overview-icon.total,
 .overview-icon.classes {
-    background: #eef2ff;
-    color: #4f46e5;
+    background: #E8EFE5;
+    color: #404E3B;
 }
 
 .overview-icon.active {
-    background: #ecfdf5;
-    color: #059669;
+    background: #E8F1E8;
+    color: #3F7D4A;
 }
 
 .overview-icon.inactive {
-    background: #fef2f2;
-    color: #dc2626;
+    background: #FBEAEA;
+    color: #C94A4A;
 }
 
 .overview-dot {
@@ -563,7 +563,7 @@
 .student-overview-item span {
     display: block;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 11px;
 }
@@ -573,7 +573,7 @@
 
     margin-top: 2px;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 19px;
     font-weight: 750;
@@ -618,7 +618,7 @@
 
     box-sizing: border-box;
 
-    border: 1px solid #e4e7ef;
+    border: 1px solid #D6D9D5;
 
     border-bottom: none;
 
@@ -627,8 +627,8 @@
     background:
         linear-gradient(
             135deg,
-            #ffffff,
-            #fafbff
+            #FFFFFF,
+            #F3F3F1
         );
 }
 
@@ -653,9 +653,9 @@
 
     border-radius: 11px;
 
-    background: #eef2ff;
+    background: #E8EFE5;
 
-    color: #4f46e5;
+    color: #404E3B;
 
     font-size: 15px;
 }
@@ -663,7 +663,7 @@
 .student-class-title h2 {
     margin: 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 18px;
     font-weight: 750;
@@ -672,7 +672,7 @@
 .student-class-title p {
     margin: 3px 0 0;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 11px;
 }
@@ -712,23 +712,23 @@
 }
 
 .class-student-count {
-    background: #f1f5f9;
+    background: #F3F3F1;
 
-    color: #475569;
+    color: #6C8480;
 }
 
 .class-student-count strong {
     margin-right: 3px;
 
-    color: #1e293b;
+    color: #344130;
 }
 
 .class-active-count {
     gap: 6px;
 
-    background: #ecfdf5;
+    background: #E8F1E8;
 
-    color: #047857;
+    color: #3F7D4A;
 }
 
 .class-status-dot {
@@ -737,13 +737,13 @@
 
     border-radius: 50%;
 
-    background: #10b981;
+    background: #3F7D4A;
 }
 
 .class-inactive-count {
-    background: #fef2f2;
+    background: #FBEAEA;
 
-    color: #b91c1c;
+    color: #C94A4A;
 }
 
 
@@ -759,7 +759,7 @@
 
     overflow: hidden;
 
-    border: 1px solid #e4e7ef;
+    border: 1px solid #D6D9D5;
 
     border-radius: 0 0 16px 16px;
 
@@ -793,11 +793,11 @@
 .students-table th {
     padding: 13px 20px;
 
-    background: #f8fafc;
+    background: #E6E6E6;
 
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #D6D9D5;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 10px;
     font-weight: 800;
@@ -812,9 +812,9 @@
 .students-table td {
     padding: 15px 20px;
 
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #F3F3F1;
 
-    color: #475569;
+    color: #6C8480;
 
     font-size: 14px;
 
@@ -827,7 +827,7 @@
 }
 
 .students-table tbody tr:hover {
-    background: #fafbff;
+    background: #F3F3F1;
 }
 
 .students-table tbody tr:last-child td {
@@ -853,9 +853,9 @@
 
     border-radius: 8px;
 
-    background: #eef2ff;
+    background: #E8EFE5;
 
-    color: #4f46e5;
+    color: #404E3B;
 
     font-size: 12px;
     font-weight: 800;
@@ -887,16 +887,16 @@
 
     border-radius: 10px;
 
-    background: #eef2ff;
+    background: #E8EFE5;
 
-    color: #4f46e5;
+    color: #404E3B;
 
     font-size: 12px;
     font-weight: 800;
 }
 
 .student-name-cell strong {
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 14px;
     font-weight: 700;
@@ -922,15 +922,15 @@
 }
 
 .student-status-badge.active {
-    background: #ecfdf5;
+    background: #E8F1E8;
 
-    color: #047857;
+    color: #3F7D4A;
 }
 
 .student-status-badge.inactive {
-    background: #fef2f2;
+    background: #FBEAEA;
 
-    color: #b91c1c;
+    color: #C94A4A;
 }
 
 .student-status-dot {
@@ -973,33 +973,33 @@
 }
 
 .student-edit-button {
-    border: 1px solid #dfe3ff;
+    border: 1px solid #D6D9D5;
 
-    background: #fafaff;
+    background: #F3F3F1;
 
-    color: #4f46e5;
+    color: #404E3B;
 }
 
 .student-delete-button {
-    border: 1px solid #fee2e2;
+    border: 1px solid #FBEAEA;
 
-    background: #fffafa;
+    background: #FBEAEA;
 
-    color: #dc2626;
+    color: #C94A4A;
 }
 
 .student-edit-button:hover {
-    background: #eef2ff;
+    background: #E8EFE5;
 
-    border-color: #c7cdfc;
+    border-color: #B9C8B0;
 
     transform: translateY(-1px);
 }
 
 .student-delete-button:hover {
-    background: #fef2f2;
+    background: #FBEAEA;
 
-    border-color: #fecaca;
+    border-color: #E7B8B8;
 
     transform: translateY(-1px);
 }
@@ -1035,9 +1035,9 @@
 
     border-radius: 14px;
 
-    background: #eef2ff;
+    background: #E8EFE5;
 
-    color: #6366f1;
+    color: #7B9669;
 
     font-size: 22px;
 }
@@ -1045,7 +1045,7 @@
 .students-empty h3 {
     margin: 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 18px;
 }
@@ -1055,7 +1055,7 @@
 
     margin: 7px 0 18px;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 14px;
 
@@ -1063,7 +1063,7 @@
 }
 
 .students-empty p strong {
-    color: #4f46e5;
+    color: #404E3B;
 }
 
 .students-empty button {
@@ -1077,7 +1077,7 @@
     border: none;
     border-radius: 8px;
 
-    background: #4f46e5;
+    background: #404E3B;
 
     color: white;
 
@@ -1088,7 +1088,7 @@
 }
 
 .students-empty button:hover {
-    background: #4338ca;
+    background: #344130;
 }
 
 
@@ -1106,13 +1106,13 @@
 
     padding: 14px 16px;
 
-    border: 1px solid #fecaca;
+    border: 1px solid #E7B8B8;
 
     border-radius: 10px;
 
-    background: #fef2f2;
+    background: #FBEAEA;
 
-    color: #b91c1c;
+    color: #C94A4A;
 
     font-size: 14px;
 }
@@ -1132,13 +1132,13 @@
 
     padding: 16px 18px;
 
-    border: 1px solid #a7f3d0;
+    border: 1px solid #B9CDB9;
 
     border-radius: 10px;
 
-    background: #ecfdf5;
+    background: #E8F1E8;
 
-    color: #065f46;
+    color: #3F7D4A;
 }
 
 .students-upload-title {
@@ -1175,13 +1175,13 @@
 }
 
 .students-upload-summary span {
-    color: #047857;
+    color: #3F7D4A;
 
     font-size: 11px;
 }
 
 .students-upload-summary strong {
-    color: #065f46;
+    color: #3F7D4A;
 
     font-size: 18px;
 }
@@ -1202,7 +1202,7 @@
 
     gap: 12px;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 14px;
 }
@@ -1211,9 +1211,9 @@
     width: 28px;
     height: 28px;
 
-    border: 3px solid #e2e8f0;
+    border: 3px solid #D6D9D5;
 
-    border-top-color: #4f46e5;
+    border-top-color: #404E3B;
 
     border-radius: 50%;
 
@@ -1285,13 +1285,13 @@
     padding: 23px 24px;
 
     border-bottom:
-        1px solid #e5e7eb;
+        1px solid #D6D9D5;
 }
 
 .student-modal-label {
     margin: 0 0 6px;
 
-    color: #6366f1;
+    color: #7B9669;
 
     font-size: 10px;
     font-weight: 800;
@@ -1302,7 +1302,7 @@
 .student-modal-header h2 {
     margin: 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 21px;
 }
@@ -1310,7 +1310,7 @@
 .student-modal-header p:last-child {
     margin: 5px 0 0;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 13px;
 }
@@ -1329,15 +1329,15 @@
 
     border-radius: 8px;
 
-    background: #f1f5f9;
+    background: #F3F3F1;
 
-    color: #64748b;
+    color: #6C8480;
 
     cursor: pointer;
 }
 
 .student-modal-close:hover {
-    background: #e2e8f0;
+    background: #D6D9D5;
 }
 
 .student-form {
@@ -1349,7 +1349,7 @@
 
     margin-bottom: 17px;
 
-    color: #334155;
+    color: #4F625D;
 
     font-size: 13px;
     font-weight: 700;
@@ -1370,7 +1370,7 @@
     padding: 0 13px;
 
     border:
-        1px solid #d9dee8;
+        1px solid #D6D9D5;
 
     border-radius: 9px;
 
@@ -1378,17 +1378,17 @@
 
     background: white;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 14px;
 }
 
 .student-form input:not([type="checkbox"]):focus,
 .student-form select:focus {
-    border-color: #6366f1;
+    border-color: #7B9669;
 
     box-shadow:
-        0 0 0 3px rgba(99, 102, 241, 0.1);
+        0 0 0 3px rgba(64, 78, 59, 0.1);
 }
 
 .student-active-checkbox {
@@ -1408,7 +1408,7 @@
 
     margin: 0;
 
-    accent-color: #4f46e5;
+    accent-color: #404E3B;
 }
 
 .student-modal-actions {
@@ -1439,19 +1439,19 @@
 
     background: white;
 
-    color: #475569;
+    color: #6C8480;
 }
 
 .student-save-button {
     border: none;
 
-    background: #4f46e5;
+    background: #404E3B;
 
     color: white;
 }
 
 .student-save-button:hover {
-    background: #4338ca;
+    background: #344130;
 }
 
 .student-cancel-button:disabled,
@@ -1614,4 +1614,147 @@
         justify-content: center;
     }
 
+}
+
+/* =========================================================
+   EXCEL TEMPLATE BUTTON
+========================================================= */
+
+.download-template-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 42px;
+    padding: 0 16px;
+
+    border: 1px solid var(--accent-border);
+    border-radius: 10px;
+
+    background: var(--surface);
+    color: var(--primary);
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.download-template-button svg {
+    width: 17px;
+    height: 17px;
+}
+
+.download-template-button:hover:not(:disabled) {
+    background: var(--accent-bg);
+    border-color: var(--accent);
+    color: var(--primary-dark);
+
+    transform: translateY(-1px);
+
+    box-shadow: var(--shadow-sm);
+}
+
+.download-template-button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   FINAL MOBILE FIX - NO HORIZONTAL TABLE SCROLL
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .students-page {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    .students-table-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .students-table {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .students-table thead {
+        display: none !important;
+    }
+
+    .students-table tbody {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .students-table tr {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: 14px !important;
+        border-bottom: 1px solid #E5E7EB !important;
+    }
+
+    .students-table td {
+        display: grid !important;
+        grid-template-columns: 92px minmax(0, 1fr) !important;
+        gap: 10px !important;
+        align-items: center !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: 7px 0 !important;
+        border: none !important;
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+    }
+
+    .students-table td::before {
+        font-size: 10px !important;
+        font-weight: 800 !important;
+        text-transform: uppercase !important;
+        color: #718783 !important;
+    }
+
+    .students-table td:nth-child(1)::before {
+        content: "Roll No";
+    }
+
+    .students-table td:nth-child(2)::before {
+        content: "Student";
+    }
+
+    .students-table td:nth-child(3)::before {
+        content: "Status";
+    }
+
+    .students-table td:nth-child(4)::before {
+        content: "Actions";
+    }
+
+    .student-action-buttons {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
 }

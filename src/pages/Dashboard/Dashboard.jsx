@@ -1,4 +1,27 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
+import {
+    ArrowDown,
+    ArrowUpRight,
+    BarChart3,
+    BookOpen,
+    CalendarDays,
+    ChartNoAxesColumn,
+    CircleCheck,
+    CircleDot,
+    ClipboardCheck,
+    GraduationCap,
+    Eye,
+    Hand,
+    LogOut,
+    Search,
+    School,
+    Star,
+    TriangleAlert,
+    UserCheck,
+    UserX,
+    UsersRound
+} from "lucide-react";
+
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
 import "./Dashboard.css";
@@ -175,7 +198,7 @@ const Dashboard = () => {
             return {
                 label: "Excellent",
                 className: "excellent",
-                icon: "★",
+                icon: <Star size={16} />,
             };
         }
 
@@ -183,7 +206,7 @@ const Dashboard = () => {
             return {
                 label: "Good",
                 className: "good",
-                icon: "✓",
+                icon: <CircleCheck size={16} />,
             };
         }
 
@@ -191,14 +214,14 @@ const Dashboard = () => {
             return {
                 label: "Average",
                 className: "average",
-                icon: "◷",
+                icon: <CircleDot size={16} />,
             };
         }
 
         return {
             label: "Low",
             className: "low",
-            icon: "⚠",
+            icon: <TriangleAlert size={16} />,
         };
     };
 
@@ -242,8 +265,7 @@ const Dashboard = () => {
                     onClick={logout}
                 >
                     <span className="logout-icon">
-                        ⇥
-                    </span>
+                        <LogOut size={18} /></span>
 
                     Logout
                 </button>
@@ -272,7 +294,7 @@ const Dashboard = () => {
 
                     <h1>
                         Admin Dashboard{" "}
-                        <span>👋</span>
+                        <span><Hand size={20} /></span>
                     </h1>
 
                     <p className="dashboard-welcome">
@@ -288,8 +310,7 @@ const Dashboard = () => {
                     onClick={logout}
                 >
                     <span className="logout-icon">
-                        ⇥
-                    </span>
+                        <LogOut size={18} /></span>
 
                     Logout
                 </button>
@@ -306,7 +327,7 @@ const Dashboard = () => {
                 <div className="stat-card teachers-stat">
 
                     <div className="stat-icon purple">
-                        👥
+                        <UsersRound size={22} />
                     </div>
 
                     <div className="stat-content">
@@ -328,7 +349,7 @@ const Dashboard = () => {
                 <div className="stat-card classes-stat">
 
                     <div className="stat-icon green">
-                        🏫
+                        <School size={22} />
                     </div>
 
                     <div className="stat-content">
@@ -350,7 +371,7 @@ const Dashboard = () => {
                 <div className="stat-card students-stat">
 
                     <div className="stat-icon orange">
-                        🎓
+                        <GraduationCap size={22} />
                     </div>
 
                     <div className="stat-content">
@@ -372,7 +393,7 @@ const Dashboard = () => {
                 <div className="stat-card records-stat">
 
                     <div className="stat-icon red">
-                        📋
+                        <ClipboardCheck size={22} />
                     </div>
 
                     <div className="stat-content">
@@ -394,7 +415,7 @@ const Dashboard = () => {
                 <div className="stat-card overall-stat">
 
                     <div className="stat-icon blue">
-                        📈
+                        <ChartNoAxesColumn size={22} />
                     </div>
 
                     <div className="stat-content">
@@ -433,7 +454,7 @@ const Dashboard = () => {
                     <div className="recent-title">
 
                         <div className="recent-icon">
-                            📅
+                            <CalendarDays size={20} />
                         </div>
 
                         <div>
@@ -470,7 +491,7 @@ const Dashboard = () => {
                                 )
                             }
                         >
-                            📅 All Time
+                            <CalendarDays size={15} /> All Time
                         </button>
 
 
@@ -487,7 +508,7 @@ const Dashboard = () => {
                                 )
                             }
                         >
-                            📅 Last 7 Days
+                            <CalendarDays size={15} /> Last 7 Days
                         </button>
 
 
@@ -504,14 +525,14 @@ const Dashboard = () => {
                                 )
                             }
                         >
-                            📅 Last 30 Days
+                            <CalendarDays size={15} /> Last 30 Days
                         </button>
 
 
                         <div className="dashboard-search">
 
                             <span>
-                                ⌕
+                                <Search size={16} />
                             </span>
 
                             <input
@@ -546,7 +567,7 @@ const Dashboard = () => {
                     <div className="summary-card total-summary">
 
                         <div className="summary-icon">
-                            📋
+                            <ClipboardCheck size={20} />
                         </div>
 
                         <div>
@@ -570,7 +591,7 @@ const Dashboard = () => {
                     <div className="summary-card average-summary">
 
                         <div className="summary-icon">
-                            📊
+                            <ChartNoAxesColumn size={20} />
                         </div>
 
                         <div>
@@ -595,7 +616,7 @@ const Dashboard = () => {
                     <div className="summary-card best-summary">
 
                         <div className="summary-icon">
-                            ↗
+                            <ArrowUpRight size={20} />
                         </div>
 
                         <div className="summary-text">
@@ -606,7 +627,7 @@ const Dashboard = () => {
 
                             <strong>
                                 {bestClass?.className ||
-                                    "—"}
+                                    "-"}
                             </strong>
 
                         </div>
@@ -614,7 +635,7 @@ const Dashboard = () => {
                         <b>
                             {bestClass
                                 ? `${bestClass.percentage}%`
-                                : "—"}
+                                : "-"}
                         </b>
 
                     </div>
@@ -625,7 +646,7 @@ const Dashboard = () => {
                     <div className="summary-card attention-summary">
 
                         <div className="summary-icon">
-                            ↓
+                            <ArrowDown size={20} />
                         </div>
 
                         <div className="summary-text">
@@ -636,7 +657,7 @@ const Dashboard = () => {
 
                             <strong>
                                 {lowestClass?.className ||
-                                    "—"}
+                                    "-"}
                             </strong>
 
                         </div>
@@ -644,7 +665,7 @@ const Dashboard = () => {
                         <b>
                             {lowestClass
                                 ? `${lowestClass.percentage}%`
-                                : "—"}
+                                : "-"}
                         </b>
 
                     </div>
@@ -662,7 +683,7 @@ const Dashboard = () => {
                     <div className="empty-state">
 
                         <div className="empty-icon">
-                            📋
+                            <ClipboardCheck size={28} />
                         </div>
 
                         <h3>
@@ -689,23 +710,23 @@ const Dashboard = () => {
                                 <tr>
 
                                     <th>
-                                        📖 Class
+                                        <BookOpen size={15} />Class
                                     </th>
 
                                     <th>
-                                        📅 Date
+                                        <CalendarDays size={15} />Date
                                     </th>
 
                                     <th>
-                                        👥 Present
+                                        <UsersRound size={15} />Present
                                     </th>
 
                                     <th>
-                                        👤 Absent
+                                        <UserX size={15} />Absent
                                     </th>
 
                                     <th>
-                                        📊 Attendance %
+                                        <ChartNoAxesColumn size={15} />Attendance %
                                     </th>
 
                                     <th>
@@ -744,7 +765,7 @@ const Dashboard = () => {
                                                     <div className="class-cell">
 
                                                         <div className="class-icon">
-                                                            📖
+                                                            <BookOpen size={18} />
                                                         </div>
 
                                                         <strong>
@@ -874,7 +895,7 @@ const Dashboard = () => {
                                                         type="button"
                                                         title="View attendance"
                                                     >
-                                                        👁
+                                                        <Eye size={17} />
                                                     </button>
 
                                                 </td>
@@ -928,3 +949,11 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+
+
+
+
+
+

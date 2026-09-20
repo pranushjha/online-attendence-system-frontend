@@ -9,12 +9,12 @@
     background:
         radial-gradient(
             circle at 12% 8%,
-            rgba(99, 102, 241, 0.07),
+            rgba(64, 78, 59, 0.07),
             transparent 28%
         ),
-        #f8fafc;
+        #E6E6E6;
 
-    color: #0f172a;
+    color: #27342F;
 }
 
 
@@ -40,7 +40,7 @@
 .dashboard-label {
     margin: 0 0 7px;
 
-    color: #635bff;
+    color: #404E3B;
 
     font-size: 13px;
     font-weight: 800;
@@ -51,7 +51,7 @@
 .dashboard-header h1 {
     margin: 0;
 
-    color: #0b132b;
+    color: #27342F;
 
     font-size: 38px;
     line-height: 1.15;
@@ -66,7 +66,7 @@
 .dashboard-welcome {
     margin: 8px 0 0;
 
-    color: #718096;
+    color: #6C8480;
 
     font-size: 16px;
 }
@@ -83,7 +83,7 @@
     border: none;
     border-radius: 11px;
 
-    background: #0f172a;
+    background: #27342F;
     color: white;
 
     font-size: 14px;
@@ -98,7 +98,7 @@
 }
 
 .dashboard-logout:hover {
-    background: #1e293b;
+    background: #404E3B;
 
     transform: translateY(-2px);
 
@@ -137,7 +137,7 @@
 
     padding: 18px;
 
-    border: 1px solid #e2e8f0;
+    border: 1px solid #D6D9D5;
     border-radius: 17px;
 
     background: white;
@@ -173,23 +173,23 @@
 }
 
 .stat-icon.purple {
-    background: #ede9fe;
+    background: #CCFBF1;
 }
 
 .stat-icon.green {
-    background: #dcfce7;
+    background: #E8F1E8;
 }
 
 .stat-icon.orange {
-    background: #ffedd5;
+    background: #FFF4DD;
 }
 
 .stat-icon.red {
-    background: #ffe4e6;
+    background: #FBEAEA;
 }
 
 .stat-icon.blue {
-    background: #e0f2fe;
+    background: #CCFBF1;
 }
 
 .stat-content {
@@ -202,7 +202,7 @@
 .stat-content p {
     margin: 0;
 
-    color: #475569;
+    color: #6C8480;
 
     font-size: 13px;
     font-weight: 600;
@@ -211,7 +211,7 @@
 .stat-content h2 {
     margin: 5px 0 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 30px;
     line-height: 1.1;
@@ -222,13 +222,13 @@
 .stat-content small {
     margin-top: 4px;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 11px;
 }
 
 .overall-stat .stat-content h2 {
-    color: #16a34a;
+    color: #16A34A;
 }
 
 
@@ -242,7 +242,7 @@
 
     padding: 25px;
 
-    border: 1px solid #e2e8f0;
+    border: 1px solid #D6D9D5;
     border-radius: 21px;
 
     background: white;
@@ -288,8 +288,8 @@
     background:
         linear-gradient(
             135deg,
-            #4f46e5,
-            #6847e8
+            #404E3B,
+            #404E3B
         );
 
     color: white;
@@ -297,13 +297,13 @@
     font-size: 24px;
 
     box-shadow:
-        0 8px 18px rgba(79, 70, 229, 0.24);
+        0 8px 18px rgba(64, 78, 59, 0.24);
 }
 
 .recent-title h2 {
     margin: 0;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 27px;
 
@@ -313,7 +313,7 @@
 .recent-title p {
     margin: 4px 0 0;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 14px;
 }
@@ -337,11 +337,11 @@
 
     padding: 0 14px;
 
-    border: 1px solid #e2e8f0;
+    border: 1px solid #D6D9D5;
     border-radius: 10px;
 
-    background: #f8fafc;
-    color: #64748b;
+    background: #E6E6E6;
+    color: #6C8480;
 
     font-size: 12px;
     font-weight: 700;
@@ -355,19 +355,19 @@
 }
 
 .filter-button:hover {
-    color: #4f46e5;
+    color: #404E3B;
 
-    border-color: #a5b4fc;
+    border-color: #5EEAD4;
 
-    background: #f5f3ff;
+    background: #F0FDFA;
 }
 
 .filter-button.active {
-    color: #4f46e5;
+    color: #404E3B;
 
-    border-color: #6366f1;
+    border-color: #7B9669;
 
-    background: #f5f3ff;
+    background: #F0FDFA;
 }
 
 
@@ -386,12 +386,12 @@
 
     padding: 0 13px;
 
-    border: 1px solid #e2e8f0;
+    border: 1px solid #D6D9D5;
     border-radius: 22px;
 
     background: white;
 
-    color: #64748b;
+    color: #6C8480;
 }
 
 .dashboard-search span {
@@ -404,7 +404,7 @@
     border: none;
     outline: none;
 
-    color: #334155;
+    color: #4F625D;
 
     background: transparent;
 
@@ -412,7 +412,7 @@
 }
 
 .dashboard-search input::placeholder {
-    color: #94a3b8;
+    color: #6C8480;
 }
 
 
@@ -445,19 +445,19 @@
 }
 
 .total-summary {
-    background: #ecfdf5;
+    background: #E8F1E8;
 }
 
 .average-summary {
-    background: #eff6ff;
+    background: #F0FDFA;
 }
 
 .best-summary {
-    background: #f0fdf4;
+    background: #E8F1E8;
 }
 
 .attention-summary {
-    background: #fff1f2;
+    background: #FBEAEA;
 }
 
 .summary-icon {
@@ -485,7 +485,7 @@
 }
 
 .summary-card span {
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 11px;
 }
@@ -493,7 +493,7 @@
 .summary-card strong {
     margin-top: 2px;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 15px;
 }
@@ -501,13 +501,13 @@
 .summary-card b {
     margin-left: auto;
 
-    color: #16a34a;
+    color: #16A34A;
 
     font-size: 14px;
 }
 
 .attention-summary b {
-    color: #dc2626;
+    color: #C94A4A;
 }
 
 
@@ -518,7 +518,7 @@
 .attendance-table-wrapper {
     overflow-x: auto;
 
-    border: 1px solid #e5e7eb;
+    border: 1px solid #D6D9D5;
     border-radius: 15px;
 }
 
@@ -534,8 +534,8 @@
     background:
         linear-gradient(
             90deg,
-            #3155ed,
-            #6547e8
+            #404E3B,
+            #404E3B
         );
 
     color: white;
@@ -553,7 +553,7 @@
 }
 
 .attendance-table tbody tr {
-    border-bottom: 1px solid #eef2f7;
+    border-bottom: 1px solid #D6D9D5;
 
     transition: background 0.15s ease;
 }
@@ -563,13 +563,13 @@
 }
 
 .attendance-table tbody tr:hover {
-    background: #f8faff;
+    background: #E6E6E6;
 }
 
 .attendance-table td {
     padding: 10px 16px;
 
-    color: #334155;
+    color: #4F625D;
 
     font-size: 13px;
 
@@ -600,15 +600,15 @@
 
     border-radius: 50%;
 
-    background: #eef2ff;
+    background: #F0FDFA;
 
-    color: #4f46e5;
+    color: #404E3B;
 
     font-size: 16px;
 }
 
 .class-cell strong {
-    color: #111827;
+    color: #27342F;
 
     font-size: 13px;
 }
@@ -625,9 +625,9 @@
 
     border-radius: 16px;
 
-    background: #f1f5f9;
+    background: #F3F3F1;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 12px;
 }
@@ -651,15 +651,15 @@
 }
 
 .count-badge.present {
-    color: #16a34a;
+    color: #16A34A;
 
-    background: #dcfce7;
+    background: #E8F1E8;
 }
 
 .count-badge.absent {
-    color: #dc2626;
+    color: #C94A4A;
 
-    background: #ffe4e6;
+    background: #FBEAEA;
 }
 
 
@@ -682,7 +682,7 @@
 
     border-radius: 20px;
 
-    background: #e8edf5;
+    background: #D6D9D5;
 }
 
 .progress-fill {
@@ -694,25 +694,25 @@
 }
 
 .progress-fill.excellent {
-    background: #10b981;
+    background: #16A34A;
 }
 
 .progress-fill.good {
-    background: #10b981;
+    background: #16A34A;
 }
 
 .progress-fill.average {
-    background: #f59e0b;
+    background: #B7791F;
 }
 
 .progress-fill.low {
-    background: #cbd5e1;
+    background: #C8CEC8;
 }
 
 .percentage-cell strong {
     min-width: 48px;
 
-    color: #0f172a;
+    color: #27342F;
 
     font-size: 12px;
 }
@@ -735,35 +735,35 @@
 }
 
 .status-badge.excellent {
-    color: #059669;
+    color: #16A34A;
 
-    border: 1px solid #a7f3d0;
+    border: 1px solid #B9CDB9;
 
-    background: #d1fae5;
+    background: #E8F1E8;
 }
 
 .status-badge.good {
-    color: #059669;
+    color: #16A34A;
 
-    border: 1px solid #a7f3d0;
+    border: 1px solid #B9CDB9;
 
-    background: #ecfdf5;
+    background: #E8F1E8;
 }
 
 .status-badge.average {
-    color: #d97706;
+    color: #B7791F;
 
-    border: 1px solid #fed7aa;
+    border: 1px solid #FCD34D;
 
-    background: #fff7ed;
+    background: #FFF4DD;
 }
 
 .status-badge.low {
-    color: #dc2626;
+    color: #C94A4A;
 
-    border: 1px solid #fecdd3;
+    border: 1px solid #E7B8B8;
 
-    background: #fff1f2;
+    background: #FBEAEA;
 }
 
 
@@ -779,12 +779,12 @@
     align-items: center;
     justify-content: center;
 
-    border: 1px solid #e0e7ff;
+    border: 1px solid #CCFBF1;
     border-radius: 50%;
 
-    background: #f8faff;
+    background: #E6E6E6;
 
-    color: #4f46e5;
+    color: #404E3B;
 
     cursor: pointer;
 
@@ -796,7 +796,7 @@
 .view-button:hover {
     transform: scale(1.06);
 
-    background: #eef2ff;
+    background: #F0FDFA;
 }
 
 
@@ -807,13 +807,13 @@
 .attendance-footer {
     padding: 14px 17px;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 12px;
 }
 
 .attendance-footer strong {
-    color: #334155;
+    color: #4F625D;
 }
 
 
@@ -824,10 +824,10 @@
 .empty-state {
     padding: 55px 20px;
 
-    border: 1px dashed #cbd5e1;
+    border: 1px dashed #C8CEC8;
     border-radius: 15px;
 
-    background: #f8fafc;
+    background: #E6E6E6;
 
     text-align: center;
 }
@@ -844,7 +844,7 @@
 
     border-radius: 50%;
 
-    background: #eef2ff;
+    background: #F0FDFA;
 
     font-size: 24px;
 }
@@ -852,7 +852,7 @@
 .empty-state h3 {
     margin: 0;
 
-    color: #334155;
+    color: #4F625D;
 
     font-size: 16px;
 }
@@ -860,7 +860,7 @@
 .empty-state p {
     margin: 7px 0 0;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 13px;
 }
@@ -881,9 +881,9 @@
 
     gap: 13px;
 
-    background: #f8fafc;
+    background: #E6E6E6;
 
-    color: #64748b;
+    color: #6C8480;
 
     font-size: 14px;
 }
@@ -892,8 +892,8 @@
     width: 38px;
     height: 38px;
 
-    border: 4px solid #e0e7ff;
-    border-top-color: #4f46e5;
+    border: 4px solid #CCFBF1;
+    border-top-color: #404E3B;
 
     border-radius: 50%;
 
@@ -924,7 +924,7 @@
 
     padding: 30px;
 
-    background: #f8fafc;
+    background: #E6E6E6;
 
     text-align: center;
 }
@@ -939,9 +939,9 @@
 
     border-radius: 50%;
 
-    background: #fee2e2;
+    background: #FBEAEA;
 
-    color: #dc2626;
+    color: #C94A4A;
 
     font-size: 25px;
     font-weight: 800;
@@ -950,13 +950,13 @@
 .dashboard-error-page h2 {
     margin: 0;
 
-    color: #b91c1c;
+    color: #C94A4A;
 }
 
 .dashboard-error-page p {
     margin: 0 0 10px;
 
-    color: #64748b;
+    color: #6C8480;
 }
 
 
@@ -1098,3 +1098,809 @@
     }
 
 }
+
+/* =========================================================
+   ATTENDANCE SYSTEM â€” DASHBOARD COLOR THEME
+   ========================================================= */
+
+:root {
+    --attendance-primary: #404E3B;
+    --attendance-accent: #7B9669;
+    --attendance-background: #E6E6E6;
+    --attendance-surface: #FFFFFF;
+    --attendance-text: #27342F;
+    --attendance-secondary: #6C8480;
+    --attendance-success: #16A34A;
+    --attendance-warning: #B7791F;
+    --attendance-danger: #C94A4A;
+    --attendance-border: #D6D9D5;
+}
+
+/* Page background */
+.dashboard-page,
+.dashboard-container {
+    background: var(--attendance-background);
+}
+
+/* Main headings */
+.dashboard-page h1,
+.dashboard-page h2,
+.dashboard-page h3 {
+    color: var(--attendance-text);
+}
+
+/* Secondary text */
+.dashboard-page p,
+.dashboard-page .subtitle,
+.dashboard-page .description {
+    color: var(--attendance-secondary);
+}
+
+/* Primary buttons */
+.dashboard-page button:not(.danger):not(.delete),
+.dashboard-page .primary-button {
+    background: var(--attendance-primary);
+    border-color: var(--attendance-primary);
+}
+
+.dashboard-page button:not(.danger):not(.delete):hover,
+.dashboard-page .primary-button:hover {
+    background: #0B5F59;
+    border-color: #0B5F59;
+}
+
+/* Cards */
+.dashboard-page .card,
+.dashboard-page .stat-card,
+.dashboard-page .dashboard-card {
+    background: var(--attendance-surface);
+    border-color: var(--attendance-border);
+}
+
+/* Primary / active filter */
+.dashboard-page .active,
+.dashboard-page .filter-button.active,
+.dashboard-page .active-filter {
+    background: var(--attendance-primary);
+    border-color: var(--attendance-primary);
+    color: #FFFFFF;
+}
+
+/* Teal icons / highlights */
+.dashboard-page .icon-primary,
+.dashboard-page .highlight,
+.dashboard-page .accent {
+    color: var(--attendance-primary);
+}
+
+/* Positive attendance */
+.dashboard-page .success,
+.dashboard-page .excellent,
+.dashboard-page .present {
+    color: var(--attendance-success);
+}
+
+/* Warning */
+.dashboard-page .warning,
+.dashboard-page .needs-attention {
+    color: var(--attendance-warning);
+}
+
+/* Danger / absent */
+.dashboard-page .danger,
+.dashboard-page .absent,
+.dashboard-page .delete {
+    color: var(--attendance-danger);
+}
+
+/* Borders */
+.dashboard-page input,
+.dashboard-page select,
+.dashboard-page .input,
+.dashboard-page .search-box {
+    border-color: var(--attendance-border);
+}
+
+/* Focus states */
+.dashboard-page input:focus,
+.dashboard-page select:focus {
+    border-color: var(--attendance-accent);
+    box-shadow: 0 0 0 3px rgba(123, 150, 105, 0.12);
+}
+
+/* Table */
+.dashboard-page table {
+    border-color: var(--attendance-border);
+}
+
+.dashboard-page thead {
+    background: var(--attendance-primary);
+}
+
+.dashboard-page thead th {
+    color: #FFFFFF;
+}
+
+/* Links */
+.dashboard-page a {
+    color: var(--attendance-primary);
+}
+
+.dashboard-page a:hover {
+    color: #0B5F59;
+}
+
+/* Teal accent elements */
+.dashboard-page .accent-bg,
+.dashboard-page .icon-bg {
+    background: #CCFBF1;
+    color: var(--attendance-primary);
+}
+
+
+/* =========================================================
+   ATTENDANCE SYSTEM â€” FINAL DASHBOARD COMPONENT COLORS
+   ========================================================= */
+
+/* Statistics icons */
+.stat-icon.purple {
+    background: #CCFBF1;
+    color: #404E3B;
+}
+
+.stat-icon.green {
+    background: #E8F1E8;
+    color: #16A34A;
+}
+
+.stat-icon.orange {
+    background: #FFF4DD;
+    color: #B7791F;
+}
+
+.stat-icon.red {
+    background: #FBEAEA;
+    color: #C94A4A;
+}
+
+.stat-icon.blue {
+    background: #CCFBF1;
+    color: #404E3B;
+}
+
+/* Logout */
+.dashboard-logout {
+    background: #404E3B;
+}
+
+.dashboard-logout:hover {
+    background: #0B5F59;
+}
+
+/* Filters */
+.filter-button:hover {
+    color: #404E3B;
+    border-color: #7B9669;
+    background: #F0FDFA;
+}
+
+.filter-button.active {
+    color: #FFFFFF;
+    border-color: #404E3B;
+    background: #404E3B;
+}
+
+/* Summary cards */
+.total-summary {
+    background: #F0FDFA;
+}
+
+.average-summary {
+    background: #FFF4DD;
+}
+
+.best-summary {
+    background: #E8F1E8;
+}
+
+.attention-summary {
+    background: #FBEAEA;
+}
+
+/* Summary values */
+.summary-card b {
+    color: #16A34A;
+}
+
+.attention-summary b {
+    color: #C94A4A;
+}
+
+/* Progress */
+.progress-fill.excellent,
+.progress-fill.good {
+    background: #16A34A;
+}
+
+.progress-fill.average {
+    background: #B7791F;
+}
+
+.progress-fill.low {
+    background: #C94A4A;
+}
+
+/* Attendance status */
+.status-badge.excellent {
+    color: #15803D;
+    border-color: #B9CDB9;
+    background: #E8F1E8;
+}
+
+.status-badge.good {
+    color: #16A34A;
+    border-color: #B9CDB9;
+    background: #E8F1E8;
+}
+
+.status-badge.average {
+    color: #B7791F;
+    border-color: #FCD34D;
+    background: #FFF4DD;
+}
+
+.status-badge.low {
+    color: #C94A4A;
+    border-color: #E7B8B8;
+    background: #FBEAEA;
+}
+
+/* Primary table header */
+.attendance-table thead {
+    background: #404E3B;
+}
+
+.attendance-table thead th {
+    color: #FFFFFF;
+}
+
+/* Search focus */
+.dashboard-search input:focus {
+    border-color: #7B9669;
+    box-shadow: 0 0 0 3px rgba(123, 150, 105, 0.12);
+}
+
+/* Primary links */
+.dashboard-page a {
+    color: #404E3B;
+}
+
+.dashboard-page a:hover {
+    color: #0B5F59;
+}
+
+/* Teal icon backgrounds */
+.dashboard-page .accent-bg,
+.dashboard-page .icon-bg {
+    background: #CCFBF1;
+    color: #404E3B;
+}
+
+/* =========================================================
+   ATTENDANCE SYSTEM â€” DASHBOARD OLIVE/SAGE THEME
+   Final visual layer
+========================================================= */
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.dashboard-page {
+    background: var(--background);
+    color: var(--text);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.dashboard-label {
+    color: var(--primary) !important;
+}
+
+.dashboard-header h1 {
+    color: var(--text-primary) !important;
+}
+
+.dashboard-welcome {
+    color: var(--text-secondary) !important;
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.dashboard-logout {
+    background: var(--primary) !important;
+    color: #FFFFFF !important;
+
+    border: 1px solid var(--primary) !important;
+
+    box-shadow: var(--shadow-sm);
+}
+
+.dashboard-logout:hover {
+    background: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
+
+    box-shadow: var(--shadow);
+}
+
+
+/* =========================================================
+   STAT CARDS
+========================================================= */
+
+.stat-card {
+    background: var(--surface) !important;
+    border-color: var(--border-light) !important;
+
+    box-shadow: var(--shadow-sm);
+}
+
+.stat-card:hover {
+    box-shadow: var(--shadow);
+}
+
+
+/* =========================================================
+   STAT ICONS
+   Keep functional meaning but use softer palette
+========================================================= */
+
+.stat-icon {
+    color: var(--primary) !important;
+}
+
+.stat-icon.purple {
+    background: #E8EFE5 !important;
+    color: var(--primary) !important;
+}
+
+.stat-icon.green {
+    background: var(--success-bg) !important;
+    color: var(--success) !important;
+}
+
+.stat-icon.orange {
+    background: var(--warning-bg) !important;
+    color: var(--warning) !important;
+}
+
+.stat-icon.red {
+    background: var(--danger-bg) !important;
+    color: var(--danger) !important;
+}
+
+.stat-icon.blue {
+    background: #E8EFE5 !important;
+    color: var(--primary) !important;
+}
+
+
+/* =========================================================
+   STAT TEXT
+========================================================= */
+
+.stat-content p,
+.stat-content small {
+    color: var(--text-secondary) !important;
+}
+
+.stat-content h2 {
+    color: var(--text-primary) !important;
+}
+
+.overall-stat .stat-content h2 {
+    color: var(--success) !important;
+}
+
+
+/* =========================================================
+   RECENT ATTENDANCE CONTAINER
+========================================================= */
+
+.recent-section {
+    background: var(--surface) !important;
+    border-color: var(--border-light) !important;
+
+    box-shadow: var(--shadow-sm);
+}
+
+.recent-title h2 {
+    color: var(--text-primary) !important;
+}
+
+.recent-title p {
+    color: var(--text-secondary) !important;
+}
+
+
+/* =========================================================
+   RECENT ATTENDANCE ICON
+========================================================= */
+
+.recent-icon {
+    background: var(--primary) !important;
+    color: #FFFFFF !important;
+
+    box-shadow:
+        0 8px 18px rgba(64, 78, 59, 0.16);
+}
+
+
+/* =========================================================
+   FILTER BUTTONS
+========================================================= */
+
+.filter-button {
+    border-color: var(--border) !important;
+
+    background: var(--surface-soft) !important;
+    color: var(--text-secondary) !important;
+}
+
+.filter-button:hover {
+    color: var(--primary) !important;
+
+    border-color: var(--accent-border) !important;
+
+    background: var(--accent-bg) !important;
+}
+
+.filter-button.active {
+    color: #FFFFFF !important;
+
+    border-color: var(--primary) !important;
+
+    background: var(--primary) !important;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.dashboard-search {
+    border-color: var(--border) !important;
+    background: var(--surface) !important;
+}
+
+.dashboard-search input {
+    color: var(--text-primary) !important;
+    background: transparent !important;
+}
+
+.dashboard-search input::placeholder {
+    color: var(--text-muted) !important;
+}
+
+.dashboard-search span {
+    color: var(--text-secondary) !important;
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+.summary-card {
+    border: 1px solid var(--border-light);
+}
+
+
+/* Total */
+.total-summary {
+    background: #E8EFE5 !important;
+}
+
+.total-summary .summary-icon {
+    color: var(--primary) !important;
+}
+
+
+/* Average */
+.average-summary {
+    background: #EEF2EA !important;
+}
+
+.average-summary .summary-icon {
+    color: var(--primary) !important;
+}
+
+
+/* Best */
+.best-summary {
+    background: var(--success-bg) !important;
+}
+
+.best-summary .summary-icon {
+    color: var(--success) !important;
+}
+
+
+/* Needs attention */
+.attention-summary {
+    background: var(--danger-bg) !important;
+}
+
+.attention-summary .summary-icon {
+    color: var(--danger) !important;
+}
+
+
+/* Summary text */
+
+.summary-card span {
+    color: var(--text-secondary) !important;
+}
+
+.summary-card strong {
+    color: var(--text-primary) !important;
+}
+
+.summary-card b {
+    color: var(--success) !important;
+}
+
+.attention-summary b {
+    color: var(--danger) !important;
+}
+
+
+/* =========================================================
+   ATTENDANCE TABLE
+========================================================= */
+
+.attendance-table-wrapper {
+    border-color: var(--border-light) !important;
+
+    background: var(--surface);
+}
+
+.attendance-table {
+    background: var(--surface) !important;
+}
+
+
+/* Table header */
+
+.attendance-table thead {
+    background: var(--primary) !important;
+}
+
+.attendance-table th {
+    color: #FFFFFF !important;
+}
+
+
+/* Table body */
+
+.attendance-table tbody tr {
+    border-color: var(--border-light) !important;
+}
+
+.attendance-table tbody tr:hover {
+    background: var(--surface-soft) !important;
+}
+
+.attendance-table td {
+    color: var(--text-primary);
+}
+
+
+/* =========================================================
+   CLASS ICON
+========================================================= */
+
+.class-icon {
+    background: var(--accent-bg) !important;
+    color: var(--primary) !important;
+}
+
+
+/* =========================================================
+   DATE BADGE
+========================================================= */
+
+.date-badge {
+    background: var(--surface-soft) !important;
+    color: var(--text-secondary) !important;
+
+    border-color: var(--border-light) !important;
+}
+
+
+/* =========================================================
+   PRESENT / ABSENT COUNTS
+========================================================= */
+
+.count-badge.present {
+    background: var(--success-bg) !important;
+    color: var(--success) !important;
+}
+
+.count-badge.absent {
+    background: var(--danger-bg) !important;
+    color: var(--danger) !important;
+}
+
+
+/* =========================================================
+   PROGRESS BAR
+========================================================= */
+
+.progress-bar {
+    background: #E4E6E3 !important;
+}
+
+.progress-fill.excellent,
+.progress-fill.good {
+    background: var(--success) !important;
+}
+
+.progress-fill.average {
+    background: var(--warning) !important;
+}
+
+.progress-fill.low {
+    background: #B8C0BA !important;
+}
+
+.percentage-cell strong {
+    color: var(--text-primary) !important;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+========================================================= */
+
+.status-badge.excellent {
+    color: var(--success) !important;
+
+    border-color: #B9D0BA !important;
+
+    background: var(--success-bg) !important;
+}
+
+.status-badge.good {
+    color: var(--success) !important;
+
+    border-color: #B9D0BA !important;
+
+    background: #EEF5EE !important;
+}
+
+.status-badge.average {
+    color: var(--warning) !important;
+
+    border-color: #E8D2A5 !important;
+
+    background: var(--warning-bg) !important;
+}
+
+.status-badge.low {
+    color: var(--danger) !important;
+
+    border-color: #E8BABA !important;
+
+    background: var(--danger-bg) !important;
+}
+
+
+/* =========================================================
+   VIEW BUTTON
+========================================================= */
+
+.view-button {
+    color: var(--primary) !important;
+
+    border-color: var(--accent-border) !important;
+
+    background: var(--surface) !important;
+}
+
+.view-button:hover {
+    color: #FFFFFF !important;
+
+    border-color: var(--primary) !important;
+
+    background: var(--primary) !important;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.attendance-footer {
+    color: var(--text-secondary) !important;
+
+    border-color: var(--border-light) !important;
+}
+
+.attendance-footer strong {
+    color: var(--text-primary) !important;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+    color: var(--text-secondary);
+}
+
+.empty-icon {
+    background: var(--accent-bg) !important;
+    color: var(--primary) !important;
+}
+
+.empty-state h3 {
+    color: var(--text-primary) !important;
+}
+
+.empty-state p {
+    color: var(--text-secondary) !important;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading-spinner {
+    border-color: var(--border) !important;
+    border-top-color: var(--primary) !important;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.dashboard-error-page {
+    background: var(--surface) !important;
+    color: var(--text-primary) !important;
+}
+
+.error-icon {
+    background: var(--danger-bg) !important;
+    color: var(--danger) !important;
+}
+
+.dashboard-error-page h2 {
+    color: var(--text-primary) !important;
+}
+
+.dashboard-error-page p {
+    color: var(--text-secondary) !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .dashboard-page {
+        background: var(--background);
+    }
+}
+

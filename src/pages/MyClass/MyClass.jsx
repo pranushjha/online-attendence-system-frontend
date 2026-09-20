@@ -1,16 +1,16 @@
-import {
+﻿import {
     useEffect,
     useRef,
     useState,
 } from "react";
 
 import {
-    FaPlus,
-    FaFileExcel,
-    FaTimes,
-    FaEdit,
-    FaTrash,
-} from "react-icons/fa";
+    Plus,
+    FileSpreadsheet,
+    X,
+    Pencil,
+    Trash2,
+} from "lucide-react";
 
 import api from "../../services/api";
 
@@ -870,7 +870,7 @@ const MyClass = () => {
                         }
                     >
 
-                        <FaFileExcel />
+                        <FileSpreadsheet />
 
                         {uploading
                             ? "Uploading..."
@@ -891,7 +891,7 @@ const MyClass = () => {
                         }
                     >
 
-                        <FaPlus />
+                        <Plus />
 
                         Add Student
 
@@ -1214,7 +1214,7 @@ const MyClass = () => {
                                                             background:
                                                                 "white",
                                                             color:
-                                                                "#4f46e5",
+                                                                "#0F766E",
                                                             cursor:
                                                                 "pointer",
                                                             display:
@@ -1226,7 +1226,7 @@ const MyClass = () => {
                                                         }}
                                                     >
 
-                                                        <FaEdit />
+                                                        <Pencil />
 
                                                     </button>
 
@@ -1270,7 +1270,7 @@ const MyClass = () => {
                                                         }}
                                                     >
 
-                                                        <FaTrash />
+                                                        <Trash2 />
 
                                                     </button>
 
@@ -1339,7 +1339,7 @@ const MyClass = () => {
                                 }
                             >
 
-                                <FaTimes />
+                                <X />
 
                             </button>
 
@@ -1550,7 +1550,7 @@ const MyClass = () => {
                                 }
                             >
 
-                                <FaTimes />
+                                <X />
 
                             </button>
 
@@ -1695,3 +1695,4 @@ const MyClass = () => {
 
 
 export default MyClass;
+
