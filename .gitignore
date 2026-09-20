@@ -35,3 +35,5 @@ css-backup-before-olive-theme/
 .idea/
 .DS_Store
 Thumbs.db
+
+.env.production
