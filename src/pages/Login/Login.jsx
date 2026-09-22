@@ -1,4 +1,5 @@
-import { useState } from "react";
+﻿import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -346,6 +347,23 @@ const Login = () => {
 
                         </div>
 
+                        <div
+                            style={{
+                                marginTop: "8px",
+                                textAlign: "right",
+                            }}
+                        >
+                            <Link
+                                to="/forgot-password"
+                                style={{
+                                    fontSize: "14px",
+                                    textDecoration: "none",
+                                }}
+                            >
+                                Forgot password?
+                            </Link>
+                        </div>
+
 
                         <button
                             type="submit"
@@ -380,7 +398,7 @@ const Login = () => {
                         </span>
 
                         <span className="footer-dot">
-                            •
+                            â€¢
                         </span>
 
                         <span>
@@ -398,6 +416,8 @@ const Login = () => {
 };
 
 export default Login;
+
+
 
 
 

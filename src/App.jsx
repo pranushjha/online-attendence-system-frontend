@@ -7,6 +7,11 @@
 
 import Login from "./pages/Login/Login";
 
+import VerifyEmail from "./pages/VerifyEmail/VerifyEmail";
+import SetPassword from "./pages/SetPassword/SetPassword";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
+
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Teachers from "./pages/Teachers/Teachers";
 import Classes from "./pages/Classes/Classes";
@@ -42,6 +47,26 @@ function App() {
               <Route
                   path="/login"
                   element={<Login />}
+              />
+
+              <Route
+                  path="/verify-email"
+                  element={<VerifyEmail />}
+              />
+
+              <Route
+                  path="/set-password"
+                  element={<SetPassword />}
+              />
+
+              <Route
+                  path="/forgot-password"
+                  element={<ForgotPassword />}
+              />
+
+              <Route
+                  path="/reset-password"
+                  element={<ResetPassword />}
               />
 
 
@@ -233,4 +258,5 @@ function App() {
 }
 
 export default App;
+
 

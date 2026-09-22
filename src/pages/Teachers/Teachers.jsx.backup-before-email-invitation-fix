@@ -198,8 +198,10 @@ const Teachers = () => {
 
         const name = form.name.trim();
         const email = form.email.trim();
-        const password = form.password;
-if (!name) {
+        const password = form.password.trim();
+
+
+        if (!name) {
 
             setError(
                 "Teacher name is required."
@@ -217,7 +219,19 @@ if (!name) {
 
             return;
         }
-try {
+
+
+        if (!editingTeacher && !password) {
+
+            setError(
+                "Password is required when creating a teacher."
+            );
+
+            return;
+        }
+
+
+        try {
 
             setSaving(true);
 
@@ -229,11 +243,23 @@ try {
                     form.assignedClass || null,
             };
 
-            // Password is required for creation.
-            // During editing it is only sent when
-            // the admin entered a new password.
-            if (password) {
+
+            // Password is required when creating.
+            if (!editingTeacher) {
+
                 payload.password = password;
+
+            }
+
+
+            // Password is optional when editing.
+            if (
+                editingTeacher &&
+                password
+            ) {
+
+                payload.password = password;
+
             }
 
 
@@ -776,23 +802,22 @@ try {
                                     onChange={handleChange}
                                     placeholder={
                                         editingTeacher
-                                            ? "Enter new password (optional)"
-                                            : "Enter teacher password"
+                                            ? "Leave blank to keep current password"
+                                            : "Enter password"
                                     }
                                     autoComplete={
                                         editingTeacher
                                             ? "new-password"
                                             : "new-password"
                                     }
-                                    minLength={8}
                                     required={!editingTeacher}
                                 />
 
-                                <small>
-                                    {editingTeacher
-                                        ? "Leave blank to keep the current password."
-                                        : "The teacher will use this password after verifying their email."}
-                                </small>
+                                {editingTeacher && (
+                                    <small className="teacher-form-help">
+                                        Leave blank if you do not want to change the password.
+                                    </small>
+                                )}
 
                             </label>
 
@@ -892,7 +917,4 @@ try {
 
 
 export default Teachers;
-
-
-
 
