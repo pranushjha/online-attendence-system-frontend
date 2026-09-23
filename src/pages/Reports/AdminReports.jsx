@@ -15,6 +15,7 @@ import {
     CalendarDays,
     Presentation,
     X,
+    Download,
 } from "lucide-react";
 
 import api from "../../services/api";
@@ -737,7 +738,634 @@ const AdminReports = () => {
     // TEACHER FILTER
     // ==========================================
 
-    const filteredAttendance =
+    
+    // ==========================================
+    // OPTIMIZED EXCEL EXPORT
+    // Attendance Matrix
+    // ==========================================
+
+    const handleDownloadExcel = async () => {
+
+        try {
+
+            if (!filteredAttendance.length) {
+                setError(
+                    "There are no attendance records to export."
+                );
+                return;
+            }
+
+            // Load XLSX only when the user actually downloads Excel.
+            const XLSX = await import("xlsx");
+
+            const workbook = XLSX.utils.book_new();
+
+            const getExportDate = (record) => {
+
+                if (!record?.date) {
+                    return "";
+                }
+
+                const date = new Date(record.date);
+
+                if (Number.isNaN(date.getTime())) {
+                    return String(record.date).slice(0, 10);
+                }
+
+                return date.toISOString().slice(0, 10);
+            };
+
+            const formatDateHeader = (date) => {
+
+                if (!date) {
+                    return "";
+                }
+
+                const parsed = new Date(`${date}T00:00:00`);
+
+                if (Number.isNaN(parsed.getTime())) {
+                    return date;
+                }
+
+                return parsed.toLocaleDateString(
+                    "en-GB",
+                    {
+                        day: "2-digit",
+                        month: "short",
+                    }
+                );
+            };
+
+            const cleanSheetName = (value) => {
+
+                return String(value || "Unknown")
+                    .replace(/[\\/:*?[\]]/g, "_")
+                    .replace(/\s+/g, " ")
+                    .trim()
+                    .slice(0, 31);
+            };
+
+            const getStatus = (student) => {
+
+                const status = String(
+                    getStudentStatus(student) || ""
+                )
+                    .trim()
+                    .toLowerCase();
+
+                if (status === "present") {
+                    return "P";
+                }
+
+                if (status === "absent") {
+                    return "A";
+                }
+
+                return "—";
+            };
+
+            const getStudentKey = (student, index) => {
+                return String(
+                    getStudentId(
+                        student,
+                        `student-${index}`
+                    )
+                );
+            };
+
+            // ==========================================
+            // GROUP ATTENDANCE BY CLASS
+            // ==========================================
+
+            const classGroups = new Map();
+
+            filteredAttendance.forEach((record) => {
+
+                const className =
+                    getClassName(record) ||
+                    "Unknown Class";
+
+                const classKey =
+                    String(
+                        getClassId(record) ||
+                        className
+                    );
+
+                const date = getExportDate(record);
+
+                if (!date) {
+                    return;
+                }
+
+                if (!classGroups.has(classKey)) {
+
+                    classGroups.set(
+                        classKey,
+                        {
+                            className,
+                            teacherNames: new Set(),
+                            dates: new Set(),
+                            students: new Map(),
+                        }
+                    );
+
+                }
+
+                const group = classGroups.get(classKey);
+
+                group.dates.add(date);
+
+                const teacherName =
+                    getTeacherName(record);
+
+                if (teacherName) {
+                    group.teacherNames.add(teacherName);
+                }
+
+                const students =
+                    getStudentRecords(record);
+
+                students.forEach((student, index) => {
+
+                    const studentKey =
+                        getStudentKey(
+                            student,
+                            index
+                        );
+
+                    if (!group.students.has(studentKey)) {
+
+                        group.students.set(
+                            studentKey,
+                            {
+                                rollNo:
+                                    getStudentRollNo(student),
+                                name:
+                                    getStudentName(student),
+                                attendance: {},
+                            }
+                        );
+
+                    }
+
+                    group.students.get(
+                        studentKey
+                    ).attendance[date] =
+                        getStatus(student);
+
+                });
+
+            });
+
+            if (!classGroups.size) {
+
+                setError(
+                    "No attendance data was found for export."
+                );
+
+                return;
+            }
+
+            // ==========================================
+            // SUMMARY DATA
+            // ==========================================
+
+            const summaryRows = [];
+
+            let overallPresent = 0;
+            let overallAbsent = 0;
+            let overallNotMarked = 0;
+            let overallStudentDays = 0;
+
+            const usedSheetNames = new Set();
+
+            // ==========================================
+            // CREATE CLASS SHEETS
+            // ==========================================
+
+            classGroups.forEach((group) => {
+
+                const dates =
+                    Array.from(group.dates).sort();
+
+                const students =
+                    Array.from(
+                        group.students.values()
+                    ).sort((a, b) => {
+
+                        const rollA = Number(a.rollNo);
+                        const rollB = Number(b.rollNo);
+
+                        if (
+                            !Number.isNaN(rollA) &&
+                            !Number.isNaN(rollB)
+                        ) {
+                            return rollA - rollB;
+                        }
+
+                        return String(
+                            a.rollNo || ""
+                        ).localeCompare(
+                            String(b.rollNo || ""),
+                            undefined,
+                            { numeric: true }
+                        );
+
+                    });
+
+                const teacherName =
+                    group.teacherNames.size === 0
+                        ? "Not Assigned"
+                        : group.teacherNames.size === 1
+                            ? Array.from(
+                                group.teacherNames
+                            )[0]
+                            : "Multiple Teachers";
+
+                // ==========================================
+                // SHEET NAME
+                // ==========================================
+
+                const baseName =
+                    cleanSheetName(
+                        group.className
+                    ) || "Class";
+
+                let sheetName = baseName;
+                let counter = 2;
+
+                while (
+                    usedSheetNames.has(sheetName) ||
+                    sheetName === "Summary"
+                ) {
+
+                    const suffix = `_${counter}`;
+
+                    sheetName =
+                        baseName.slice(
+                            0,
+                            31 - suffix.length
+                        ) + suffix;
+
+                    counter++;
+                }
+
+                usedSheetNames.add(sheetName);
+
+                // ==========================================
+                // CLASS MATRIX
+                // ==========================================
+
+                const rows = [
+
+                    ["ATTENDANCE REPORT"],
+
+                    [
+                        "Class",
+                        group.className
+                    ],
+
+                    [
+                        "Teacher",
+                        teacherName
+                    ],
+
+                    [
+                        "Attendance Dates",
+                        `${dates[0]} to ${dates[dates.length - 1]}`
+                    ],
+
+                    [],
+
+                ];
+
+                const headers = [
+                    "Roll No",
+                    "Student Name",
+                    ...dates.map(formatDateHeader),
+                    "Present",
+                    "Absent",
+                    "Not Marked",
+                    "Attendance %",
+                ];
+
+                rows.push(headers);
+
+                let classPresent = 0;
+                let classAbsent = 0;
+                let classNotMarked = 0;
+
+                students.forEach((student) => {
+
+                    let present = 0;
+                    let absent = 0;
+                    let notMarked = 0;
+
+                    const dailyStatus =
+                        dates.map((date) => {
+
+                            const status =
+                                student.attendance[date] ||
+                                "—";
+
+                            if (status === "P") {
+                                present++;
+                            } else if (status === "A") {
+                                absent++;
+                            } else {
+                                notMarked++;
+                            }
+
+                            return status;
+
+                        });
+
+                    const marked =
+                        present + absent;
+
+                    const percentage =
+                        marked > 0
+                            ? `${(
+                                present / marked * 100
+                            ).toFixed(2)}%`
+                            : "0.00%";
+
+                    rows.push([
+                        student.rollNo,
+                        student.name,
+                        ...dailyStatus,
+                        present,
+                        absent,
+                        notMarked,
+                        percentage,
+                    ]);
+
+                    classPresent += present;
+                    classAbsent += absent;
+                    classNotMarked += notMarked;
+
+                });
+
+                overallPresent += classPresent;
+                overallAbsent += classAbsent;
+                overallNotMarked += classNotMarked;
+                overallStudentDays +=
+                    students.length * dates.length;
+
+                const worksheet =
+                    XLSX.utils.aoa_to_sheet(rows);
+
+                worksheet["!cols"] = [
+                    { wch: 12 },
+                    { wch: 28 },
+                    ...dates.map(() => ({
+                        wch: 12
+                    })),
+                    { wch: 10 },
+                    { wch: 10 },
+                    { wch: 12 },
+                    { wch: 16 },
+                ];
+
+                worksheet["!freeze"] = {
+                    xSplit: 2,
+                    ySplit: 6
+                };
+
+                const lastColumn =
+                    XLSX.utils.encode_col(
+                        headers.length - 1
+                    );
+
+                worksheet["!autofilter"] = {
+                    ref:
+                        `A6:${lastColumn}${rows.length}`
+                };
+
+                XLSX.utils.book_append_sheet(
+                    workbook,
+                    worksheet,
+                    sheetName
+                );
+
+                // ==========================================
+                // DAILY SUMMARY
+                // ==========================================
+
+                dates.forEach((date) => {
+
+                    let present = 0;
+                    let absent = 0;
+                    let notMarked = 0;
+
+                    students.forEach((student) => {
+
+                        const status =
+                            student.attendance[date] ||
+                            "—";
+
+                        if (status === "P") {
+                            present++;
+                        } else if (status === "A") {
+                            absent++;
+                        } else {
+                            notMarked++;
+                        }
+
+                    });
+
+                    const marked =
+                        present + absent;
+
+                    const percentage =
+                        marked > 0
+                            ? `${(
+                                present / marked * 100
+                            ).toFixed(2)}%`
+                            : "0.00%";
+
+                    summaryRows.push([
+                        group.className,
+                        teacherName,
+                        date,
+                        students.length,
+                        present,
+                        absent,
+                        notMarked,
+                        percentage,
+                    ]);
+
+                });
+
+            });
+
+            // ==========================================
+            // SUMMARY SHEET
+            // ==========================================
+
+            const overallMarked =
+                overallPresent +
+                overallAbsent;
+
+            const overallPercentage =
+                overallMarked > 0
+                    ? `${(
+                        overallPresent /
+                        overallMarked *
+                        100
+                    ).toFixed(2)}%`
+                    : "0.00%";
+
+            const summarySheetRows = [
+
+                [
+                    "ATTENDANCE REPORT SUMMARY"
+                ],
+
+                [],
+
+                [
+                    "Class Filter",
+                    selectedClass === "all"
+                        ? "All Classes"
+                        : (
+                            filteredAttendance[0]
+                                ? getClassName(
+                                    filteredAttendance[0]
+                                )
+                                : "Selected Class"
+                        )
+                ],
+
+                [
+                    "Teacher Filter",
+                    selectedTeacher === "all"
+                        ? "All Teachers"
+                        : (
+                            filteredAttendance[0]
+                                ? getTeacherName(
+                                    filteredAttendance[0]
+                                )
+                                : "Selected Teacher"
+                        )
+                ],
+
+                [
+                    "Generated",
+                    new Date().toLocaleString()
+                ],
+
+                [],
+
+                [
+                    "Class",
+                    "Teacher",
+                    "Date",
+                    "Total Students",
+                    "Present",
+                    "Absent",
+                    "Not Marked",
+                    "Attendance %",
+                ],
+
+                ...summaryRows,
+
+                [],
+
+                [
+                    "Overall",
+                    "",
+                    "",
+                    overallStudentDays,
+                    overallPresent,
+                    overallAbsent,
+                    overallNotMarked,
+                    overallPercentage,
+                ],
+
+            ];
+
+            const summaryWorksheet =
+                XLSX.utils.aoa_to_sheet(
+                    summarySheetRows
+                );
+
+            summaryWorksheet["!cols"] = [
+                { wch: 18 },
+                { wch: 24 },
+                { wch: 14 },
+                { wch: 18 },
+                { wch: 12 },
+                { wch: 12 },
+                { wch: 14 },
+                { wch: 18 },
+            ];
+
+            summaryWorksheet["!freeze"] = {
+                ySplit: 7
+            };
+
+            if (summaryRows.length > 0) {
+
+                summaryWorksheet["!autofilter"] = {
+                    ref:
+                        `A7:H${7 + summaryRows.length}`
+                };
+
+            }
+
+            XLSX.utils.book_append_sheet(
+                workbook,
+                summaryWorksheet,
+                "Summary",
+                0
+            );
+
+            // ==========================================
+            // FILE NAME
+            // ==========================================
+
+            const allDates =
+                filteredAttendance
+                    .map(getExportDate)
+                    .filter(Boolean)
+                    .sort();
+
+            const firstDate =
+                allDates[0] || "report";
+
+            const lastDate =
+                allDates[allDates.length - 1] ||
+                firstDate;
+
+            const fileName =
+                firstDate === lastDate
+                    ? `Attendance_Report_${firstDate}.xlsx`
+                    : `Attendance_Report_${firstDate}_to_${lastDate}.xlsx`;
+
+            XLSX.writeFile(
+                workbook,
+                fileName
+            );
+
+            setError("");
+
+        } catch (err) {
+
+            console.error(
+                "Optimized Excel Export Error:",
+                err
+            );
+
+            setError(
+                "Unable to export attendance report."
+            );
+
+        }
+
+    };
+
+const filteredAttendance =
         useMemo(() => {
 
             return attendanceData.filter(
@@ -1238,6 +1866,24 @@ const AdminReports = () => {
                     }
 
                 </button>
+                <button
+                    type="button"
+                    className="refresh-button"
+                    onClick={handleDownloadExcel}
+                    disabled={
+                        refreshing ||
+                        loading ||
+                        filteredAttendance.length === 0
+                    }
+                    title="Download attendance report as Excel"
+                >
+
+                    <Download />
+
+                    Download Excel
+
+                </button>
+
 
             </div>
 
@@ -2073,5 +2719,6 @@ const AdminReports = () => {
 
 
 export default AdminReports;
+
 
 

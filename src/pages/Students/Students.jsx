@@ -1,11 +1,10 @@
-import {
+﻿import {
     useEffect,
     useRef,
     useState,
 } from "react";
 
 import { Navigate } from "react-router-dom";
-import * as XLSX from "xlsx";
 
 import {
     Pencil,
@@ -405,7 +404,8 @@ const Students = () => {
     // EXCEL TEMPLATE
     // =========================================================
 
-    const downloadExcelTemplate = () => {
+    const downloadExcelTemplate = async () => {
+        const XLSX = await import("xlsx");
 
         const templateData = [
             {
@@ -1851,4 +1851,5 @@ const Students = () => {
 
 
 export default Students;
+
 

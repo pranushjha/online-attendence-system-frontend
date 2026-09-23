@@ -1,4 +1,4 @@
-﻿import {
+import {
     createContext,
     useContext,
     useEffect,
@@ -168,53 +168,23 @@ export const AuthProvider = ({ children }) => {
     // TEACHER LOGIN
     // ==========================================
 
-    const teacherLogin = async (email, password) => {
+    const teacherLogin = async (name, password) => {
 
         const response = await api.post(
             "/auth/teacher/login",
             {
-                email,
+                name,
                 password,
             }
         );
 
+        const { token, user } = response.data;
 
-        const {
-            token: receivedToken,
-            user: receivedUser,
-        } = response.data;
+        sessionStorage.setItem("token", token);
+        sessionStorage.setItem("user", JSON.stringify(user));
 
-
-        if (!receivedToken || !receivedUser) {
-
-            throw new Error(
-                "Invalid login response from server"
-            );
-        }
-
-
-        // ==========================================
-        // SAVE ONLY IN CURRENT TAB
-        // ==========================================
-
-        sessionStorage.setItem(
-            "token",
-            receivedToken
-        );
-
-        sessionStorage.setItem(
-            "user",
-            JSON.stringify(receivedUser)
-        );
-
-
-        // ==========================================
-        // UPDATE REACT STATE
-        // ==========================================
-
-        setToken(receivedToken);
-        setUser(receivedUser);
-
+        setToken(token);
+        setUser(user);
 
         return response.data;
     };

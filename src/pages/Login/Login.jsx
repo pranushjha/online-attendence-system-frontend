@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -29,6 +29,7 @@ const Login = () => {
 
     const [formData, setFormData] = useState({
         email: "",
+        name: "",
         password: "",
     });
 
@@ -68,11 +69,30 @@ const Login = () => {
         setError("");
 
         if (
-            !formData.email.trim() ||
-            !formData.password
+            role === "admin" &&
+            !formData.email.trim()
         ) {
             setError(
-                "Please enter your email and password."
+                "Please enter your email."
+            );
+
+            return;
+        }
+
+        if (
+            role === "teacher" &&
+            !formData.name.trim()
+        ) {
+            setError(
+                "Please enter your teacher name."
+            );
+
+            return;
+        }
+
+        if (!formData.password) {
+            setError(
+                "Please enter your password."
             );
 
             return;
@@ -96,7 +116,7 @@ const Login = () => {
 
                 response =
                     await teacherLogin(
-                        formData.email,
+                        formData.name,
                         formData.password
                     );
             }
@@ -277,18 +297,32 @@ const Login = () => {
 
                         <div className="form-group">
 
-                            <label htmlFor="email">
-                                Email address
+                            <label htmlFor={role === "admin" ? "email" : "name"}>
+                                {role === "admin"
+                                    ? "Email address"
+                                    : "Teacher Name"}
                             </label>
 
                             <input
-                                id="email"
-                                name="email"
-                                type="email"
-                                placeholder="you@college.com"
-                                value={formData.email}
+                                id={role === "admin" ? "email" : "name"}
+                                name={role === "admin" ? "email" : "name"}
+                                type="text"
+                                placeholder={
+                                    role === "admin"
+                                        ? "you@college.com"
+                                        : "Enter teacher name"
+                                }
+                                value={
+                                    role === "admin"
+                                        ? formData.email
+                                        : formData.name
+                                }
                                 onChange={handleChange}
-                                autoComplete="email"
+                                autoComplete={
+                                    role === "admin"
+                                        ? "email"
+                                        : "username"
+                                }
                             />
 
                         </div>

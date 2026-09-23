@@ -1,32 +1,45 @@
-﻿import {
+﻿import { lazy, Suspense } from "react";
+
+import {
   BrowserRouter,
   Navigate,
   Route,
   Routes,
 } from "react-router-dom";
 
-import Login from "./pages/Login/Login";
 
-import VerifyEmail from "./pages/VerifyEmail/VerifyEmail";
-import SetPassword from "./pages/SetPassword/SetPassword";
-import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword/ResetPassword";
 
-import Dashboard from "./pages/Dashboard/Dashboard";
-import Teachers from "./pages/Teachers/Teachers";
-import Classes from "./pages/Classes/Classes";
-import Students from "./pages/Students/Students";
-import Attendance from "./pages/Attendance/Attendance";
 
-import Reports from "./pages/Reports/Reports";
-import AdminReports from "./pages/Reports/AdminReports";
 
-import MyClass from "./pages/MyClass/MyClass";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import AdminLayout from "./layouts/AdminLayout";
 import TeacherLayout from "./layouts/TeacherLayout";
+
+const Login = lazy(() => import("./pages/Login/Login"));
+const VerifyEmail = lazy(() => import("./pages/VerifyEmail/VerifyEmail"));
+const SetPassword = lazy(() => import("./pages/SetPassword/SetPassword"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword/ResetPassword"));
+
+const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
+const Teachers = lazy(() => import("./pages/Teachers/Teachers"));
+const Classes = lazy(() => import("./pages/Classes/Classes"));
+const Students = lazy(() => import("./pages/Students/Students"));
+const Attendance = lazy(() => import("./pages/Attendance/Attendance"));
+
+const Reports = lazy(() => import("./pages/Reports/Reports"));
+const AdminReports = lazy(() => import("./pages/Reports/AdminReports"));
+
+const MyClass = lazy(() => import("./pages/MyClass/MyClass"));
+
+const PageLoader = () => (
+  <div style={{ padding: "40px" }}>
+    Loading...
+  </div>
+);
+
 
 
 // ==========================================
@@ -38,6 +51,7 @@ function App() {
   return (
       <BrowserRouter>
 
+          <Suspense fallback={<PageLoader />}>
           <Routes>
 
               {/* ==========================================
@@ -252,6 +266,7 @@ function App() {
               />
 
           </Routes>
+          </Suspense>
 
       </BrowserRouter>
   );
